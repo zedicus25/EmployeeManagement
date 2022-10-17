@@ -1,6 +1,8 @@
-﻿using System;
+﻿using EmployeeManagement.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +25,17 @@ namespace EmployeeManagement.CustomControls
         public LoginForm()
         {
             InitializeComponent();
+            DataContext = new LoginWindow_VM();
+        }
+
+        
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+            { 
+                ((dynamic)this.DataContext).PasswordInput = ((PasswordBox)sender).Password; 
+            }
         }
     }
 }

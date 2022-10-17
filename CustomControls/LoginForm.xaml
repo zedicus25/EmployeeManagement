@@ -25,20 +25,20 @@
 
 
 
-
-
         <TextBox Grid.Row="1" Grid.Column="1"
+                 Text="{Binding LoginInput, UpdateSourceTrigger=PropertyChanged}"
                  x:Name="LoginTB"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 VerticalAlignment="Bottom"
                 TextWrapping="Wrap"
-                     Margin="10 0"
+                   Margin="10 5"
                 MaxLength="20"
                 materialDesign:HintAssist.Hint="Логін" >
         </TextBox>
 
 
         <PasswordBox Grid.Row="2" Grid.Column="1"
+                     PasswordChanged="PasswordBox_PasswordChanged"
                      VerticalAlignment="Center"
                      Margin="10 0"
                     Style="{StaticResource MaterialDesignFilledPasswordBox}"
@@ -48,7 +48,10 @@
 
         <Button Grid.Row="3" Grid.Column="1" Margin="10 0" VerticalAlignment="Top"
                 Style="{StaticResource MaterialDesignFlatSecondaryDarkBgButton}"
+                Command="{Binding LoginCommand}"
                 Content="Увійти" />
+
+        <Label Grid.Column="3" Grid.Row="5" Content="{Binding ServerMessages, UpdateSourceTrigger=PropertyChanged}"></Label>
 
     </Grid>
 </UserControl>

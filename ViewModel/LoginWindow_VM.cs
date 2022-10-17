@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Model;
 using GalaSoft.MvvmLight.CommandWpf;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -37,7 +38,11 @@ namespace EmployeeManagement.ViewModel
             {
                 return _loginCommand ?? (_loginCommand = new RelayCommand(() =>
                 {
-                    _serverClient.SendMessageToServer("Some");
+                    if(LoginInput != String.Empty && PasswordInput != String.Empty)
+                    {
+                        string msg = $"id={_serverClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
+                        _serverClient.SendMessageToServer(msg);
+                    }
                 }));
             }
         }
@@ -53,7 +58,7 @@ namespace EmployeeManagement.ViewModel
         public LoginWindow_VM()
         {
             _serverClient = new ServerClient();
-            _serverClient.GetServerMessage+= UpdateServerMessages;
+            _serverClient.GetServerMessage += UpdateServerMessages;
         }
 
 

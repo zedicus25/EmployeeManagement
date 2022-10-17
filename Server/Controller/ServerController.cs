@@ -18,12 +18,12 @@ namespace Server.Controller
         private readonly int PORT;
         private CancellationTokenSource _tokenSource;
         private Task _listenTask;
-        private SynchronizationContext _synchronizationContext;
+        public UserController UserController { get; private set; }
 
         public ServerController(int port = 8008)
         {
             _tokenSource = new CancellationTokenSource();
-            _synchronizationContext = SynchronizationContext.Current;
+            UserController = new UserController();
             clients = new List<ServerClient>();
             PORT = port;
             _listenTask = new Task(Listen, _tokenSource.Token);
@@ -53,6 +53,7 @@ namespace Server.Controller
             TcpClient tcpClient = tcpListener.AcceptTcpClient();
             ServerClient serverClient = new ServerClient(tcpClient, this);
             AddConnection(serverClient);
+            SendMessageToClient(serverClient.Id, $"ClientId={serverClient.Id}");
             StateUpdating?.Invoke($"Client {serverClient.Id} connected");
         }
 
@@ -84,7 +85,24 @@ namespace Server.Controller
         public void SetMessagesFromClient(string msg)
         {
             StateUpdating?.Invoke(msg);
-            clients.Last().NetworkStream.Write(Encoding.Unicode.GetBytes("message to client"), 0, 17);
+        }
+
+        public void CheckUserLoginPasswordData(string data)
+        {
+            string res = $"loginigResult={UserController.CheckData(data)}";
+            string[] datas = data.Split('\n');
+            string id = datas[0].Substring(datas[0].IndexOf('=')+1);
+            SendMessageToClient(id, res);
+        }
+
+        public void SendMessageToClient(string id, string msg)
+        {
+            ServerClient client = clients.FirstOrDefault(c => c.Id.Equals(id));
+            if (client == null)
+                return;
+
+            byte[] bytes = Encoding.Unicode.GetBytes(msg);
+            client.NetworkStream.Write(bytes, 0, bytes.Length);
         }
     }
 }

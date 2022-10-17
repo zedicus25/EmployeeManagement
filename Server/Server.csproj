@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\ServerController.cs" />
+    <Compile Include="Controller\UserController.cs" />
     <Compile Include="Model\ServerClient.cs" />
     <Compile Include="Utilities\IDataController.cs" />
     <Compile Include="Utilities\JsonDataController.cs" />

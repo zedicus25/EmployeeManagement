@@ -53,7 +53,14 @@ namespace Server.Model
                         } while (NetworkStream.DataAvailable);
 
                         if (sb.Length > 0)
-                            _serverController.SetMessagesFromClient(sb.ToString());
+                        {
+                            string msg = sb.ToString();
+                            if (msg.Contains("id=") && msg.Contains("login=") && msg.Contains("password="))
+                                _serverController.CheckUserLoginPasswordData(msg);
+                            else
+                                _serverController.SetMessagesFromClient(sb.ToString());
+                        }
+                            
                     }
                     catch (Exception ex)
                     {

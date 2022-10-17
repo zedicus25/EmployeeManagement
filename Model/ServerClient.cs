@@ -11,11 +11,15 @@ namespace EmployeeManagement.Model
         public event Action<string> StateUpdating;
         public event Action<string> GetServerMessage;
 
-        private static TcpClient _tcpClient;
-        private static NetworkStream _tcpStream;
+        public string IdOnServer { get; private set; }
 
-        private static readonly int PORT = 8008;
-        private static readonly string HOST = "127.0.0.1";
+        private TcpClient _tcpClient;
+        private NetworkStream _tcpStream;
+
+        private readonly int PORT = 8008;
+        private readonly string HOST = "127.0.0.1";
+        
+
 
         private CancellationTokenSource _tokenSource;
         private Task _receiveTask;
@@ -75,7 +79,24 @@ namespace EmployeeManagement.Model
                     } while (_tcpStream.DataAvailable);
 
                     if (sb.Length > 0)
-                        GetServerMessage?.Invoke(sb.ToString());
+                    {
+                        string msg = sb.ToString();
+                        if (msg.Contains("ClientId"))
+                        {
+                            IdOnServer = msg.Substring(msg.IndexOf('=')+1);
+                            continue;
+                        }else if (msg.Contains("loginigResult="))
+                        {
+                            GetServerMessage?.Invoke(msg.Substring(msg.IndexOf('=')+1));
+                        }
+                        else
+                        {
+                            GetServerMessage?.Invoke(sb.ToString());
+                        }
+
+                        
+                    }
+                        
                 }
             }
             catch (Exception ex)

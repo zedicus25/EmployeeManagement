@@ -25,6 +25,7 @@ namespace EmployeeManagement.CustomControls
         public LoginForm()
         {
             InitializeComponent();
+            DataContext = new LoginWindow_VM();
         }
 
         

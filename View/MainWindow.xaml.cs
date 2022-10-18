@@ -24,7 +24,6 @@ namespace EmployeeManagement.View
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
         }
     }
 }

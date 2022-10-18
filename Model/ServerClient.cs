@@ -10,7 +10,6 @@ namespace EmployeeManagement.Model
     {
         public event Action<string> StateUpdating;
         public event Action<string> GetServerMessage;
-        public event Action<bool> LoginingResult;
 
         public string IdOnServer { get; private set; }
 
@@ -37,7 +36,7 @@ namespace EmployeeManagement.Model
             try
             {
                 byte[] data = Encoding.Unicode.GetBytes(message);
-                _tcpStream?.Write(data, 0, data.Length);
+                _tcpStream.Write(data, 0, data.Length);
             }
             catch (Exception ex)
             {
@@ -86,17 +85,16 @@ namespace EmployeeManagement.Model
                         {
                             IdOnServer = msg.Substring(msg.IndexOf('=')+1);
                             continue;
-                        }
-                        else if (msg.Contains("loginigResult="))
+                        }else if (msg.Contains("loginigResult="))
                         {
-                            bool res = Convert.ToBoolean(msg.Substring(msg.IndexOf('=') + 1));
-                            LoginingResult?.Invoke(res);
-                            continue;
+                            GetServerMessage?.Invoke(msg.Substring(msg.IndexOf('=')+1));
                         }
                         else
                         {
-                            GetServerMessage?.Invoke(msg);
-                        }          
+                            GetServerMessage?.Invoke(sb.ToString());
+                        }
+
+                        
                     }
                         
                 }
@@ -111,7 +109,7 @@ namespace EmployeeManagement.Model
         private void Disconnect()
         {
             _tokenSource.Cancel();
-            _tcpStream?.Close();
+            _tcpStream.Close();
             _tcpClient.Close();
             StateUpdating?.Invoke("You disconnected from server");
         }

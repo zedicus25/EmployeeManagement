@@ -1,17 +1,12 @@
 ﻿using EmployeeManagement.Model;
 using GalaSoft.MvvmLight.CommandWpf;
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 
 namespace EmployeeManagement.ViewModel
 {
-    public class LoginWindow_VM : INotifyPropertyChanged
+    public class LoginWindow_VM : BaseVM
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
         public string LoginInput
         {
             get => _loginInput;
@@ -26,9 +21,15 @@ namespace EmployeeManagement.ViewModel
         public string ServerMessages
         {
             get => _serverMessage;
-            set
-            {
-                _serverMessage = value;
+            set { _serverMessage = value; }
+        }
+
+        public bool LoginingResult 
+        {
+            get => _loginigResult;
+            set 
+            { 
+                _loginigResult = value;
             }
         }
 
@@ -52,6 +53,7 @@ namespace EmployeeManagement.ViewModel
         private string _passwordInput;
         private string _serverMessage;
         private ServerClient _serverClient;
+        private bool _loginigResult;
 
         private RelayCommand _loginCommand;
 
@@ -59,6 +61,7 @@ namespace EmployeeManagement.ViewModel
         {
             _serverClient = new ServerClient();
             _serverClient.GetServerMessage += UpdateServerMessages;
+            _serverClient.LoginingResult += SetLoginigResult;
         }
 
 
@@ -68,7 +71,12 @@ namespace EmployeeManagement.ViewModel
             OnPropertyChanged("ServerMessages");
         }
 
-        public void OnPropertyChanged([CallerMemberName] string prop = "") =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        private void SetLoginigResult(bool res)
+        {
+            _loginigResult = res;
+            OnPropertyChanged("LoginingResult");
+            if (_loginigResult)
+                MainViewModel.Instance.SetViewModel(new HomeWindow_VM());
+        }
     }
 }

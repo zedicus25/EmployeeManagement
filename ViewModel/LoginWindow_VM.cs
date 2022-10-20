@@ -24,15 +24,6 @@ namespace EmployeeManagement.ViewModel
             set { _serverMessage = value; }
         }
 
-        public bool LoginingResult 
-        {
-            get => _loginigResult;
-            set 
-            { 
-                _loginigResult = value;
-            }
-        }
-
         public RelayCommand LoginCommand
         {
             get
@@ -70,12 +61,15 @@ namespace EmployeeManagement.ViewModel
             OnPropertyChanged("ServerMessages");
         }
 
-        private void SetLoginigResult(bool res)
+        private void SetLoginigResult(bool res, User user)
         {
             _loginigResult = res;
-            OnPropertyChanged("LoginingResult");
             if (_loginigResult)
+            {
                 MainViewModel.Instance.SetViewModel(new HomeWindow_VM());
+                MainViewModel.Instance.User = user;
+            }
+               
         }
     }
 }

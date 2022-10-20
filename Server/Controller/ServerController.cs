@@ -89,7 +89,10 @@ namespace Server.Controller
 
         public void CheckUserLoginPasswordData(string data)
         {
-            string res = $"loginigResult={UserController.CheckData(data)}";
+            bool logResult = UserController.CheckData(data, out User logUser);
+            string res = $"loginigResult={logResult}\n";
+            if (logResult)
+                res += logUser.ToString();
             string[] datas = data.Split('\n');
             string id = datas[0].Substring(datas[0].IndexOf('=')+1);
             SendMessageToClient(id, res);

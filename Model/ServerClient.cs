@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmployeeManagement.Utilities;
+using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -10,7 +11,7 @@ namespace EmployeeManagement.Model
     {
         public event Action<string> StateUpdating;
         public event Action<string> GetServerMessage;
-        public event Action<bool> LoginingResult;
+        public event Action<bool, User> LoginingResult;
 
         public string IdOnServer { get; private set; }
 
@@ -70,7 +71,7 @@ namespace EmployeeManagement.Model
             {
                 while (_tokenSource.Token.IsCancellationRequested == false)
                 {
-                    byte[] data = new byte[256];
+                    byte[] data = new byte[1024];
                     StringBuilder sb = new StringBuilder();
                     int byteCount = 0;
                     do
@@ -89,8 +90,11 @@ namespace EmployeeManagement.Model
                         }
                         else if (msg.Contains("loginigResult="))
                         {
-                            bool res = Convert.ToBoolean(msg.Substring(msg.IndexOf('=') + 1));
-                            LoginingResult?.Invoke(res);
+                            bool res = Convert.ToBoolean(msg.Substring(msg.IndexOf('=')+1, (msg.IndexOf('\n') - msg.IndexOf('=') )));
+                            User user = null;
+                            if (res)
+                                user = Parser.Instance.GetUser(msg.Substring(msg.IndexOf('\n') + 1));
+                            LoginingResult?.Invoke(res, user);
                             continue;
                         }
                         else

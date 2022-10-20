@@ -1,5 +1,6 @@
 ﻿
 using EmployeeManagement.Model;
+using EmployeeManagement.Utilities;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -21,8 +22,19 @@ namespace EmployeeManagement.ViewModel
 
 
 		public ServerClient ServerClient { get; private set; }
+		public User User 
+		{
+			get => _user;
+			set
+			{
+				if(value != null)
+					_user = value;
+			} 
+		}
 
 		private BaseVM _selectedVM;
+		private Parser _parser;
+		private User _user;
 
 
         public MainViewModel()
@@ -33,6 +45,7 @@ namespace EmployeeManagement.ViewModel
             }
             ServerClient = new ServerClient();
             _selectedVM = new LoginWindow_VM();
+			_parser = new Parser();
 			
 		}
 

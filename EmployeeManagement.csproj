@@ -136,6 +136,7 @@
     </Compile>
     <Compile Include="Model\ServerClient.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="Utilities\Parser.cs" />
     <Compile Include="ViewModel\Account_VM.cs" />
     <Compile Include="ViewModel\AllTask_VM.cs" />
     <Compile Include="ViewModel\BaseVM.cs" />

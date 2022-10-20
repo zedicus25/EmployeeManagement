@@ -41,8 +41,8 @@ namespace EmployeeManagement.ViewModel
                 {
                     if(LoginInput != String.Empty && PasswordInput != String.Empty)
                     {
-                        string msg = $"id={_serverClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
-                        _serverClient.SendMessageToServer(msg);
+                        string msg = $"id={MainViewModel.Instance.ServerClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
+                        MainViewModel.Instance.ServerClient.SendMessageToServer(msg);
                     }
                 }));
             }
@@ -52,16 +52,15 @@ namespace EmployeeManagement.ViewModel
         private string _loginInput;
         private string _passwordInput;
         private string _serverMessage;
-        private ServerClient _serverClient;
+        
         private bool _loginigResult;
 
         private RelayCommand _loginCommand;
 
         public LoginWindow_VM()
         {
-            _serverClient = new ServerClient();
-            _serverClient.GetServerMessage += UpdateServerMessages;
-            _serverClient.LoginingResult += SetLoginigResult;
+            MainViewModel.Instance.ServerClient.GetServerMessage += UpdateServerMessages;
+            MainViewModel.Instance.ServerClient.LoginingResult += SetLoginigResult;
         }
 
 

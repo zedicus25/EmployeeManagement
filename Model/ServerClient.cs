@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Model
 {
-    internal class ServerClient
+    public class ServerClient
     {
         public event Action<string> StateUpdating;
         public event Action<string> GetServerMessage;

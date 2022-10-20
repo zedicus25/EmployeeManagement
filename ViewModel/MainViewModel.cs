@@ -1,4 +1,5 @@
 ﻿
+using EmployeeManagement.Model;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -18,21 +19,21 @@ namespace EmployeeManagement.ViewModel
 			}
 		}
 
-        private BaseVM _selectedVM;
+
+		public ServerClient ServerClient { get; private set; }
+
+		private BaseVM _selectedVM;
 
 
-		public MainViewModel()
+        public MainViewModel()
 		{
-			_selectedVM = new LoginWindow_VM();
-			if(Instance == null)
-			{
-				Instance = this;
-				return;
-			}
-			else
-			{
-				return;
-			}
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            ServerClient = new ServerClient();
+            _selectedVM = new LoginWindow_VM();
+			
 		}
 
 		public void SetViewModel(BaseVM baseVM)

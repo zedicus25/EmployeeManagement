@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace EmployeeManagement.ViewModel
 {
-    public class BaseVM : INotifyPropertyChanged
+    public abstract class BaseVM : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

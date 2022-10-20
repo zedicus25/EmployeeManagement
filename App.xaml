@@ -12,7 +12,7 @@
 
         <ResourceDictionary x:Key="MaterialDesign">
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="Aqua" SecondaryColor="DarkGreen" />
+                <materialDesign:CustomColorTheme BaseTheme="Dark" PrimaryColor="#3f51b5" SecondaryColor="#3d5afe" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate DataType="{x:Type viewModels:LoginWindow_VM}">
@@ -20,6 +20,18 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:HomeWindow_VM}">
                 <views:HomeWindow></views:HomeWindow>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:AllTask_VM}">
+                <views:AllTasks></views:AllTasks>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:MyTasks_VM}">
+                <views:MyTasks></views:MyTasks>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:Account_VM}">
+                <views:Account></views:Account>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:Project_VM}">
+                <views:AboutProject></views:AboutProject>
             </DataTemplate>
         </ResourceDictionary>
         

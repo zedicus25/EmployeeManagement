@@ -11,7 +11,6 @@ namespace EmployeeManagement.CustomControls
         public AllTasks()
         {
             InitializeComponent();
-            this.DataContext = new AllTask_VM();
         }
     }
 }

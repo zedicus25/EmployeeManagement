@@ -15,7 +15,7 @@ namespace Server.Model
         public DateTime Birthday { get; set; }
         public float Salary { get; set; }
         public string CompanyName { get; set; }
-        public string CurrentProject { get; set; }
+        public int CurrentProject { get; set; }
         public string Position { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
@@ -28,7 +28,7 @@ namespace Server.Model
         
 
         public User(uint dataBaseId, string login, string password, string name, string lastName, string patronymic, DateTime birthday, 
-            float salary, string companyName, string currentProject, string position, string email, string phoneNumber, string country, 
+            float salary, string companyName, int currentProject, string position, string email, string phoneNumber, string country, 
             string city, string adress, string avatar, bool isAdmin, bool isMainAdmin)
         {
             DataBaseId = dataBaseId;

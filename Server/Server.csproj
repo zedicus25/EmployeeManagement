@@ -49,8 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\ProjectTaskController.cs" />
     <Compile Include="Controller\ServerController.cs" />
     <Compile Include="Controller\UserController.cs" />
+    <Compile Include="Model\CompanyProject.cs" />
+    <Compile Include="Model\ProjectTask.cs" />
     <Compile Include="Model\ServerClient.cs" />
     <Compile Include="Utilities\IDataController.cs" />
     <Compile Include="Utilities\JsonDataController.cs" />

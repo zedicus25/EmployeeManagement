@@ -1,0 +1,41 @@
+CREATE DATABASE [EmployeeManagement];
+USE [EmployeeManagement];
+
+
+CREATE TABLE [Persons](
+[Id] INT IDENTITY PRIMARY KEY,
+[FIO_Id] INT UNIQUE FOREIGN KEY REFERENCES [FIO]([Id]),
+[Adress_Id] INT UNIQUE FOREIGN KEY REFERENCES [Adresses]([Id]),
+[Birthday] DATE NOT NULL,
+[]
+);
+
+CREATE TABLE [Adresses](
+[Id] INT IDENTITY PRIMARY KEY,
+[Country] NVARCHAR(70) NOT NULL,
+[City] NVARCHAR(70) NOT NULL,
+[Street] NVARCHAR(70) NOT NULL,
+[House_Number] INT NOT NULL,
+[Full_Adress] NVARCHAR(240)
+);
+
+CREATE TABLE [Employees](
+[Id] INT IDENTITY PRIMARY KEY,
+[Role_Id] INT FOREIGN KEY REFERENCES [EmployeeRoles]([Id]),
+[Persons_Id] INT UNIQUE FOREIGN KEY REFERENCES [Persons]([Id]),
+[Salary] MONEY NOT NULL,
+);
+
+
+CREATE TABLE [EmployeeRoles](
+[Id] INT IDENTITY PRIMARY KEY,
+[RoleTitle] NVARCHAR(100) NOT NULL,
+[RoleDescription] NVARCHAR(300)
+);
+
+CREATE TABLE [FIO](
+[Id] INT IDENTITY PRIMARY KEY,
+[Name] NVARCHAR(50) NOT NULL,
+[LastName] NVARCHAR(50) NOT NULL,
+[Patronymic] NVARCHAR(50)
+);

@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Model;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace EmployeeManagement.Utilities
 {
@@ -13,5 +14,6 @@ namespace EmployeeManagement.Utilities
         }
 
         public User GetUser(string data) => JsonConvert.DeserializeObject<User>(data);
+        public List<ProjectTask> GetTasks(string data) => JsonConvert.DeserializeObject<List<ProjectTask>>(data);
     }
 }

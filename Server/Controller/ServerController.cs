@@ -1,4 +1,5 @@
-﻿using Server.Model;
+﻿using Newtonsoft.Json;
+using Server.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,13 @@ namespace Server.Controller
         private CancellationTokenSource _tokenSource;
         private Task _listenTask;
         public UserController UserController { get; private set; }
+        public ProjectTaskController ProjectTaskController { get; private set; }
 
         public ServerController(int port = 8008)
         {
             _tokenSource = new CancellationTokenSource();
             UserController = new UserController();
+            ProjectTaskController = new ProjectTaskController();
             clients = new List<ServerClient>();
             PORT = port;
             _listenTask = new Task(Listen, _tokenSource.Token);
@@ -106,6 +109,18 @@ namespace Server.Controller
 
             byte[] bytes = Encoding.Unicode.GetBytes(msg);
             client.NetworkStream.Write(bytes, 0, bytes.Length);
+        }
+
+        public void SendTasks(string client, int projectId)
+        {
+            IEnumerable<ProjectTask> tasks = from task in ProjectTaskController.Tasks
+                                  where
+                                  ProjectTaskController.Tasks.All(t => t.ProjectId.Equals(projectId))
+                                  select task;
+
+            string json = "allTasks=";
+            json += JsonConvert.SerializeObject(tasks);
+            SendMessageToClient(client, json);
         }
     }
 }

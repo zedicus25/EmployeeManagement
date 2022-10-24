@@ -134,6 +134,7 @@
     <Compile Include="CustomControls\MyTasks.xaml.cs">
       <DependentUpon>MyTasks.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\ProjectTask.cs" />
     <Compile Include="Model\ServerClient.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Utilities\Parser.cs" />

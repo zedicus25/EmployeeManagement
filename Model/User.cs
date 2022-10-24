@@ -94,7 +94,7 @@ namespace EmployeeManagement.Model
                 OnPropertyChanged("CompanyName");
             }
         }
-        public string CurrentProject
+        public int CurrentProject
         {
             get => _currentProject;
             set
@@ -194,7 +194,7 @@ namespace EmployeeManagement.Model
         private DateTime _birthday;
         private float _salary;
         private string _companyName;
-        private string _currentProject;
+        private int _currentProject;
         private string _position;
         private string _email;
         private string _phoneNumber;
@@ -208,7 +208,7 @@ namespace EmployeeManagement.Model
 
 
         public User(uint id, string password, string login, string name, string lastName, string patronymic, DateTime birthday,
-            float salary, string companyName, string currentProject, string position, string email, string phoneNumber, string country,
+            float salary, string companyName, int currentProject, string position, string email, string phoneNumber, string country,
             string city, string adress, string avatar, bool isAdmin, bool isMainAdmin)
         {
             _dataBaseId = id;

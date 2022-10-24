@@ -1,11 +1,12 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using System;
-
+using System.Windows.Documents;
 
 namespace EmployeeManagement.ViewModel
 {
     public class HomeWindow_VM : BaseVM
     {
+        
 		public BaseVM HomePageVM
 		{
 			get => _baseVM;
@@ -78,7 +79,6 @@ namespace EmployeeManagement.ViewModel
 
         public HomeWindow_VM()
 		{
-			_baseVM = new AllTask_VM();
 		}
 
 		private void SetViewModel(BaseVM viewModel)

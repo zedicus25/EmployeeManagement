@@ -1,5 +1,7 @@
 ﻿using EmployeeManagement.Utilities;
+using EmployeeManagement.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -12,6 +14,7 @@ namespace EmployeeManagement.Model
         public event Action<string> StateUpdating;
         public event Action<string> GetServerMessage;
         public event Action<bool, User> LoginingResult;
+        public event Action<List<ProjectTask>> AllTasks;
 
         public string IdOnServer { get; private set; }
 
@@ -44,6 +47,13 @@ namespace EmployeeManagement.Model
             {
                 StateUpdating?.Invoke($"Connection error {ex.Message}");
             }
+        }
+        public void GetAllTasks()
+        {
+            string msg = "--getAllTasks\n";
+            msg += $"id={IdOnServer}\n";
+            msg += $"projectId={MainViewModel.Instance.User.CurrentProject}\n";
+            SendMessageToServer(msg);
         }
 
         private void TryConnect()
@@ -97,10 +107,15 @@ namespace EmployeeManagement.Model
                             LoginingResult?.Invoke(res, user);
                             continue;
                         }
+                        else if (msg.Contains("allTasks="))
+                        {
+                            AllTasks?.Invoke(Parser.Instance.GetTasks(msg.Substring(msg.IndexOf('=') + 1)));
+                        }
                         else
                         {
                             GetServerMessage?.Invoke(msg);
-                        }          
+                        }
+                        sb.Clear();
                     }
                         
                 }

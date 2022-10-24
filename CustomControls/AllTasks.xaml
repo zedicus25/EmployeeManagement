@@ -11,12 +11,34 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <ProgressBar Grid.Column="1" Grid.Row="1" IsIndeterminate="True" />
+
+        <ListBox Grid.ColumnSpan="1" Grid.RowSpan="4" Margin="10" ItemsSource="{Binding Tasks, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedTask}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <GroupBox IsEnabled="{Binding IsComplete}" Header="{Binding TaskTitle}" Style="{StaticResource MaterialDesignGroupBox}"
+                              Margin="15,3" BorderThickness="0">
+                        <TextBlock
+                            Margin="6,6,6,6" TextWrapping="Wrap" Text="{Binding Term}" />
+                    </GroupBox>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+        <Grid DataContext="{Binding SelectedTask, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="4">
+            <StackPanel Margin="10">
+                <TextBlock FontSize="30" Padding="0 5" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding TaskTitle}" />
+                <TextBlock FontSize="11" Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding Term}" />
+                <TextBlock FontSize="16" Padding="0 10" TextWrapping="Wrap" Style="{StaticResource MaterialDesignBody2TextBlock}" Text="{Binding TaskDescription}" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

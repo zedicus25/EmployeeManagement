@@ -6,7 +6,7 @@ namespace Server.Model
     public class ProjectTask
     {
         public string TaskTitle { get; set; }
-        public string TaskDesciption { get; set; }
+        public string TaskDescription { get; set; }
         public int Importance { get; set; }
         public DateTime Term { get; set; }
         public int UserId { get; set; }
@@ -17,7 +17,7 @@ namespace Server.Model
         public ProjectTask(string taskTitle, string taskDesciption, int importance, DateTime term, int userId, int id, int projectId, bool isComplete)
         {
             this.TaskTitle = taskTitle;
-            this.TaskDesciption = taskDesciption;
+            this.TaskDescription = taskDesciption;
             this.Importance = importance;
             this.Term = term;
             this.UserId = userId;

@@ -29,6 +29,6 @@
                     Content="{materialDesign:PackIcon Kind=InformationOutline}" />
             </ToolBar>
         </ToolBarTray>
-        <ContentControl Content="{Binding HomePageVM}" Margin="50,0,0,0"></ContentControl>
+        <ContentControl Content="{Binding HomePageVM, UpdateSourceTrigger=PropertyChanged}" Margin="50,0,0,0"></ContentControl>
     </Grid>
 </UserControl>

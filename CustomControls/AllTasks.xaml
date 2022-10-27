@@ -39,6 +39,9 @@
                 <TextBlock FontSize="11" Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding Term}" />
                 <TextBlock FontSize="16" Padding="0 10" TextWrapping="Wrap" Style="{StaticResource MaterialDesignBody2TextBlock}" Text="{Binding TaskDescription}" />
             </StackPanel>
+            <Button Margin="25"  Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
+                    ToolTip="Взяти завдання"
+                    Content="Get task" Command="{Binding GetTask}" VerticalAlignment="Bottom" />
         </Grid>
     </Grid>
 </UserControl>

@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Model;
+using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -17,6 +18,17 @@ namespace EmployeeManagement.ViewModel
         }
 
 
+        public RelayCommand GetTask
+        {
+            get
+            {
+                return _getTaskCommand ?? (_getTaskCommand = new RelayCommand(() =>
+                {
+
+                }));
+            }
+        }
+
         public ObservableCollection<ProjectTask> Tasks
         {
             get => _tasks;
@@ -29,6 +41,8 @@ namespace EmployeeManagement.ViewModel
 
         private ObservableCollection<ProjectTask> _tasks;
         private ProjectTask _selectedTask;
+
+        private RelayCommand _getTaskCommand;
         public AllTask_VM()
         {
             MainViewModel.Instance.ServerClient.AllTasks += GetTasks;

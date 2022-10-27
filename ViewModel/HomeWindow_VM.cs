@@ -1,21 +1,20 @@
 ﻿using GalaSoft.MvvmLight.Command;
-using System;
-using System.Windows.Documents;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EmployeeManagement.ViewModel
 {
     public class HomeWindow_VM : BaseVM
     {
-        
-		public BaseVM HomePageVM
-		{
-			get => _baseVM;
-			set 
-			{ 
-				_baseVM = value;
-				
-			}
-		}
+        public BaseVM HomePageVM
+        {
+            get => _baseVM;
+            set
+            {
+                _baseVM = value;
+            }
+        }
 
         public RelayCommand GoToAllTask
         {
@@ -25,7 +24,7 @@ namespace EmployeeManagement.ViewModel
                 {
                     if (_baseVM is AllTask_VM)
                         return;
-                    SetViewModel(new AllTask_VM());
+                    SetCurrentVM(_allVMs[0]);
                 }));
             }
         }
@@ -38,7 +37,7 @@ namespace EmployeeManagement.ViewModel
                 {
                     if (_baseVM is MyTasks_VM)
                         return;
-                    SetViewModel(new MyTasks_VM());
+                    SetCurrentVM(_allVMs[1]);
                 }));
             }
         }
@@ -51,7 +50,7 @@ namespace EmployeeManagement.ViewModel
                 {
                     if (_baseVM is Account_VM)
                         return;
-                    SetViewModel(new Account_VM());
+                    SetCurrentVM(_allVMs[2]);
                 }));
             }
         }
@@ -64,7 +63,7 @@ namespace EmployeeManagement.ViewModel
                 {
                     if (_baseVM is Project_VM)
                         return;
-                    SetViewModel(new Project_VM());
+                    SetCurrentVM(_allVMs[3]);
                 }));
             }
         }
@@ -75,22 +74,36 @@ namespace EmployeeManagement.ViewModel
         private RelayCommand _goToProject;
 
         private BaseVM _baseVM;
+        private List<BaseVM> _allVMs;
+        private Task _vmCreation;
+        private CancellationTokenSource _cancellationToken;
 
 
         public HomeWindow_VM()
 		{
+            _cancellationToken = new CancellationTokenSource();
+            _allVMs = new List<BaseVM>();
+            _vmCreation = new Task(CreateVMs, _cancellationToken.Token);
+            _vmCreation.Start();
 		}
 
-		private void SetViewModel(BaseVM viewModel)
+        private async void CreateVMs()
         {
-            if (viewModel == null)
-                return;
-            _baseVM = viewModel;
-            OnPropertyChanged("HomePageVM");
+            while (MainViewModel.Instance.User == null)
+                await Task.Delay(10);
+            _allVMs.Add(new AllTask_VM());
+            _allVMs.Add(new MyTasks_VM());
+            _allVMs.Add(new Account_VM());
+            _allVMs.Add(new Project_VM());
+            _cancellationToken.Cancel();
         }
 
-		
-
-
+        private void SetCurrentVM(BaseVM vm)
+        {
+            if (vm == null)
+                return;
+            _baseVM = vm;
+            OnPropertyChanged("HomePageVM");
+        }
 	}
 }

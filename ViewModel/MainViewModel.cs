@@ -1,14 +1,22 @@
-﻿
-using EmployeeManagement.Model;
+﻿using EmployeeManagement.Model;
 using EmployeeManagement.Utilities;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EmployeeManagement.ViewModel
 {
     public class MainViewModel : BaseVM
     {
-		public static MainViewModel Instance { get; private set; }
+
+        public static MainViewModel GetInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new MainViewModel();
+            }
+            return _instance;
+        }
+        private static MainViewModel _instance;
 
         public BaseVM SelectedViewModel
 		{
@@ -33,21 +41,23 @@ namespace EmployeeManagement.ViewModel
 		}
 
 		private BaseVM _selectedVM;
-		private Parser _parser;
 		private User _user;
 
+        private Task _listenAllTask;
+		private Task _listemMyTask;
+        private CancellationTokenSource _tokenSourceListenTasks;
 
-        public MainViewModel()
+
+        private MainViewModel()
 		{
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            ServerClient = new ServerClient();
-            _selectedVM = new LoginWindow_VM();
-			_parser = new Parser();
-			
-		}
+			ServerClient = new ServerClient();
+			SelectedViewModel = new LoginWindow_VM();
+			_tokenSourceListenTasks = new CancellationTokenSource();
+            _listenAllTask = new Task(SendAllTasksQuerry, _tokenSourceListenTasks.Token);
+			_listemMyTask = new Task(SendMyTasksQuerry, _tokenSourceListenTasks.Token);
+            _listenAllTask.Start();
+			_listemMyTask.Start();
+        }
 
 		public void SetViewModel(BaseVM baseVM)
 		{
@@ -55,6 +65,28 @@ namespace EmployeeManagement.ViewModel
 				return;
 			_selectedVM = baseVM;
 			OnPropertyChanged("SelectedViewModel");
+		}
+
+        private async void SendAllTasksQuerry()
+		{
+            while (_tokenSourceListenTasks.Token.IsCancellationRequested == false)
+            {
+                ServerClient.GetAllTasks();
+				await Task.Delay(5000);
+            }
+        }
+
+		private async void SendMyTasksQuerry()
+		{
+			while (_tokenSourceListenTasks.Token.IsCancellationRequested == false)
+			{
+				await Task.Delay(5000);
+			}
+		}
+
+		~MainViewModel()
+		{
+			_tokenSourceListenTasks.Cancel();
 		}
 
     }

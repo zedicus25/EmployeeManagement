@@ -23,6 +23,7 @@ namespace EmployeeManagement.Model
 
         private readonly int PORT = 8008;
         private readonly string HOST = "127.0.0.1";
+        private StringBuilder _stringBuilder;
         
 
 
@@ -33,6 +34,7 @@ namespace EmployeeManagement.Model
         {
             _tokenSource = new CancellationTokenSource();
             _tcpClient = new TcpClient();
+            _stringBuilder = new StringBuilder();
             TryConnect();
         }
 
@@ -50,10 +52,25 @@ namespace EmployeeManagement.Model
         }
         public void GetAllTasks()
         {
-            string msg = "--getAllTasks\n";
-            msg += $"id={IdOnServer}\n";
-            msg += $"projectId={MainViewModel.Instance.User.CurrentProject}\n";
-            SendMessageToServer(msg);
+            if(MainViewModel.GetInstance().User == null)
+                return;
+            _stringBuilder.AppendLine("--getAllTasks\n");
+            _stringBuilder.AppendLine($"id={IdOnServer}\n");
+            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.CurrentProject}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+
+        public void GetMyTasks()
+        {
+            if (MainViewModel.GetInstance().User == null)
+                return;
+            _stringBuilder.AppendLine("--getMyTasks\n");
+            _stringBuilder.AppendLine($"id={IdOnServer}\n");
+            _stringBuilder.AppendLine($"userId={MainViewModel.GetInstance().User.Id}\n");
+            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.CurrentProject}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
         }
 
         private void TryConnect()
@@ -103,13 +120,13 @@ namespace EmployeeManagement.Model
                             bool res = Convert.ToBoolean(msg.Substring(msg.IndexOf('=')+1, (msg.IndexOf('\n') - msg.IndexOf('=') )));
                             User user = null;
                             if (res)
-                                user = Parser.Instance.GetUser(msg.Substring(msg.IndexOf('\n') + 1));
+                                user = Parser.GetInstance().GetUser(msg.Substring(msg.IndexOf('\n') + 1));
                             LoginingResult?.Invoke(res, user);
                             continue;
                         }
                         else if (msg.Contains("allTasks="))
                         {
-                            AllTasks?.Invoke(Parser.Instance.GetTasks(msg.Substring(msg.IndexOf('=') + 1)));
+                            AllTasks?.Invoke(Parser.GetInstance().GetTasks(msg.Substring(msg.IndexOf('=') + 1)));
                         }
                         else
                         {

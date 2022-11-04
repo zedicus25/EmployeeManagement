@@ -36,5 +36,10 @@ namespace EmployeeManagement.CustomControls
                 ((dynamic)this.DataContext).PasswordInput = ((PasswordBox)sender).Password; 
             }
         }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((dynamic)this.DataContext).AddListeners();
+        }
     }
 }

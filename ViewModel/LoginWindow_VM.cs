@@ -32,8 +32,8 @@ namespace EmployeeManagement.ViewModel
                 {
                     if(LoginInput != String.Empty && PasswordInput != String.Empty)
                     {
-                        string msg = $"id={MainViewModel.Instance.ServerClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
-                        MainViewModel.Instance.ServerClient.SendMessageToServer(msg);
+                        string msg = $"id={MainViewModel.GetInstance().ServerClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
+                        MainViewModel.GetInstance().ServerClient.SendMessageToServer(msg);
                     }
                 }));
             }
@@ -50,10 +50,14 @@ namespace EmployeeManagement.ViewModel
 
         public LoginWindow_VM()
         {
-            MainViewModel.Instance.ServerClient.GetServerMessage += UpdateServerMessages;
-            MainViewModel.Instance.ServerClient.LoginingResult += SetLoginigResult;
+            
         }
 
+        public void AddListeners()
+        {
+            MainViewModel.GetInstance().ServerClient.GetServerMessage += UpdateServerMessages;
+            MainViewModel.GetInstance().ServerClient.LoginingResult += SetLoginigResult;
+        }
 
         private void UpdateServerMessages(string msg)
         {
@@ -66,8 +70,8 @@ namespace EmployeeManagement.ViewModel
             _loginigResult = res;
             if (_loginigResult)
             {
-                MainViewModel.Instance.SetViewModel(new HomeWindow_VM());
-                MainViewModel.Instance.User = user;
+                MainViewModel.GetInstance().SetViewModel(new HomeWindow_VM());
+                MainViewModel.GetInstance().User = user;
             }
                
         }

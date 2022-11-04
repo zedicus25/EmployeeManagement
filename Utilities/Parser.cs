@@ -1,16 +1,24 @@
 ﻿using EmployeeManagement.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace EmployeeManagement.Utilities
 {
     public class Parser
     {
-        public static Parser Instance { get; private set; }
-
-        public Parser()
+        public static Parser GetInstance()
         {
-            Instance = this;
+            if (_instance == null)
+            {
+                _instance = new Parser();
+            }
+            return _instance;
+        }
+        private static Parser _instance;
+
+        private Parser()
+        {
         }
 
         public User GetUser(string data) => JsonConvert.DeserializeObject<User>(data);

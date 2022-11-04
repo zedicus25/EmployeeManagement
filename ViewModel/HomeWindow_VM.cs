@@ -89,7 +89,7 @@ namespace EmployeeManagement.ViewModel
 
         private async void CreateVMs()
         {
-            while (MainViewModel.Instance.User == null)
+            while (MainViewModel.GetInstance().User == null)
                 await Task.Delay(10);
             _allVMs.Add(new AllTask_VM());
             _allVMs.Add(new MyTasks_VM());

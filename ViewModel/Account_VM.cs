@@ -20,7 +20,7 @@ namespace EmployeeManagement.ViewModel
 
         public Account_VM()
         {
-            _user = MainViewModel.Instance.User;
+            _user = MainViewModel.GetInstance().User;
         }
     }
 }

@@ -28,33 +28,64 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.logL = new System.Windows.Forms.Label();
+            this.startBtn = new System.Windows.Forms.Button();
+            this.stopBtn = new System.Windows.Forms.Button();
+            this.logRB = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
-            // logL
+            // startBtn
             // 
-            this.logL.AutoSize = true;
-            this.logL.Location = new System.Drawing.Point(13, 13);
-            this.logL.Name = "logL";
-            this.logL.Size = new System.Drawing.Size(0, 13);
-            this.logL.TabIndex = 0;
+            this.startBtn.Location = new System.Drawing.Point(12, 354);
+            this.startBtn.Name = "startBtn";
+            this.startBtn.Size = new System.Drawing.Size(85, 85);
+            this.startBtn.TabIndex = 0;
+            this.startBtn.Text = "Start";
+            this.startBtn.UseVisualStyleBackColor = true;
+            this.startBtn.Click += new System.EventHandler(this.startBtn_Click);
+            // 
+            // stopBtn
+            // 
+            this.stopBtn.Location = new System.Drawing.Point(103, 354);
+            this.stopBtn.Name = "stopBtn";
+            this.stopBtn.Size = new System.Drawing.Size(85, 85);
+            this.stopBtn.TabIndex = 1;
+            this.stopBtn.Text = "Stop";
+            this.stopBtn.UseVisualStyleBackColor = true;
+            this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
+            // 
+            // logRB
+            // 
+            this.logRB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.logRB.Location = new System.Drawing.Point(12, 12);
+            this.logRB.Name = "logRB";
+            this.logRB.ReadOnly = true;
+            this.logRB.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.logRB.Size = new System.Drawing.Size(780, 336);
+            this.logRB.TabIndex = 3;
+            this.logRB.Text = "";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.logL);
+            this.ClientSize = new System.Drawing.Size(804, 451);
+            this.Controls.Add(this.logRB);
+            this.Controls.Add(this.stopBtn);
+            this.Controls.Add(this.startBtn);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Server";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label logL;
+        private System.Windows.Forms.Button startBtn;
+        private System.Windows.Forms.Button stopBtn;
+        private System.Windows.Forms.RichTextBox logRB;
     }
 }
 

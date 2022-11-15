@@ -18,20 +18,30 @@ namespace Server
 
         private void UpdateServerState(string msg)
         {
-            if (this.logL.InvokeRequired)
+            if (this.logRB.InvokeRequired)
             {
                 SetTextCallback d = new SetTextCallback(UpdateServerState);
                 this.Invoke(d, new object[] { msg });
             }
             else
             {
-                this.logL.Text += msg+"\n";
+                this.logRB.Text += msg+"\n";
             }
         }
 
         ~Form1()
         {
             _serverController.StateUpdating -= UpdateServerState;
+        }
+
+        private void startBtn_Click(object sender, System.EventArgs e)
+        {
+            _serverController.StartServer();
+        }
+
+        private void stopBtn_Click(object sender, System.EventArgs e)
+        {
+            _serverController.StopServer();
         }
     }
 }

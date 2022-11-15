@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Server.Model;
+using Server.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,21 +15,30 @@ namespace Server.Controller
     internal class ServerController
     {
         public event Action<string> StateUpdating;
-        private TcpListener tcpListener;
-        private List<ServerClient> clients;
+        private TcpListener _tcpListener;
+        private List<ServerClient> _clients;
         private readonly int PORT;
         private CancellationTokenSource _tokenSource;
         private Task _listenTask;
+        private bool _isEnabled;
         public UserController UserController { get; private set; }
         public ProjectTaskController ProjectTaskController { get; private set; }
 
         public ServerController(int port = 8008)
         {
-            _tokenSource = new CancellationTokenSource();
+            _isEnabled = false;
+            _clients = new List<ServerClient>();
+            PORT = port;
+        }
+
+        public void StartServer()
+        {
+            if (_isEnabled)
+                return;
+            _isEnabled = true;
             UserController = new UserController();
             ProjectTaskController = new ProjectTaskController();
-            clients = new List<ServerClient>();
-            PORT = port;
+            _tokenSource = new CancellationTokenSource();
             _listenTask = new Task(Listen, _tokenSource.Token);
             _listenTask.Start();
         }
@@ -46,14 +56,14 @@ namespace Server.Controller
             catch (Exception ex)
             {
                 StateUpdating?.Invoke($"Server error {ex.Message}");
-                CloseServer();
+                StopServer();
             }
         }
 
 
         private void CathcClients()
         {
-            TcpClient tcpClient = tcpListener.AcceptTcpClient();
+            TcpClient tcpClient = _tcpListener.AcceptTcpClient();
             ServerClient serverClient = new ServerClient(tcpClient, this);
             AddConnection(serverClient);
             SendMessageToClient(serverClient.Id, $"ClientId={serverClient.Id}");
@@ -62,27 +72,32 @@ namespace Server.Controller
 
         private void TryStartServer()
         {
-            tcpListener = new TcpListener(IPAddress.Any, PORT);
-            tcpListener.Start();
+            _tcpListener = new TcpListener(IPAddress.Any, PORT);
+            _tcpListener.Start();
             StateUpdating?.Invoke("Server is start!");
         }
 
-        public void AddConnection(ServerClient client) => clients.Add(client);
+        public void AddConnection(ServerClient client) => _clients.Add(client);
         public void RemoveConnection(string id)
         {
-            ServerClient client = clients.FirstOrDefault(c => c.Id.Equals(id));
+            ServerClient client = _clients.FirstOrDefault(c => c.Id.Equals(id));
             if(client != null)
-                clients.Remove(client);
+                _clients.Remove(client);
         }
 
-        private void CloseServer()
+        public void StopServer()
         {
-            tcpListener.Stop();
-            for (int i = 0; i < clients.Count; i++)
+            if (_isEnabled == false)
+                return;
+
+            _tcpListener.Stop();
+            for (int i = 0; i < _clients.Count; i++)
             {
-                clients[i].Close();
+                _clients[i].Close();
             }
             StateUpdating?.Invoke("Server is stop!");
+            _clients.Clear();
+            _isEnabled = false;
         }
 
         public void SetMessagesFromClient(string msg)
@@ -103,7 +118,7 @@ namespace Server.Controller
 
         public void SendMessageToClient(string id, string msg)
         {
-            ServerClient client = clients.FirstOrDefault(c => c.Id.Equals(id));
+            ServerClient client = _clients.FirstOrDefault(c => c.Id.Equals(id));
             if (client == null)
                 return;
 

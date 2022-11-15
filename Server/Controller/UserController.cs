@@ -1,6 +1,4 @@
-﻿
-using Server.Model;
-using Server.Utilities;
+﻿using Server.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,12 +7,10 @@ namespace Server.Controller
     internal class UserController
     {
         public List<User> Users { get; private set; }
-        private JsonDataController<User> _jsonDataController;
 
         public UserController()
         {
-            _jsonDataController = new JsonDataController<User>("data","users.txt");
-            Users = _jsonDataController.ReadData();
+            
         }
 
         public bool CheckData(string data, out User user )

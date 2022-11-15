@@ -1,62 +1,59 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace Server.Model
 {
     [Serializable]
-    public class User
+    public class User : IJson
     {
-        public uint DataBaseId { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public string Name { get; set; }
-        public string LastName { get; set; }
+        #region Person Info
+        public string First_Name { get; set; }
+        public string Last_Name { get; set; }
         public string Patronymic { get; set; }
-        public DateTime Birthday { get; set; }
-        public float Salary { get; set; }
-        public string CompanyName { get; set; }
-        public int CurrentProject { get; set; }
-        public string Position { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
-        public string Adress { get; set; }
-        public string Avatar { get; set; }
-        public bool IsAdmin { get; set; }
-        public bool IsMainAdmin { get; set; }
-        
+        public string Street { get; set; }
+        public string House_Number { get; set; }
+        public string Full_Adress { get; set; }
+        public DateTime Birthday { get; set; }
+        public List<UserPhoneNumber> PhoneNumbers { get; set; }
+        public List<UserEmail> Emails { get; set; }
+        #endregion
 
-        public User(uint dataBaseId, string login, string password, string name, string lastName, string patronymic, DateTime birthday, 
-            float salary, string companyName, int currentProject, string position, string email, string phoneNumber, string country, 
-            string city, string adress, string avatar, bool isAdmin, bool isMainAdmin)
+        #region Role Info
+        public int UserRoleId { get; set; }
+        public int UserRoleName { get; set; }
+        public string EmployeeRoleName { get; set; }
+        public string EmployeeRoleDescription { get; set; }
+        #endregion
+
+        public UserTask Task { get; set; }
+        public UserProject Project { get; set; }
+
+        #region LoginData
+        public string Login { get; set; }
+        public string Password { get; set; }
+        #endregion
+
+        public float Salary { get; set; }
+        public string Avatar { get; set; }
+
+        public void FillFio(string firstName, string lastName, string patronymic)
         {
-            DataBaseId = dataBaseId;
-            Login = login;
-            Password = password;
-            Name = name;
-            LastName = lastName;
+            First_Name = firstName;
+            Last_Name = lastName;
             Patronymic = patronymic;
-            Birthday = birthday;
-            Salary = salary;
-            CompanyName = companyName;
-            CurrentProject = currentProject;
-            Position = position;
-            Email = email;
-            PhoneNumber = phoneNumber;
-            Country = country;
-            City = city;
-            Adress = adress;
-            Avatar = avatar;
-            IsAdmin = isAdmin;
-            IsMainAdmin = isMainAdmin;
-            
         }
 
-        public override string ToString()
+        public void FillAddress(string country, string city, string street, string houseNumber, string fullAdress)
         {
-            string json = JsonConvert.SerializeObject(this);
-            return json;
+
+        }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

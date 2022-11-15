@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,10 +34,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Client(User)\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper.Contrib, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Client(User)\packages\Dapper.Contrib.2.0.78\lib\net461\Dapper.Contrib.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\Client(User)\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,9 +59,30 @@
   <ItemGroup>
     <Compile Include="Controller\ProjectTaskController.cs" />
     <Compile Include="Controller\ServerController.cs" />
+    <Compile Include="Model\DataBaseModels\Adress.cs" />
+    <Compile Include="Model\DataBaseModels\Descriptions.cs" />
+    <Compile Include="Model\DataBaseModels\Emails.cs" />
+    <Compile Include="Model\DataBaseModels\Employee.cs" />
+    <Compile Include="Model\DataBaseModels\EmployeRole.cs" />
+    <Compile Include="Model\DataBaseModels\FIO.cs" />
+    <Compile Include="Model\DataBaseModels\IJson.cs" />
+    <Compile Include="Model\DataBaseModels\Images.cs" />
+    <Compile Include="Model\DataBaseModels\Importance.cs" />
+    <Compile Include="Model\DataBaseModels\LoginData.cs" />
+    <Compile Include="Model\DataBaseModels\Person.cs" />
+    <Compile Include="Model\DataBaseModels\PhoneNumber.cs" />
+    <Compile Include="Model\DataBaseModels\Project.cs" />
+    <Compile Include="Model\DataBaseModels\TaskCondition.cs" />
+    <Compile Include="Model\DataBaseModels\Term.cs" />
+    <Compile Include="Model\DataBaseModels\UsersRole.cs" />
+    <Compile Include="Model\UserEmail.cs" />
+    <Compile Include="Model\UserPhoneNumber.cs" />
+    <Compile Include="Model\UserProject.cs" />
+    <Compile Include="Model\UserTask.cs" />
+    <Compile Include="Utilities\DataBaseController.cs" />
+    <Compile Include="Utilities\SqlConnectionSingleton.cs" />
     <Compile Include="Controller\UserController.cs" />
-    <Compile Include="Model\CompanyProject.cs" />
-    <Compile Include="Model\ProjectTask.cs" />
+    <Compile Include="Model\DataBaseModels\ProjectTask.cs" />
     <Compile Include="Model\ServerClient.cs" />
     <Compile Include="Utilities\IDataController.cs" />
     <Compile Include="Utilities\JsonDataController.cs" />
@@ -74,6 +103,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="View\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

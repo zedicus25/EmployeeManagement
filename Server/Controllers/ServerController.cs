@@ -3,6 +3,10 @@ using System.Net;
 using System.Text;
 using Task = System.Threading.Tasks.Task;
 using Server.ServerModels;
+using Server.Models;
+using System.Threading.Tasks;
+using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace Server.Controllers
 {
@@ -15,6 +19,7 @@ namespace Server.Controllers
         private CancellationTokenSource _tokenSource;
         private Task _listenTask;
         private bool _isEnabled;
+        private DbA8ec2dZedicus52001Context _dbContext;
 
         public ServerController(int port = 8008)
         {
@@ -31,6 +36,7 @@ namespace Server.Controllers
             _tokenSource = new CancellationTokenSource();
             _listenTask = new Task(Listen, _tokenSource.Token);
             _listenTask.Start();
+            _dbContext = new DbA8ec2dZedicus52001Context();
         }
 
         private void Listen()
@@ -113,100 +119,52 @@ namespace Server.Controllers
                 string login = datas[1].Substring(datas[1].IndexOf('=') + 1).Trim();
                 string password = datas[2].Substring(datas[2].IndexOf('=') + 1).Trim();
 
-                /*IEnumerable<Descriptions> descriptions = DataBaseController.GetInstance().GetDescriptions();
-
-                LoginData loginData = DataBaseController.GetInstance().GetLoginData()
+                LoginDatum loginData = _dbContext.LoginData
                     .FirstOrDefault(x => x.Password.Equals(password) && x.Login.Equals(login));
 
                 if (loginData == null)
-                    SendMessageToClient(datas[0].Substring(datas[0].IndexOf('=') + 1), "loginigResult=false\n");*/
-
-                /*Employee employee = DataBaseController.GetInstance().GetEmployees()
-                    .FirstOrDefault(x => x.LoginDataId.Equals(loginData.Id));
-
-                #region Person creation
-                Person person = DataBaseController.GetInstance().GetPersons()
-                    .FirstOrDefault(x => x.Id.Equals(employee.PersonId));
-
-                FIO fio = DataBaseController.GetInstance().GetFIOs()
-                    .FirstOrDefault(x => x.Id.Equals(person.FIO_Id));
-
-                Adress adress = DataBaseController.GetInstance().GetAdresses()
-                    .FirstOrDefault(x => x.Id.Equals(person.Adress_Id));
-
-                IEnumerable<PhoneNumber> numbers = DataBaseController.GetInstance().GetPhoneNumbers()
-                    .Where(x => x.PersonId.Equals(person.Id));
-
-                IEnumerable<Emails> emails = DataBaseController.GetInstance().GetEmails()
-                    .Where(x => x.PersonId.Equals(person.Id));
-
-                EmployeRole employeRole = DataBaseController.GetInstance().GetEmployeRoles()
-                    .FirstOrDefault(x => x.Id.Equals(employee.RoleId));
-
-                Descriptions employeeRoleDesc = descriptions
-                    .FirstOrDefault(x => x.Id.Equals(employeRole.DescriptionId));
-
-                UsersRole userRole = DataBaseController.GetInstance().GetUsersRoles()
-                    .FirstOrDefault(x => x.Id.Equals(employeRole.UserRoleId));
-                #endregion
-
-                #region Task creation
-                ProjectTask task = DataBaseController.GetInstance().GetTasks()
-                    .FirstOrDefault(x => x.Id.Equals(employee.TaskId));
-
-                Descriptions taskDesc= descriptions
-                    .FirstOrDefault(x => x.Id.Equals(task.DescriptionId));
-
-                TaskCondition condition = DataBaseController.GetInstance().GetTaskConditions()
-                    .FirstOrDefault(x => x.Id.Equals(task.TaskConditionId));
-
-                Descriptions taskCondiotionDesc = descriptions
-                    .FirstOrDefault(x => x.Id.Equals(condition.Description_Id));
-
-                Importance importance = DataBaseController.GetInstance().GetImportances()
-                    .FirstOrDefault(x => x.Id.Equals(task.ImportanceId));
-
-                Descriptions taskImportanceDesc = descriptions
-                    .FirstOrDefault(x => x.Id.Equals(importance.DescriptionId));
-
-                Term term = DataBaseController.GetInstance().GetTerms()
-                    .FirstOrDefault(x => x.Id.Equals(task.TermId));
-                #endregion
-
-                #region Project creation
-                Project project = DataBaseController.GetInstance().GetProjects()
-                    .FirstOrDefault(x => x.Id.Equals(task.ProjectId));
-
-                Descriptions projectDesc = descriptions
-                    .FirstOrDefault(x => x.Id.Equals(project.Description_Id));
-
-                IEnumerable<Images> images = DataBaseController.GetInstance().GetImages()
-                    .Where(x => x.ProjectId.Equals(project.Id));
-                #endregion
-
+                {
+                    SendMessageToClient(datas[0].Substring(datas[0].IndexOf('=') + 1), "loginigResult=false\n");
+                    return;
+                }
+                Employee employee = _dbContext.Employees.FirstOrDefault(x => x.LoginDataId.Equals(loginData.Id));
+                Person person = _dbContext.Persons.FirstOrDefault(x => x.Id.Equals(employee.PersonId));
+                Fio fio = _dbContext.Fios.FirstOrDefault(x => x.Id.Equals(person.FioId));
+                Adress adress = _dbContext.Adresses.FirstOrDefault(x => x.Id.Equals(person.Id));
+                EmployeesRole employeeRole = _dbContext.EmployeesRoles.FirstOrDefault(x => x.Id.Equals(employee.RoleId));
+                UsersRole userRole = _dbContext.UsersRoles.FirstOrDefault(x => x.Id.Equals(employeeRole.UserRoleId));
+                Description employeeDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(employeeRole.DescriptionId));
+                Server.Models.Task task = _dbContext.Tasks.FirstOrDefault(x => x.Id.Equals(employee.TaskId));
+                Description taskDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(task.DescriptionId));
+                TaskCondition taskCondition = _dbContext.TaskConditions.FirstOrDefault(x => x.Id.Equals(task.TaskConditionId));
+                Description conditionDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(taskCondition.DescriptionId));
+                Importance taskImportance = _dbContext.Importances.FirstOrDefault(x => x.Id.Equals(task.ImportanceId));
+                Description importanceDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(taskImportance.DescriptionId));
+                Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id.Equals(task.TermId));
+                Project project = _dbContext.Projects.FirstOrDefault(x => x.Id.Equals(task.ProjectId));
+                Description projectDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(project.DescriptionId));
 
                 User userData = new User();
-                userData.FillFio(fio.First_Name, fio.Last_Name, fio.Patronymic, person.Birthday);
-                userData.FillAddress(adress.Country, adress.City, adress.Street, adress.House_Number, adress.Full_Adress);
-                userData.FillPhoneNumbers(numbers);
-                userData.FillEmails(emails);
-                userData.FillRoleInfo(userRole.Id, userRole.Name, employeeRoleDesc.Title, employeeRoleDesc.Description);
-                userData.FillUserTask(task.Id, taskDesc.Title, taskDesc.Description, condition.Id, taskCondiotionDesc.Title,
-                    importance.Id, taskImportanceDesc.Title, term.CreationDate, term.ToComplete);
-                userData.FillUserProject(project.Id, projectDesc.Title, projectDesc.Description, images);
+                userData.FillFio(fio.FirstName, fio.LastName, fio.Patronymic, person.Birthday);
+                userData.FillAddress(adress.Country, adress.City, adress.Street, adress.HouseNumber, adress.FullAdress);
+                userData.FillPhoneNumbers(person.PhoneNumbers);
+                userData.FillEmails(person.Emails);
+                userData.FillRoleInfo(userRole.Id, userRole.Name, employeeDesc.Title, employeeDesc.Description1);
+
+                userData.FillUserTask(task.Id, taskDesc.Title, taskDesc.Description1, taskCondition.Id, conditionDesc.Title,
+                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete);
+
+                userData.FillUserProject(project.Id, projectDesc.Title, projectDesc.Description1, project.Images);
+
                 userData.FillLoginData(loginData.Login, loginData.Password);
-                userData.FillEmployeeDate(employee.Salary, employee.Avatar);*/
+
+                userData.FillEmployeeDate((float)employee.Salary, employee.Avatar);
+
+                string user = userData.ToJson();
+                string res = $"loginigResult={true}\n{user}";
+                SendMessageToClient(datas[0].Substring(datas[0].IndexOf('=') + 1), res);
 
             }
-
-
-            /*bool logResult = UserController.CheckData(data, out User logUser);
-            string res = $"loginigResult={logResult}\n";
-            if (logResult)
-                res += logUser.ToString();
-            string[] datas = data.Split('\n');
-            string id = datas[0].Substring(datas[0].IndexOf('=')+1);
-            SendMessageToClient(id, res);*/
         }
 
         public void SendMessageToClient(string id, string msg)

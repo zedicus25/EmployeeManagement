@@ -56,7 +56,7 @@ namespace EmployeeManagement.Model
                 return;
             _stringBuilder.AppendLine("--getAllTasks\n");
             _stringBuilder.AppendLine($"id={IdOnServer}\n");
-            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.CurrentProject}\n");
+            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.Project.Id}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }
@@ -67,8 +67,7 @@ namespace EmployeeManagement.Model
                 return;
             _stringBuilder.AppendLine("--getMyTasks\n");
             _stringBuilder.AppendLine($"id={IdOnServer}\n");
-            _stringBuilder.AppendLine($"userId={MainViewModel.GetInstance().User.Id}\n");
-            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.CurrentProject}\n");
+            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.Project.Id}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }

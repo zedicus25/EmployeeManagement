@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Server.Models;
 
@@ -15,6 +16,7 @@ public partial class Employee
 
     public int LoginDataId { get; set; }
 
+    [DataType(DataType.Currency)]
     public decimal Salary { get; set; }
 
     public string? Avatar { get; set; }

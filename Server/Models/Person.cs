@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Server.Models;
 
@@ -10,7 +11,7 @@ public partial class Person
     public int FioId { get; set; }
 
     public int AdressId { get; set; }
-
+    [DataType(DataType.Date)]
     public DateTime Birthday { get; set; }
 
     public virtual Adress Adress { get; set; } = null!;

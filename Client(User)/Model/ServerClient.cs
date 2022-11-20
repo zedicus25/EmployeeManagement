@@ -40,6 +40,11 @@ namespace EmployeeManagement.Model
 
         public void SendMessageToServer(string message)
         {
+            if (message.ToLower().Contains("drop") || message.ToLower().Contains("delete") ||
+                message.ToLower().Contains("update") || message.ToLower().Contains("add") ||
+                message.ToLower().Contains("alter") || message.ToLower().Contains("table") ||
+                message.ToLower().Contains("database"))
+                return;
             try
             {
                 byte[] data = Encoding.Unicode.GetBytes(message);

@@ -103,7 +103,6 @@ namespace Server.Controllers
 
         public void CheckUserLoginPasswordData(string data)
         {
-
             data = data.Trim();
             string[] datas = data.Split('\n');
             if (datas.Length != 3)
@@ -129,12 +128,14 @@ namespace Server.Controllers
                 }
                 Employee employee = _dbContext.Employees.FirstOrDefault(x => x.LoginDataId.Equals(loginData.Id));
                 Person person = _dbContext.Persons.FirstOrDefault(x => x.Id.Equals(employee.PersonId));
+                IEnumerable<Email> emails = _dbContext.Emails.Where(x => x.PersonId.Equals(person.Id));
+                IEnumerable<PhoneNumber> phoneNumbers = _dbContext.PhoneNumbers.Where(x => x.PersonId.Equals(person.Id));
                 Fio fio = _dbContext.Fios.FirstOrDefault(x => x.Id.Equals(person.FioId));
                 Adress adress = _dbContext.Adresses.FirstOrDefault(x => x.Id.Equals(person.Id));
                 EmployeesRole employeeRole = _dbContext.EmployeesRoles.FirstOrDefault(x => x.Id.Equals(employee.RoleId));
                 UsersRole userRole = _dbContext.UsersRoles.FirstOrDefault(x => x.Id.Equals(employeeRole.UserRoleId));
                 Description employeeDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(employeeRole.DescriptionId));
-                Server.Models.Task task = _dbContext.Tasks.FirstOrDefault(x => x.Id.Equals(employee.TaskId));
+                Models.Task task = _dbContext.Tasks.FirstOrDefault(x => x.Id.Equals(employee.TaskId));
                 Description taskDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(task.DescriptionId));
                 TaskCondition taskCondition = _dbContext.TaskConditions.FirstOrDefault(x => x.Id.Equals(task.TaskConditionId));
                 Description conditionDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(taskCondition.DescriptionId));
@@ -147,8 +148,8 @@ namespace Server.Controllers
                 User userData = new User();
                 userData.FillFio(fio.FirstName, fio.LastName, fio.Patronymic, person.Birthday);
                 userData.FillAddress(adress.Country, adress.City, adress.Street, adress.HouseNumber, adress.FullAdress);
-                userData.FillPhoneNumbers(person.PhoneNumbers);
-                userData.FillEmails(person.Emails);
+                userData.FillPhoneNumbers(phoneNumbers);
+                userData.FillEmails(emails);
                 userData.FillRoleInfo(userRole.Id, userRole.Name, employeeDesc.Title, employeeDesc.Description1);
 
                 userData.FillUserTask(task.Id, taskDesc.Title, taskDesc.Description1, taskCondition.Id, conditionDesc.Title,

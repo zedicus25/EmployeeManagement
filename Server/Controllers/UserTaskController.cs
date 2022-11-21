@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Server.Models;
 using Server.ServerModels;
 using System.Threading.Tasks;
@@ -8,8 +7,12 @@ namespace Server.Controllers
 {
     public class UserTaskController
     {
-        public IEnumerable<UserTask> GetUserTasks(int projectId, ref DbA8ec2dZedicus52001Context context)
+        public IEnumerable<UserTask> GetUserTasks(int projectId, DbContext dbContext)
         {
+            if(!(dbContext is EmployeeManagementContext))
+                return new List<UserTask>();
+
+            EmployeeManagementContext context = dbContext as EmployeeManagementContext;
 
             List<Models.Task> models = context.Tasks
                 .Where(x => x.ProjectId.Equals(projectId)).ToList();
@@ -30,6 +33,17 @@ namespace Server.Controllers
                     taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete));
             }
             return tasks;
+        }
+
+        public void SetTaskCondition(int taskId, int conditionId, DbContext dbContext)
+        {
+            if (!(dbContext is EmployeeManagementContext))
+                return;
+
+            EmployeeManagementContext context = dbContext as EmployeeManagementContext;
+
+            context.Tasks.FirstOrDefault(x => x.Id.Equals(taskId)).TaskConditionId = conditionId;
+            context.SaveChanges();
         }
     }
 }

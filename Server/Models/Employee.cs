@@ -18,7 +18,6 @@ public partial class Employee
 
     [DataType(DataType.Currency)]
     public decimal Salary { get; set; }
-
     public string? Avatar { get; set; }
 
     public virtual LoginDatum LoginData { get; set; } = null!;

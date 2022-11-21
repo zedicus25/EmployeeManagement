@@ -51,7 +51,7 @@
             </StackPanel>
             <Button Margin="25"  Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
                     ToolTip="Взяти завдання"
-                    Content="Get task" Command="{Binding GetTask}" VerticalAlignment="Bottom" />
+                    Content="Get task" Command="{Binding GetTaskCommand}" VerticalAlignment="Bottom" />
         </Grid>
     </Grid>
 </UserControl>

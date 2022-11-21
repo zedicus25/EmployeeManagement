@@ -20,7 +20,7 @@ namespace Server.Controllers
         private CancellationTokenSource _tokenSource;
         private Task _listenTask;
         private bool _isEnabled;
-        private DbA8ec2dZedicus52001Context _dbContext;
+        private EmployeeManagementContext _dbContext;
         private UserTaskController _userTaskController;
 
         public ServerController(int port = 8008)
@@ -39,7 +39,7 @@ namespace Server.Controllers
             _tokenSource = new CancellationTokenSource();
             _listenTask = new Task(Listen, _tokenSource.Token);
             _listenTask.Start();
-            _dbContext = new DbA8ec2dZedicus52001Context();
+            _dbContext = new EmployeeManagementContext();
         }
 
         private void Listen()
@@ -183,11 +183,16 @@ namespace Server.Controllers
 
         public void SendTasks(string client, int projectId)
         {
-            IEnumerable<UserTask> tasks = _userTaskController.GetUserTasks(projectId, ref _dbContext);
+            IEnumerable<UserTask> tasks = _userTaskController.GetUserTasks(projectId, _dbContext);
             StringBuilder sb = new StringBuilder();
             sb.Append("allTasks=");
             sb.Append(JsonConvert.SerializeObject(tasks));
             SendMessageToClient(client, sb.ToString());
+        }
+
+        public void GiveTaskToUser(int taskId)
+        {
+            _userTaskController.SetTaskCondition(taskId, 3, _dbContext);
         }
     }
 }

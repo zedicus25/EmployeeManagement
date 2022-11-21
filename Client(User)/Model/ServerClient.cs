@@ -66,6 +66,17 @@ namespace EmployeeManagement.Model
             _stringBuilder.Clear();
         }
 
+        public void GetTaskFromAll(int taskId)
+        {
+            if (MainViewModel.GetInstance().User == null)
+                return;
+            _stringBuilder.Append("--setMyTask\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            _stringBuilder.Append($"taskId={taskId}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+
         public void GetMyTasks()
         {
             if (MainViewModel.GetInstance().User == null)

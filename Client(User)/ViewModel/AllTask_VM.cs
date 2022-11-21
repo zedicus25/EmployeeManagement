@@ -2,8 +2,6 @@
 using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace EmployeeManagement.ViewModel
 {
@@ -20,13 +18,17 @@ namespace EmployeeManagement.ViewModel
         }
 
 
-        public RelayCommand GetTask
+        public RelayCommand GetTaskCommand
         {
             get
             {
                 return _getTaskCommand ?? (_getTaskCommand = new RelayCommand(() =>
                 {
+                    if (_selectedTask == null)
+                        return;
 
+                    MainViewModel.GetInstance().ServerClient.GetTaskFromAll(_selectedTask.Id);
+                    MainViewModel.GetInstance().GetAllTasks();
                 }));
             }
         }

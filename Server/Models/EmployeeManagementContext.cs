@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Server.Models;
 
-public partial class DbA8ec2dZedicus52001Context : DbContext
+public partial class EmployeeManagementContext : DbContext
 {
-    public DbA8ec2dZedicus52001Context()
+    public EmployeeManagementContext()
     {
     }
 
-    public DbA8ec2dZedicus52001Context(DbContextOptions<DbA8ec2dZedicus52001Context> options)
+    public EmployeeManagementContext(DbContextOptions<EmployeeManagementContext> options)
         : base(options)
     {
     }

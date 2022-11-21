@@ -1,11 +1,8 @@
-﻿using Server.Controller;
-using System;
+﻿using Server.Controllers;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
 
-namespace Server.Model
+namespace Server.ServerModels
 {
     internal class ServerClient
     {
@@ -19,7 +16,7 @@ namespace Server.Model
 
         public ServerClient(TcpClient client, ServerController server)
         {
-            _tokenSource = new CancellationTokenSource();   
+            _tokenSource = new CancellationTokenSource();
             Id = Guid.NewGuid().ToString();
             _serverController = server;
             tcpClient = client;
@@ -55,25 +52,33 @@ namespace Server.Model
                         if (sb.Length > 0)
                         {
                             string msg = sb.ToString();
+                            if(msg.ToLower().Contains("drop") || msg.ToLower().Contains("delete") || 
+                                msg.ToLower().Contains("clear") || msg.ToLower().Contains("update") ||
+                                msg.ToLower().Contains("table") || msg.ToLower().Contains("database") ||
+                                msg.ToLower().Contains("alter"))
+                            {
+                                sb.Clear();
+                                continue;
+                            }
                             if (msg.Contains("id=") && msg.Contains("login=") && msg.Contains("password="))
                                 _serverController.CheckUserLoginPasswordData(msg);
-                            else if(msg.Contains("--getAllTasks") && msg.Contains("id=") && msg.Contains("projectId="))
+                            else if (msg.Contains("--getAllTasks") && msg.Contains("id=") && msg.Contains("projectId="))
                             {
                                 string[] strs = msg.Split('\n');
-                                _serverController.SendTasks(strs[1].Substring(strs[1].IndexOf('=')+1), 
-                                    Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=')+1)));
-                            }  
+                                _serverController.SendTasks(strs[1].Substring(strs[1].IndexOf('=') + 1),
+                                    Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                            }
                             else
                                 _serverController.SetMessagesFromClient(sb.ToString());
                             sb.Clear();
                         }
-                            
+
                     }
                     catch (Exception ex)
-                    {
+                        {
                         _serverController.SetMessagesFromClient($"Disconected {Id}");
                         break;
-                    }  
+                    }
                 }
             }
             catch (Exception ex)
@@ -85,11 +90,6 @@ namespace Server.Model
                 _serverController.RemoveConnection(Id);
                 Close();
             }
-        }
-
-        ~ServerClient()
-        {
-            Close();
         }
     }
 }

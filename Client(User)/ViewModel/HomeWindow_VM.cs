@@ -54,24 +54,23 @@ namespace EmployeeManagement.ViewModel
                 }));
             }
         }
-
-        public RelayCommand GoToProject
+        public RelayCommand LogOutCommand
         {
             get
             {
-                return _goToProject ?? (_goToProject = new RelayCommand(() =>
+                return _logOutCommand ?? (_logOutCommand = new RelayCommand(() =>
                 {
-                    if (_baseVM is Project_VM)
-                        return;
-                    SetCurrentVM(_allVMs[3]);
+                    //MainViewModel.GetInstance().LogOut();
                 }));
             }
         }
 
+
+
         private RelayCommand _goToAllTasks;
         private RelayCommand _goToMyTasks;
         private RelayCommand _goToAccount;
-        private RelayCommand _goToProject;
+        private RelayCommand _logOutCommand;
 
         private BaseVM _baseVM;
         private List<BaseVM> _allVMs;

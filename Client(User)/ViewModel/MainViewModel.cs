@@ -84,6 +84,8 @@ namespace EmployeeManagement.ViewModel
 			}
 		}
 
+		
+
 		~MainViewModel()
 		{
 			_tokenSourceListenTasks.Cancel();

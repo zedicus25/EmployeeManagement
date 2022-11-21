@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -9,16 +10,7 @@ namespace EmployeeManagement.Model
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public uint Id
-        {
-            get => _dataBaseId;
-            set 
-            { 
-                _dataBaseId = value; 
-                OnPropertyChanged("Id"); 
-            }
-        }
-
+       
         public string Password
         {
             get => _password;
@@ -39,23 +31,23 @@ namespace EmployeeManagement.Model
             }
         }
 
-        public string Name
+        public string First_Name
         {
             get => _name;
             set
             {
                 _name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged("First_Name");
             }
         }
 
-        public string LastName
+        public string Last_Name
         {
             get => _lastName;
             set
             {
                 _lastName = value;
-                OnPropertyChanged("LastName");
+                OnPropertyChanged("Last_Name");
             }
         }
         public string Patronymic
@@ -65,69 +57,6 @@ namespace EmployeeManagement.Model
             {
                 _patronymic = value;
                 OnPropertyChanged("Patronymic");
-            }
-        }
-        public DateTime Birthday
-        {
-            get => _birthday;
-            set
-            {
-                _birthday = value;
-                OnPropertyChanged("Birthday");
-            }
-        }
-        public float Salary
-        {
-            get => _salary;
-            set
-            {
-                _salary = value;
-                OnPropertyChanged("Salary");
-            }
-        }
-        public string CompanyName
-        {
-            get => _companyName;
-            set
-            {
-                _companyName = value;
-                OnPropertyChanged("CompanyName");
-            }
-        }
-        public int CurrentProject
-        {
-            get => _currentProject;
-            set
-            {
-                _currentProject = value;
-                OnPropertyChanged("CurrentProject");
-            }
-        }
-        public string Position
-        {
-            get => _position;
-            set
-            {
-                _position = value;
-                OnPropertyChanged("Position");
-            }
-        }
-        public string Email
-        {
-            get => _email;
-            set
-            {
-                _email = value;
-                OnPropertyChanged("Email");
-            }
-        }
-        public string PhoneNumber
-        {
-            get => _phoneNumber;
-            set
-            {
-                _phoneNumber = value;
-                OnPropertyChanged("PhoneNumber");
             }
         }
         public string Country
@@ -148,13 +77,126 @@ namespace EmployeeManagement.Model
                 OnPropertyChanged("City");
             }
         }
-        public string Adress
+        public string Street
         {
             get => _adress;
             set
             {
                 _adress = value;
-                OnPropertyChanged("Adress");
+                OnPropertyChanged("Street");
+            }
+        }
+        public string House_Number
+        {
+            get => _houseNumber;
+            set
+            {
+                _houseNumber = value;
+                OnPropertyChanged("House_Number");
+            }
+        }
+        public string Full_Adress
+        {
+            get => _fullAdress;
+            set
+            {
+                _fullAdress = value;
+                OnPropertyChanged("Full_Adress");
+            }
+        }
+        public DateTime Birthday
+        {
+            get => _birthday;
+            set
+            {
+                _birthday = value;
+                OnPropertyChanged("Birthday");
+            }
+        }
+        
+
+        public List<UserPhoneNumber> PhoneNumbers
+        {
+            get => _phoneNumbers;
+            set 
+            { 
+                _phoneNumbers = value;
+                OnPropertyChanged("PhoneNumbers");
+            }
+        }
+
+
+        public List<UserEmail> Emails
+        {
+            get => _emails;
+            set
+            {
+                _emails = value;
+                OnPropertyChanged("Emails");
+            }
+        }
+
+        public int UserRoleId
+        {
+            get => _userRoleId;
+            set
+            {
+                _userRoleId = value;
+                OnPropertyChanged("UserRoleId");
+            }
+        }
+        public string UserRoleName
+        {
+            get => _userRoleName;
+            set
+            {
+                _userRoleName = value;
+                OnPropertyChanged("UserRoleName");
+            }
+        }
+        public string EmployeeRoleName
+        {
+            get => _employeeRoleName;
+            set
+            {
+                _employeeRoleName = value;
+                OnPropertyChanged("EmployeeRoleName");
+            }
+        }
+        public string EmployeeRoleDescription
+        {
+            get => _employeeRoleDescription;
+            set
+            {
+                _employeeRoleDescription = value;
+                OnPropertyChanged("EmployeeRoleDescription");
+            }
+        }
+        public UserTask Task
+        {
+            get => _task;
+            set
+            {
+                _task = value;
+                OnPropertyChanged("Task");
+            }
+        }
+        public UserProject Project
+        {
+            get => _project;
+            set
+            {
+                _project = value;
+                OnPropertyChanged("Project");
+            }
+        }
+        public float Salary
+        {
+            get => _salary;
+            set
+            {
+                _salary = value;
+                OnPropertyChanged("Salary");
             }
         }
         public string Avatar
@@ -166,26 +208,8 @@ namespace EmployeeManagement.Model
                 OnPropertyChanged("Avatar");
             }
         }
-        public bool IsAdmin
-        {
-            get => _isAdmin;
-            set
-            {
-                _isAdmin = value;
-                OnPropertyChanged("IsAdmin");
-            }
-        }
-        public bool IsMainAdmin
-        {
-            get => _isMainAdmin;
-            set
-            {
-                _isMainAdmin = value;
-                OnPropertyChanged("IsMainAdmin");
-            }
-        }
+       
 
-        private uint _dataBaseId;
         private string _login;
         private string _password;
         private string _name;
@@ -193,44 +217,20 @@ namespace EmployeeManagement.Model
         private string _patronymic;
         private DateTime _birthday;
         private float _salary;
-        private string _companyName;
-        private int _currentProject;
-        private string _position;
-        private string _email;
-        private string _phoneNumber;
         private string _country;
         private string _city;
         private string _adress;
         private string _avatar;
-        private bool _isAdmin;
-        private bool _isMainAdmin;
-        
-
-
-        public User(uint id, string password, string login, string name, string lastName, string patronymic, DateTime birthday,
-            float salary, string companyName, int currentProject, string position, string email, string phoneNumber, string country,
-            string city, string adress, string avatar, bool isAdmin, bool isMainAdmin)
-        {
-            _dataBaseId = id;
-            _password = password;
-            _login = login;
-            _name = name;
-            _lastName = lastName;
-            _patronymic = patronymic;
-            _birthday = birthday;
-            _salary = salary;
-            _companyName = companyName;
-            _currentProject = currentProject;
-            _position = position;
-            _email = email;
-            _phoneNumber = phoneNumber;
-            _country = country;
-            _city = city;
-            _adress = adress;
-            _avatar = avatar;
-            _isAdmin = isAdmin;
-            _isMainAdmin = isMainAdmin;
-        }
+        private string _houseNumber;
+        private string _fullAdress;
+        private List<UserEmail> _emails;
+        private List<UserPhoneNumber> _phoneNumbers;
+        private int _userRoleId;
+        private string _userRoleName;
+        private string _employeeRoleName;
+        private string _employeeRoleDescription;
+        private UserTask _task;
+        private UserProject _project;
 
         public void OnPropertyChanged([CallerMemberName] string prop = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));

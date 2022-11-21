@@ -40,6 +40,11 @@ namespace EmployeeManagement.Model
 
         public void SendMessageToServer(string message)
         {
+            if (message.ToLower().Contains("drop") || message.ToLower().Contains("delete") ||
+                message.ToLower().Contains("update") || message.ToLower().Contains("add") ||
+                message.ToLower().Contains("alter") || message.ToLower().Contains("table") ||
+                message.ToLower().Contains("database"))
+                return;
             try
             {
                 byte[] data = Encoding.Unicode.GetBytes(message);
@@ -56,7 +61,7 @@ namespace EmployeeManagement.Model
                 return;
             _stringBuilder.AppendLine("--getAllTasks\n");
             _stringBuilder.AppendLine($"id={IdOnServer}\n");
-            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.CurrentProject}\n");
+            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.Project.Id}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }
@@ -67,8 +72,7 @@ namespace EmployeeManagement.Model
                 return;
             _stringBuilder.AppendLine("--getMyTasks\n");
             _stringBuilder.AppendLine($"id={IdOnServer}\n");
-            _stringBuilder.AppendLine($"userId={MainViewModel.GetInstance().User.Id}\n");
-            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.CurrentProject}\n");
+            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.Project.Id}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }

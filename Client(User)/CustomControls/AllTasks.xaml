@@ -23,10 +23,11 @@
         <ListBox Grid.ColumnSpan="1" Grid.RowSpan="4" Margin="10" ItemsSource="{Binding Tasks, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedTask}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <GroupBox IsEnabled="{Binding IsComplete}" Header="{Binding TaskTitle}" Style="{StaticResource MaterialDesignGroupBox}"
+                    <GroupBox Header="{Binding Title}" Style="{StaticResource MaterialDesignGroupBox}"
                               Margin="15,3" BorderThickness="0">
                         <TextBlock
-                            Margin="6,6,6,6" TextWrapping="Wrap" Text="{Binding Term}" />
+                            Margin="15,3" TextWrapping="Wrap" Text="{Binding ImportanceName}" />
+                        
                     </GroupBox>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -35,9 +36,18 @@
 
         <Grid DataContext="{Binding SelectedTask, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="4">
             <StackPanel Margin="10">
-                <TextBlock FontSize="30" Padding="0 5" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding TaskTitle}" />
-                <TextBlock FontSize="11" Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding Term}" />
-                <TextBlock FontSize="16" Padding="0 10" TextWrapping="Wrap" Style="{StaticResource MaterialDesignBody2TextBlock}" Text="{Binding TaskDescription}" />
+                <TextBlock FontSize="30" Padding="0 5" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding Title}" />
+                <TextBlock FontWeight="Bold" FontSize="17" Text="{Binding ImportanceName}"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="11" Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="Creation date: " />
+                    <TextBlock FontSize="11" Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding CreationDate}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="11" Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="To complete: " />
+                    <TextBlock FontSize="11" Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding ToComplete}" />
+                </StackPanel>
+                <TextBlock FontWeight="Bold" FontSize="13" Text="{Binding ConditionName}"></TextBlock>
+                <TextBlock FontSize="16" Padding="0 10" TextWrapping="Wrap" Style="{StaticResource MaterialDesignBody2TextBlock}" Text="{Binding Description}" />
             </StackPanel>
             <Button Margin="25"  Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
                     ToolTip="Взяти завдання"

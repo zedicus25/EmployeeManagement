@@ -61,12 +61,16 @@ namespace Server.ServerModels
                                 continue;
                             }
                             if (msg.Contains("id=") && msg.Contains("login=") && msg.Contains("password="))
+                            {
                                 _serverController.CheckUserLoginPasswordData(msg);
+                                continue;
+                            }
                             else if (msg.Contains("--getAllTasks") && msg.Contains("id=") && msg.Contains("projectId="))
                             {
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendTasks(strs[1].Substring(strs[1].IndexOf('=') + 1),
                                     Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                                continue;
                             }
                             else
                                 _serverController.SetMessagesFromClient(sb.ToString());

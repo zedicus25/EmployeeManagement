@@ -14,7 +14,7 @@ namespace EmployeeManagement.Model
         public event Action<string> StateUpdating;
         public event Action<string> GetServerMessage;
         public event Action<bool, User> LoginingResult;
-        public event Action<List<ProjectTask>> AllTasks;
+        public event Action<List<UserTask>> AllTasks;
 
         public string IdOnServer { get; private set; }
 
@@ -59,9 +59,9 @@ namespace EmployeeManagement.Model
         {
             if(MainViewModel.GetInstance().User == null)
                 return;
-            _stringBuilder.AppendLine("--getAllTasks\n");
-            _stringBuilder.AppendLine($"id={IdOnServer}\n");
-            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.Project.Id}\n");
+            _stringBuilder.Append("--getAllTasks\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            _stringBuilder.Append($"projectId={MainViewModel.GetInstance().User.Project.Id}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }

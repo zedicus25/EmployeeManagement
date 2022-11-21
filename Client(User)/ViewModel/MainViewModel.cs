@@ -55,8 +55,8 @@ namespace EmployeeManagement.ViewModel
 			_tokenSourceListenTasks = new CancellationTokenSource();
             _listenAllTask = new Task(SendAllTasksQuerry, _tokenSourceListenTasks.Token);
 			_listemMyTask = new Task(SendMyTasksQuerry, _tokenSourceListenTasks.Token);
-            _listenAllTask.Start();
-			_listemMyTask.Start();
+            //_listenAllTask.Start();
+			//_listemMyTask.Start();
         }
 
 		public void SetViewModel(BaseVM baseVM)
@@ -66,6 +66,12 @@ namespace EmployeeManagement.ViewModel
 			_selectedVM = baseVM;
 			OnPropertyChanged("SelectedViewModel");
 		}
+
+		public void GetAllTasks()
+		{
+			ServerClient.GetAllTasks();
+		}
+
 
         private async void SendAllTasksQuerry()
 		{

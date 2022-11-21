@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Server.ServerModels
 {
     [Serializable]
@@ -15,5 +14,22 @@ namespace Server.ServerModels
         public string ImportanceName { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime ToComplete { get; set; }
+
+        public UserTask()
+        {
+        }
+
+        public UserTask(int id, string title, string description, int conditionId, string conditionName, int importanceId, string importanceName, DateTime creationDate, DateTime toComplete)
+        {
+            this.Id = id;
+            this.Title = title;
+            this.Description = description;
+            this.ConditionId = conditionId;
+            this.ConditionName = conditionName;
+            this.ImportanceId = importanceId;
+            this.ImportanceName = importanceName;
+            this.CreationDate = creationDate;
+            this.ToComplete = toComplete;
+        }
     }
 }

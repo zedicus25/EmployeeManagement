@@ -22,6 +22,6 @@ namespace EmployeeManagement.Utilities
         }
 
         public User GetUser(string data) => JsonConvert.DeserializeObject<User>(data);
-        public List<ProjectTask> GetTasks(string data) => JsonConvert.DeserializeObject<List<ProjectTask>>(data);
+        public List<UserTask> GetTasks(string data) => JsonConvert.DeserializeObject<List<UserTask>>(data);
     }
 }

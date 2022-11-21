@@ -9,7 +9,7 @@ namespace EmployeeManagement.ViewModel
 {
     public class AllTask_VM : BaseVM
     {
-        public ProjectTask SelectedTask
+        public UserTask SelectedTask
         {
             get => _selectedTask;
             set 
@@ -31,7 +31,7 @@ namespace EmployeeManagement.ViewModel
             }
         }
 
-        public ObservableCollection<ProjectTask> Tasks
+        public ObservableCollection<UserTask> Tasks
         {
             get => _tasks;
             set 
@@ -41,8 +41,8 @@ namespace EmployeeManagement.ViewModel
             }
         }
 
-        private ObservableCollection<ProjectTask> _tasks;
-        private ProjectTask _selectedTask;
+        private ObservableCollection<UserTask> _tasks;
+        private UserTask _selectedTask;
         
 
         private RelayCommand _getTaskCommand;
@@ -51,7 +51,11 @@ namespace EmployeeManagement.ViewModel
             MainViewModel.GetInstance().ServerClient.AllTasks += GetTasks;
         }
 
-        private void GetTasks(List<ProjectTask> tasks) => _tasks = new ObservableCollection<ProjectTask>(tasks);
+        private void GetTasks(List<UserTask> tasks)
+        {
+            _tasks = new ObservableCollection<UserTask>(tasks);
+            OnPropertyChanged("Tasks");
+        }
 
     }
 }

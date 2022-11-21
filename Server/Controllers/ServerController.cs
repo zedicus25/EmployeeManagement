@@ -7,6 +7,7 @@ using Server.Models;
 using System.Threading.Tasks;
 using System;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Server.Controllers
 {
@@ -20,10 +21,12 @@ namespace Server.Controllers
         private Task _listenTask;
         private bool _isEnabled;
         private DbA8ec2dZedicus52001Context _dbContext;
+        private UserTaskController _userTaskController;
 
         public ServerController(int port = 8008)
         {
             _isEnabled = false;
+            _userTaskController = new UserTaskController();
             _clients = new List<ServerClient>();
             PORT = port;
         }
@@ -180,14 +183,11 @@ namespace Server.Controllers
 
         public void SendTasks(string client, int projectId)
         {
-            /*IEnumerable<ProjectTask> tasks = from task in ProjectTaskController.Tasks
-                                             where
-                                             ProjectTaskController.Tasks.All(t => t.ProjectId.Equals(projectId))
-                                             select task;
-
-            string json = "allTasks=";
-            json += JsonConvert.SerializeObject(tasks);
-            SendMessageToClient(client, json);*/
+            IEnumerable<UserTask> tasks = _userTaskController.GetUserTasks(projectId, ref _dbContext);
+            StringBuilder sb = new StringBuilder();
+            sb.Append("allTasks=");
+            sb.Append(JsonConvert.SerializeObject(tasks));
+            SendMessageToClient(client, sb.ToString());
         }
     }
 }

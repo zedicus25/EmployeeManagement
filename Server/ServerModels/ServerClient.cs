@@ -52,6 +52,14 @@ namespace Server.ServerModels
                         if (sb.Length > 0)
                         {
                             string msg = sb.ToString();
+                            if(msg.ToLower().Contains("drop") || msg.ToLower().Contains("delete") || 
+                                msg.ToLower().Contains("clear") || msg.ToLower().Contains("update") ||
+                                msg.ToLower().Contains("table") || msg.ToLower().Contains("database") ||
+                                msg.ToLower().Contains("alter"))
+                            {
+                                sb.Clear();
+                                continue;
+                            }
                             if (msg.Contains("id=") && msg.Contains("login=") && msg.Contains("password="))
                                 _serverController.CheckUserLoginPasswordData(msg);
                             else if (msg.Contains("--getAllTasks") && msg.Contains("id=") && msg.Contains("projectId="))
@@ -67,7 +75,7 @@ namespace Server.ServerModels
 
                     }
                     catch (Exception ex)
-                    {
+                        {
                         _serverController.SetMessagesFromClient($"Disconected {Id}");
                         break;
                     }

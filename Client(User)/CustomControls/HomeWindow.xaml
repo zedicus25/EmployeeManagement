@@ -24,9 +24,9 @@
                 <Button Command="{Binding GoToAccount}"
                     ToolTip="Ваш профіль в компанії"
                     Content="{materialDesign:PackIcon Kind=AccountCircleOutline}" />
-                <Button Command="{Binding GoToProject}"
-                    ToolTip="Інформація про проект"
-                    Content="{materialDesign:PackIcon Kind=InformationOutline}" />
+                <Button Command="{Binding LogOutCommand}"
+                    ToolTip="Вийти"
+                    Content="{materialDesign:PackIcon Kind=ExitToApp}" />
             </ToolBar>
         </ToolBarTray>
         <ContentControl Content="{Binding HomePageVM, UpdateSourceTrigger=PropertyChanged}" Margin="50,0,0,0"></ContentControl>

@@ -7,27 +7,31 @@ namespace Server.Controllers
 {
     public class UserTaskController
     {
-        public IEnumerable<UserTask> GetUserTasks(int projectId, DbContext dbContext)
+        EmployeeManagementContext _dbContext;
+
+        public UserTaskController(DbContext dbContext)
         {
-            if(!(dbContext is EmployeeManagementContext))
+            _dbContext = dbContext as EmployeeManagementContext;
+        }
+        public IEnumerable<UserTask> GetUserTasks(int projectId)
+        {
+            if (_dbContext == null)
                 return new List<UserTask>();
 
-            EmployeeManagementContext context = dbContext as EmployeeManagementContext;
-
-            List<Models.Task> models = context.Tasks
-                .Where(x => x.ProjectId.Equals(projectId)).ToList();
+            List<Models.Task> models = _dbContext.Tasks
+                .Where(x => x.ProjectId.Equals(projectId) && x.TaskConditionId != 3).ToList();
 
             List<UserTask> tasks = new List<UserTask>();
 
 
             foreach (var item in models)
             {
-                Description taskDesc = context.Descriptions.FirstOrDefault(x => x.Id.Equals(item.DescriptionId));
-                TaskCondition taskCondition = context.TaskConditions.FirstOrDefault(x => x.Id.Equals(item.TaskConditionId));
-                Description conditionDesc = context.Descriptions.FirstOrDefault(x => x.Id.Equals(taskCondition.DescriptionId));
-                Importance taskImportance = context.Importances.FirstOrDefault(x => x.Id.Equals(item.ImportanceId));
-                Description importanceDesc = context.Descriptions.FirstOrDefault(x => x.Id.Equals(taskImportance.DescriptionId));
-                Term taskTerm = context.Terms.FirstOrDefault(x => x.Id.Equals(item.TermId));
+                Description taskDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(item.DescriptionId));
+                TaskCondition taskCondition = _dbContext.TaskConditions.FirstOrDefault(x => x.Id.Equals(item.TaskConditionId));
+                Description conditionDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(taskCondition.DescriptionId));
+                Importance taskImportance = _dbContext.Importances.FirstOrDefault(x => x.Id.Equals(item.ImportanceId));
+                Description importanceDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(taskImportance.DescriptionId));
+                Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id.Equals(item.TermId));
 
                 tasks.Add(new UserTask(item.Id, taskDesc.Title, taskDesc.Description1, taskCondition.Id, conditionDesc.Title,
                     taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete));
@@ -35,15 +39,34 @@ namespace Server.Controllers
             return tasks;
         }
 
-        public void SetTaskCondition(int taskId, int conditionId, DbContext dbContext)
+        public void SetTaskCondition(int userId, int taskId, int conditionId)
         {
-            if (!(dbContext is EmployeeManagementContext))
+            if (_dbContext == null)
                 return;
 
-            EmployeeManagementContext context = dbContext as EmployeeManagementContext;
-
+            EmployeeManagementContext context = _dbContext as EmployeeManagementContext;
+            context.Employees.FirstOrDefault(x => x.Id.Equals(userId)).TaskId = taskId;
             context.Tasks.FirstOrDefault(x => x.Id.Equals(taskId)).TaskConditionId = conditionId;
             context.SaveChanges();
+        }
+
+        public UserTask GetUserTask(int userId)
+        {
+            if (_dbContext == null)
+                return new UserTask();
+
+            Employee employee = _dbContext.Employees.FirstOrDefault(x => x.Id.Equals(userId));
+            Models.Task item = _dbContext.Tasks.FirstOrDefault(x => x.Id.Equals(employee.TaskId));
+
+            Description taskDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(item.DescriptionId));
+            TaskCondition taskCondition = _dbContext.TaskConditions.FirstOrDefault(x => x.Id.Equals(item.TaskConditionId));
+            Description conditionDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(taskCondition.DescriptionId));
+            Importance taskImportance = _dbContext.Importances.FirstOrDefault(x => x.Id.Equals(item.ImportanceId));
+            Description importanceDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(taskImportance.DescriptionId));
+            Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id.Equals(item.TermId));
+
+            return new UserTask(item.Id, taskDesc.Title, taskDesc.Description1, taskCondition.Id, conditionDesc.Title,
+                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete);
         }
     }
 }

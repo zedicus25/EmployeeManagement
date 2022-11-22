@@ -8,6 +8,7 @@ namespace Server.ServerModels
     [Serializable]
     public class User : IJson
     {
+        public int Id { get; set; }
         #region Person Info
         public string First_Name { get; set; }
         public string Last_Name { get; set; }
@@ -40,8 +41,9 @@ namespace Server.ServerModels
         public float Salary { get; set; }
         public string Avatar { get; set; }
 
-        public void FillFio(string firstName, string lastName, string patronymic, DateTime birthday)
+        public void FillFio(int id,string firstName, string lastName, string patronymic, DateTime birthday)
         {
+            Id = id;
             First_Name = firstName;
             Last_Name = lastName;
             Patronymic = patronymic;

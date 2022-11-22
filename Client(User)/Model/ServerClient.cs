@@ -42,8 +42,7 @@ namespace EmployeeManagement.Model
         {
             if (message.ToLower().Contains("drop") || message.ToLower().Contains("delete") ||
                 message.ToLower().Contains("update") || message.ToLower().Contains("add") ||
-                message.ToLower().Contains("alter") || message.ToLower().Contains("table") ||
-                message.ToLower().Contains("database"))
+                message.ToLower().Contains("alter") || message.ToLower().Contains("table"))
                 return;
             try
             {
@@ -72,6 +71,7 @@ namespace EmployeeManagement.Model
                 return;
             _stringBuilder.Append("--setMyTask\n");
             _stringBuilder.Append($"id={IdOnServer}\n");
+            _stringBuilder.Append($"userDataBaseId={MainViewModel.GetInstance().User.Id}\n");
             _stringBuilder.Append($"taskId={taskId}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
@@ -83,7 +83,7 @@ namespace EmployeeManagement.Model
                 return;
             _stringBuilder.AppendLine("--getMyTasks\n");
             _stringBuilder.AppendLine($"id={IdOnServer}\n");
-            _stringBuilder.AppendLine($"projectId={MainViewModel.GetInstance().User.Project.Id}\n");
+            _stringBuilder.AppendLine($"userDataBaseId={MainViewModel.GetInstance().User.Id}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }

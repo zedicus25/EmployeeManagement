@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace Server.Controllers
 {
@@ -26,7 +27,7 @@ namespace Server.Controllers
         public ServerController(int port = 8008)
         {
             _isEnabled = false;
-            _userTaskController = new UserTaskController();
+            
             _clients = new List<ServerClient>();
             PORT = port;
         }
@@ -40,6 +41,7 @@ namespace Server.Controllers
             _listenTask = new Task(Listen, _tokenSource.Token);
             _listenTask.Start();
             _dbContext = new EmployeeManagementContext();
+            _userTaskController = new UserTaskController(_dbContext);
         }
 
         private void Listen()
@@ -149,7 +151,7 @@ namespace Server.Controllers
                 Description projectDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(project.DescriptionId));
 
                 User userData = new User();
-                userData.FillFio(fio.FirstName, fio.LastName, fio.Patronymic, person.Birthday);
+                userData.FillFio(employee.Id,fio.FirstName, fio.LastName, fio.Patronymic, person.Birthday);
                 userData.FillAddress(adress.Country, adress.City, adress.Street, adress.HouseNumber, adress.FullAdress);
                 userData.FillPhoneNumbers(phoneNumbers);
                 userData.FillEmails(emails);
@@ -183,16 +185,25 @@ namespace Server.Controllers
 
         public void SendTasks(string client, int projectId)
         {
-            IEnumerable<UserTask> tasks = _userTaskController.GetUserTasks(projectId, _dbContext);
+            IEnumerable<UserTask> tasks = _userTaskController.GetUserTasks(projectId);
             StringBuilder sb = new StringBuilder();
             sb.Append("allTasks=");
             sb.Append(JsonConvert.SerializeObject(tasks));
             SendMessageToClient(client, sb.ToString());
         }
 
-        public void GiveTaskToUser(int taskId)
+        public void GiveTaskToUser(int userId,int taskId)
         {
-            _userTaskController.SetTaskCondition(taskId, 3, _dbContext);
+            _userTaskController.SetTaskCondition(userId,taskId, 3);
+        }
+
+        public void SendTask(string id, int userId)
+        {
+            UserTask task = _userTaskController.GetUserTask(userId);
+            StringBuilder sb = new StringBuilder();
+            sb.Append("myTask=");
+            sb.Append(JsonConvert.SerializeObject(task));
+            SendMessageToClient(id, sb.ToString());
         }
     }
 }

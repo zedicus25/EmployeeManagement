@@ -10,7 +10,16 @@ namespace EmployeeManagement.Model
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-       
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                OnPropertyChanged("Id");
+            }
+        }
+
         public string Password
         {
             get => _password;
@@ -231,6 +240,7 @@ namespace EmployeeManagement.Model
         private string _employeeRoleDescription;
         private UserTask _task;
         private UserProject _project;
+        private int _id;
 
         public void OnPropertyChanged([CallerMemberName] string prop = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));

@@ -54,8 +54,7 @@ namespace Server.ServerModels
                             string msg = sb.ToString();
                             if(msg.ToLower().Contains("drop") || msg.ToLower().Contains("delete") || 
                                 msg.ToLower().Contains("clear") || msg.ToLower().Contains("update") ||
-                                msg.ToLower().Contains("table") || msg.ToLower().Contains("database") ||
-                                msg.ToLower().Contains("alter"))
+                                msg.ToLower().Contains("table") || msg.ToLower().Contains("alter"))
                             {
                                 sb.Clear();
                                 continue;
@@ -77,7 +76,8 @@ namespace Server.ServerModels
                             else if(msg.Contains("--setMyTask") && msg.Contains("id=") && msg.Contains("taskId=")) 
                             {
                                 string[] strs = msg.Split('\n');
-                                _serverController.GiveTaskToUser(Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                                _serverController.GiveTaskToUser(Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)), 
+                                    Convert.ToInt32(strs[3].Substring(strs[3].IndexOf('=') + 1)));
                             }
                             else
                                 _serverController.SetMessagesFromClient(sb.ToString());

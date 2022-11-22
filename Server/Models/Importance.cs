@@ -1,15 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Server.Models;
-
-public partial class Importance
+namespace Server.Models
 {
-    public int Id { get; set; }
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
-    public int DescriptionId { get; set; }
+    public partial class Importance
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Importance()
+        {
+            ProjectTasks = new HashSet<ProjectTask>();
+        }
 
-    public virtual Description Description { get; set; } = null!;
+        public int Id { get; set; }
 
-    public virtual ICollection<Task> Tasks { get; } = new List<Task>();
+        public int DescriptionId { get; set; }
+
+        public virtual Description Description { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProjectTask> ProjectTasks { get; set; }
+    }
 }

@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
-using Server.Controllers;
 using Server.Models;
-using Image = Server.Models.Image;
+using System;
+using System.Collections.Generic;
 
 namespace Server.ServerModels
 {
     [Serializable]
-    public class User : IJson
+    public class User 
     {
         public int Id { get; set; }
         #region Person Info
@@ -59,12 +59,12 @@ namespace Server.ServerModels
             Full_Adress = fullAdress;
         }
 
-        public void FillPhoneNumbers(IEnumerable<PhoneNumber> numbers)
+        public void FillPhoneNumbers(IEnumerable<Phone_Numbers> numbers)
         {
             PhoneNumbers = new List<UserPhoneNumber>();
             foreach (var item in numbers)
             {
-                PhoneNumbers.Add(new UserPhoneNumber() { PhoneNumber = item.PhoneNumber1 });
+                PhoneNumbers.Add(new UserPhoneNumber() { PhoneNumber = item.Phone_Number });
             }
         }
         public void FillEmails(IEnumerable<Email> emails)
@@ -99,17 +99,13 @@ namespace Server.ServerModels
             Task.ToComplete = toComplete;
         }
 
-        public void FillUserProject(int id, string title, string description, IEnumerable<Image> images)
+        public void FillUserProject(int id, string title, string description)
         {
             Project = new UserProject();
             Project.Id = id;
             Project.Title = title;
             Project.Description = description;
             Project.Images = new List<string>();
-            foreach (var item in images)
-            {
-                Project.Images.Add(item.Path);
-            }
         }
 
         public void FillLoginData(string login, string password)

@@ -1,19 +1,41 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Server.Models;
-
-public partial class Adress
+namespace Server.Models
 {
-    public int Id { get; set; }
-    [StringLength(90, MinimumLength = 5)]
-    public string Country { get; set; } = null!;
-    [StringLength(90, MinimumLength = 5)]
-    public string City { get; set; } = null!;
-    [StringLength(90, MinimumLength = 7)]
-    public string Street { get; set; } = null!;
-    [StringLength(10, MinimumLength = 1)]
-    public string HouseNumber { get; set; } = null!;
-    public string? FullAdress { get; set; }
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
-    public virtual Person? Person { get; set; }
+    public partial class Adress
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Adress()
+        {
+            Persons = new HashSet<Person>();
+        }
+
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(90)]
+        public string Country { get; set; }
+
+        [Required]
+        [StringLength(90)]
+        public string City { get; set; }
+
+        [Required]
+        [StringLength(90)]
+        public string Street { get; set; }
+
+        [Required]
+        [StringLength(10)]
+        public string House_Number { get; set; }
+
+        [StringLength(250)]
+        public string Full_Adress { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Person> Persons { get; set; }
+    }
 }

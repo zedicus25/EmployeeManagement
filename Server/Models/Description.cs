@@ -1,23 +1,47 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Server.Models;
-
-public partial class Description
+namespace Server.Models
 {
-    public int Id { get; set; }
-    [StringLength(100, MinimumLength = 5)]
-    public string Title { get; set; } = null!;
-    [DataType(DataType.MultilineText)]
-    [StringLength(2500, MinimumLength = 10)]
-    public string Description1 { get; set; } = null!;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
-    public virtual EmployeesRole? EmployeesRole { get; set; }
+    public partial class Description
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Description()
+        {
+            EmployeesRoles = new HashSet<EmployeesRole>();
+            Importances = new HashSet<Importance>();
+            Projects = new HashSet<Project>();
+            TaskConditions = new HashSet<TaskCondition>();
+            ProjectTasks = new HashSet<ProjectTask>();
+        }
 
-    public virtual Importance? Importance { get; set; }
+        public int Id { get; set; }
 
-    public virtual Project? Project { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string Title { get; set; }
 
-    public virtual Task? Task { get; set; }
+        [Column("Description")]
+        [Required]
+        [StringLength(2500)]
+        public string Description1 { get; set; }
 
-    public virtual TaskCondition? TaskCondition { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmployeesRole> EmployeesRoles { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Importance> Importances { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Project> Projects { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TaskCondition> TaskConditions { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProjectTask> ProjectTasks { get; set; }
+    }
 }

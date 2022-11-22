@@ -1,26 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Server.Models;
-
-public partial class Person
+namespace Server.Models
 {
-    public int Id { get; set; }
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
-    public int FioId { get; set; }
+    [Table("Persons")]
+    public partial class Person
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Person()
+        {
+            Emails = new HashSet<Email>();
+            Employees = new HashSet<Employee>();
+            Phone_Numbers = new HashSet<Phone_Numbers>();
+        }
 
-    public int AdressId { get; set; }
-    [DataType(DataType.Date)]
-    public DateTime Birthday { get; set; }
+        public int Id { get; set; }
 
-    public virtual Adress Adress { get; set; } = null!;
+        public int FIO_Id { get; set; }
 
-    public virtual ICollection<Email> Emails { get; } = new List<Email>();
+        public int Adress_Id { get; set; }
 
-    public virtual Employee? Employee { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime Birthday { get; set; }
 
-    public virtual Fio Fio { get; set; } = null!;
+        public virtual Adress Adress { get; set; }
 
-    public virtual ICollection<PhoneNumber> PhoneNumbers { get; } = new List<PhoneNumber>();
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Email> Emails { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Employee> Employees { get; set; }
+
+        public virtual FIO FIO { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Phone_Numbers> Phone_Numbers { get; set; }
+    }
 }

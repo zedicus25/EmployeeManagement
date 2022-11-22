@@ -1,14 +1,16 @@
-﻿namespace Server.View
+﻿using System.Windows.Forms;
+
+namespace Server
 {
     partial class MainForm
     {
         /// <summary>
-        ///  Required designer variable.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        ///  Clean up any resources being used.
+        /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -23,8 +25,8 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -35,20 +37,20 @@
             // 
             // logRTB
             // 
-            this.logRTB.Location = new System.Drawing.Point(12, 12);
+            this.logRTB.Location = new System.Drawing.Point(10, 10);
             this.logRTB.Name = "logRTB";
             this.logRTB.ReadOnly = true;
             this.logRTB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.logRTB.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.logRTB.Size = new System.Drawing.Size(776, 323);
+            this.logRTB.Size = new System.Drawing.Size(666, 280);
             this.logRTB.TabIndex = 0;
             this.logRTB.Text = "";
             // 
             // startBtn
             // 
-            this.startBtn.Location = new System.Drawing.Point(12, 353);
+            this.startBtn.Location = new System.Drawing.Point(10, 306);
             this.startBtn.Name = "startBtn";
-            this.startBtn.Size = new System.Drawing.Size(85, 85);
+            this.startBtn.Size = new System.Drawing.Size(73, 74);
             this.startBtn.TabIndex = 1;
             this.startBtn.Text = "Start";
             this.startBtn.UseVisualStyleBackColor = true;
@@ -56,9 +58,9 @@
             // 
             // stopBtn
             // 
-            this.stopBtn.Location = new System.Drawing.Point(113, 353);
+            this.stopBtn.Location = new System.Drawing.Point(97, 306);
             this.stopBtn.Name = "stopBtn";
-            this.stopBtn.Size = new System.Drawing.Size(85, 85);
+            this.stopBtn.Size = new System.Drawing.Size(73, 74);
             this.stopBtn.TabIndex = 2;
             this.stopBtn.Text = "Stop";
             this.stopBtn.UseVisualStyleBackColor = true;
@@ -66,9 +68,9 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(686, 390);
             this.Controls.Add(this.stopBtn);
             this.Controls.Add(this.startBtn);
             this.Controls.Add(this.logRTB);
@@ -85,3 +87,4 @@
         private Button stopBtn;
     }
 }
+

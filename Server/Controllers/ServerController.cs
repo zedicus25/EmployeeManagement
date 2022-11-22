@@ -1,14 +1,14 @@
-﻿using System.Net.Sockets;
+﻿using Newtonsoft.Json;
+using Server.Models;
+using Server.ServerModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Sockets;
 using System.Net;
 using System.Text;
-using Task = System.Threading.Tasks.Task;
-using Server.ServerModels;
-using Server.Models;
+using System.Threading;
 using System.Threading.Tasks;
-using System;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace Server.Controllers
 {
@@ -21,13 +21,13 @@ namespace Server.Controllers
         private CancellationTokenSource _tokenSource;
         private Task _listenTask;
         private bool _isEnabled;
-        private EmployeeManagementContext _dbContext;
+        private EmployeeManagement _dbContext;
         private UserTaskController _userTaskController;
 
         public ServerController(int port = 8008)
         {
             _isEnabled = false;
-            
+
             _clients = new List<ServerClient>();
             PORT = port;
         }
@@ -38,9 +38,9 @@ namespace Server.Controllers
                 return;
             _isEnabled = true;
             _tokenSource = new CancellationTokenSource();
-            _listenTask = new Task(Listen, _tokenSource.Token);
+            _listenTask = new System.Threading.Tasks.Task(Listen, _tokenSource.Token);
             _listenTask.Start();
-            _dbContext = new EmployeeManagementContext();
+            _dbContext = new EmployeeManagement();
             _userTaskController = new UserTaskController(_dbContext);
         }
 
@@ -123,7 +123,7 @@ namespace Server.Controllers
                 string login = datas[1].Substring(datas[1].IndexOf('=') + 1).Trim();
                 string password = datas[2].Substring(datas[2].IndexOf('=') + 1).Trim();
 
-                LoginDatum loginData = _dbContext.LoginData
+                LoginData loginData = _dbContext.LoginDatas
                     .FirstOrDefault(x => x.Password.Equals(password) && x.Login.Equals(login));
 
                 if (loginData == null)
@@ -131,28 +131,28 @@ namespace Server.Controllers
                     SendMessageToClient(datas[0].Substring(datas[0].IndexOf('=') + 1), "loginigResult=false\n");
                     return;
                 }
-                Employee employee = _dbContext.Employees.FirstOrDefault(x => x.LoginDataId.Equals(loginData.Id));
-                Person person = _dbContext.Persons.FirstOrDefault(x => x.Id.Equals(employee.PersonId));
-                IEnumerable<Email> emails = _dbContext.Emails.Where(x => x.PersonId.Equals(person.Id));
-                IEnumerable<PhoneNumber> phoneNumbers = _dbContext.PhoneNumbers.Where(x => x.PersonId.Equals(person.Id));
-                Fio fio = _dbContext.Fios.FirstOrDefault(x => x.Id.Equals(person.FioId));
-                Adress adress = _dbContext.Adresses.FirstOrDefault(x => x.Id.Equals(person.Id));
-                EmployeesRole employeeRole = _dbContext.EmployeesRoles.FirstOrDefault(x => x.Id.Equals(employee.RoleId));
-                UsersRole userRole = _dbContext.UsersRoles.FirstOrDefault(x => x.Id.Equals(employeeRole.UserRoleId));
-                Description employeeDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(employeeRole.DescriptionId));
-                Models.Task task = _dbContext.Tasks.FirstOrDefault(x => x.Id.Equals(employee.TaskId));
-                Description taskDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(task.DescriptionId));
-                TaskCondition taskCondition = _dbContext.TaskConditions.FirstOrDefault(x => x.Id.Equals(task.TaskConditionId));
-                Description conditionDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(taskCondition.DescriptionId));
-                Importance taskImportance = _dbContext.Importances.FirstOrDefault(x => x.Id.Equals(task.ImportanceId));
-                Description importanceDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(taskImportance.DescriptionId));
-                Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id.Equals(task.TermId));
-                Project project = _dbContext.Projects.FirstOrDefault(x => x.Id.Equals(task.ProjectId));
-                Description projectDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id.Equals(project.DescriptionId));
+                Employee employee = _dbContext.Employees.FirstOrDefault(x => x.LoginDataId == loginData.Id);
+                Person person = _dbContext.Persons.FirstOrDefault(x => x.Id == employee.PersonId);
+                IEnumerable<Email> emails = _dbContext.Emails.Where(x => x.PersonId == person.Id);
+                IEnumerable<Phone_Numbers> phoneNumbers = _dbContext.Phone_Numbers.Where(x => x.PersonId == person.Id);
+                FIO fio = _dbContext.FIOs.FirstOrDefault(x => x.Id == person.FIO_Id);
+                Adress adress = _dbContext.Adresses.FirstOrDefault(x => x.Id == person.Id);
+                EmployeesRole employeeRole = _dbContext.EmployeesRoles.FirstOrDefault(x => x.Id == employee.RoleId);
+                UsersRole userRole = _dbContext.UsersRoles.FirstOrDefault(x => x.Id == employeeRole.UserRoleId);
+                Description employeeDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == employeeRole.DescriptionId);
+                ProjectTask task = _dbContext.ProjectTasks.FirstOrDefault(x => x.Id == employee.TaskId);
+                Description taskDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == task.DescriptionId);
+                TaskCondition taskCondition = _dbContext.TaskConditions.FirstOrDefault(x => x.Id == task.TaskConditionId);
+                Description conditionDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == taskCondition.Description_Id);
+                Importance taskImportance = _dbContext.Importances.FirstOrDefault(x => x.Id == task.ImportanceId);
+                Description importanceDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == taskImportance.DescriptionId);
+                Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id == task.TermId);
+                Project project = _dbContext.Projects.FirstOrDefault(x => x.Id == task.ProjectId);
+                Description projectDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == project.Description_Id);
 
                 User userData = new User();
-                userData.FillFio(employee.Id,fio.FirstName, fio.LastName, fio.Patronymic, person.Birthday);
-                userData.FillAddress(adress.Country, adress.City, adress.Street, adress.HouseNumber, adress.FullAdress);
+                userData.FillFio(employee.Id, fio.First_Name, fio.Last_Name, fio.Patronymic, person.Birthday);
+                userData.FillAddress(adress.Country, adress.City, adress.Street, adress.House_Number, adress.Full_Adress);
                 userData.FillPhoneNumbers(phoneNumbers);
                 userData.FillEmails(emails);
                 userData.FillRoleInfo(userRole.Id, userRole.Name, employeeDesc.Title, employeeDesc.Description1);
@@ -160,7 +160,7 @@ namespace Server.Controllers
                 userData.FillUserTask(task.Id, taskDesc.Title, taskDesc.Description1, taskCondition.Id, conditionDesc.Title,
                     taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete);
 
-                userData.FillUserProject(project.Id, projectDesc.Title, projectDesc.Description1, project.Images);
+                userData.FillUserProject(project.Id, projectDesc.Title, projectDesc.Description1);
 
                 userData.FillLoginData(loginData.Login, loginData.Password);
 
@@ -192,9 +192,9 @@ namespace Server.Controllers
             SendMessageToClient(client, sb.ToString());
         }
 
-        public void GiveTaskToUser(int userId,int taskId)
+        public void GiveTaskToUser(int userId, int taskId)
         {
-            _userTaskController.SetTaskCondition(userId,taskId, 3);
+            _userTaskController.SetTaskCondition(userId, taskId, 3);
         }
 
         public void SendTask(string id, int userId)
@@ -207,3 +207,4 @@ namespace Server.Controllers
         }
     }
 }
+

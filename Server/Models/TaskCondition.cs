@@ -1,15 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Server.Models;
-
-public partial class TaskCondition
+namespace Server.Models
 {
-    public int Id { get; set; }
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
-    public int? DescriptionId { get; set; }
+    public partial class TaskCondition
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TaskCondition()
+        {
+            ProjectTasks = new HashSet<ProjectTask>();
+        }
 
-    public virtual Description? Description { get; set; }
+        public int Id { get; set; }
 
-    public virtual ICollection<Task> Tasks { get; } = new List<Task>();
+        public int? Description_Id { get; set; }
+
+        public virtual Description Description { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProjectTask> ProjectTasks { get; set; }
+    }
 }

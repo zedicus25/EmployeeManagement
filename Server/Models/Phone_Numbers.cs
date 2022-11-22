@@ -6,16 +6,15 @@ namespace Server.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Email
+    public partial class Phone_Numbers
     {
         public int Id { get; set; }
 
         public int PersonId { get; set; }
 
-        [Column("Email")]
         [Required]
-        [StringLength(30)]
-        public string Email1 { get; set; }
+        [StringLength(15)]
+        public string Phone_Number { get; set; }
 
         public virtual Person Person { get; set; }
     }

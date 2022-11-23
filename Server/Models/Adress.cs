@@ -17,19 +17,19 @@ namespace Server.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(90)]
+        [StringLength(90, MinimumLength = 5)]
         public string Country { get; set; }
 
         [Required]
-        [StringLength(90)]
+        [StringLength(90, MinimumLength = 5)]
         public string City { get; set; }
 
         [Required]
-        [StringLength(90)]
+        [StringLength(90, MinimumLength = 5)]
         public string Street { get; set; }
 
         [Required]
-        [StringLength(10)]
+        [StringLength(10, MinimumLength = 1)]
         public string House_Number { get; set; }
 
         [StringLength(250)]

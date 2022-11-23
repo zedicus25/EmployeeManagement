@@ -19,6 +19,7 @@ namespace Server.Models
         public int LoginDataId { get; set; }
 
         [Column(TypeName = "money")]
+        [DataType(DataType.Currency)]
         public decimal Salary { get; set; }
 
         [StringLength(110)]

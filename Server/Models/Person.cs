@@ -24,6 +24,7 @@ namespace Server.Models
         public int Adress_Id { get; set; }
 
         [Column(TypeName = "date")]
+        [DataType(DataType.Date)]
         public DateTime Birthday { get; set; }
 
         public virtual Adress Adress { get; set; }

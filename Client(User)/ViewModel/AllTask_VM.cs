@@ -28,7 +28,8 @@ namespace EmployeeManagement.ViewModel
                         return;
 
                     MainViewModel.GetInstance().ServerClient.GetTaskFromAll(_selectedTask.Id);
-                    MainViewModel.GetInstance().GetAllTasks();
+                    Tasks.Remove(SelectedTask);
+                    SelectedTask = null;
                 }));
             }
         }
@@ -50,12 +51,32 @@ namespace EmployeeManagement.ViewModel
         private RelayCommand _getTaskCommand;
         public AllTask_VM()
         {
+            Tasks = new ObservableCollection<UserTask>();
             MainViewModel.GetInstance().ServerClient.AllTasks += GetTasks;
         }
 
         private void GetTasks(List<UserTask> tasks)
         {
-            _tasks = new ObservableCollection<UserTask>(tasks);
+            if (Tasks.Count <= 0)
+            {
+                FillTasks(tasks);
+                return;
+            }
+
+            foreach (var newTask in tasks)
+            {
+                foreach (var oldTask in Tasks)
+                {
+                    if (newTask.Id == oldTask.Id)
+                        continue;
+                    Tasks.Add(newTask);
+                }
+            }
+        }
+
+        private void FillTasks(List<UserTask> tasks)
+        {
+            Tasks = new ObservableCollection<UserTask>(tasks);
             OnPropertyChanged("Tasks");
         }
 

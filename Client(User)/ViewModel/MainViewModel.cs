@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Model;
 using EmployeeManagement.Utilities;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -46,16 +47,18 @@ namespace EmployeeManagement.ViewModel
         private Task _listenAllTask;
 		private Task _listemMyTask;
         private CancellationTokenSource _tokenSourceListenTasks;
+		private TimeSpan _querryDelay;
 
 
         private MainViewModel()
 		{
+			_querryDelay = new TimeSpan(0, 5, 0);
 			ServerClient = new ServerClient();
 			SelectedViewModel = new LoginWindow_VM();
 			_tokenSourceListenTasks = new CancellationTokenSource();
             _listenAllTask = new Task(SendAllTasksQuerry, _tokenSourceListenTasks.Token);
 			_listemMyTask = new Task(SendMyTasksQuerry, _tokenSourceListenTasks.Token);
-            //_listenAllTask.Start();
+            _listenAllTask.Start();
 			//_listemMyTask.Start();
         }
 
@@ -78,7 +81,7 @@ namespace EmployeeManagement.ViewModel
             while (_tokenSourceListenTasks.Token.IsCancellationRequested == false)
             {
                 ServerClient.GetAllTasks();
-				await Task.Delay(5000);
+				await Task.Delay(_querryDelay);
             }
         }
 
@@ -86,7 +89,7 @@ namespace EmployeeManagement.ViewModel
 		{
 			while (_tokenSourceListenTasks.Token.IsCancellationRequested == false)
 			{
-				await Task.Delay(5000);
+				await Task.Delay(_querryDelay);
 			}
 		}
 

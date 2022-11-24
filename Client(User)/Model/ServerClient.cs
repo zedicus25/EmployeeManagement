@@ -15,6 +15,7 @@ namespace EmployeeManagement.Model
         public event Action<string> GetServerMessage;
         public event Action<bool, User> LoginingResult;
         public event Action<List<UserTask>> AllTasks;
+        public event Action<UserTask> MyTask;
 
         public string IdOnServer { get; private set; }
 
@@ -77,13 +78,13 @@ namespace EmployeeManagement.Model
             _stringBuilder.Clear();
         }
 
-        public void GetMyTasks()
+        public void GetMyTask()
         {
             if (MainViewModel.GetInstance().User == null)
                 return;
-            _stringBuilder.AppendLine("--getMyTasks\n");
-            _stringBuilder.AppendLine($"id={IdOnServer}\n");
-            _stringBuilder.AppendLine($"userDataBaseId={MainViewModel.GetInstance().User.Id}\n");
+            _stringBuilder.Append("--getMyTask\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            _stringBuilder.Append($"userDataBaseId={MainViewModel.GetInstance().User.Id}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }
@@ -142,6 +143,10 @@ namespace EmployeeManagement.Model
                         else if (msg.Contains("allTasks="))
                         {
                             AllTasks?.Invoke(Parser.GetInstance().GetTasks(msg.Substring(msg.IndexOf('=') + 1)));
+                        }
+                        else if (msg.Contains("myTask="))
+                        {
+                            MyTask?.Invoke(Parser.GetInstance().GetTask(msg.Substring(msg.IndexOf('=') + 1)));
                         }
                         else
                         {

@@ -25,7 +25,7 @@ namespace EmployeeManagement.ViewModel
                     if (_baseVM is AllTask_VM)
                         return;
                     SetCurrentVM(_allVMs[0]);
-                    //MainViewModel.GetInstance().GetAllTasks();
+                    MainViewModel.GetInstance().GetAllTasks();
                 }));
             }
         }
@@ -39,6 +39,7 @@ namespace EmployeeManagement.ViewModel
                     if (_baseVM is MyTasks_VM)
                         return;
                     SetCurrentVM(_allVMs[1]);
+                    MainViewModel.GetInstance().GetMyTask();
                 }));
             }
         }

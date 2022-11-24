@@ -7,6 +7,56 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label>ITS MY TASKS CONTROL</Label>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        
+
+        <StackPanel VerticalAlignment="Center" Grid.Column="0" Grid.Row="2">
+            <TextBlock Margin="10 5" FontSize="15" Style="{StaticResource MaterialDesignBody2TextBlock}" >Commit name:</TextBlock>
+            <TextBox Margin="10 5" FontSize="15" />
+            <Button Margin="10 20" Grid.Column="0" Grid.Row="2"
+            Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
+            ToolTip="Submit task" Content="Submit task"/>
+        </StackPanel>
+        <TextBlock Margin="10 5" Grid.Row="2" Grid.Column="1" FontSize="15" Style="{StaticResource MaterialDesignBody2TextBlock}" 
+                   VerticalAlignment="Top">Description:</TextBlock>
+        <TextBox Margin="10 40 10 25" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" 
+                 TextWrapping="Wrap"
+                 VerticalAlignment="Stretch"
+                 MinWidth="280"
+                 AcceptsReturn="True"
+                 VerticalScrollBarVisibility="Auto"/>
+
+        <StackPanel Margin="10" Grid.RowSpan="2" Grid.ColumnSpan="3">
+            <TextBlock  Padding="5 25"
+                FontSize="30" 
+                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                Text="{Binding MyTask.Title}">
+            </TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Padding="5" FontSize="13" Style="{StaticResource MaterialDesignSubtitle2TextBlock}">To complete:</TextBlock>
+                <TextBlock  Padding="5" FontSize="13" 
+                           Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                           Text="{Binding MyTask.ToComplete}">
+                </TextBlock>
+            </StackPanel>
+            <TextBlock Padding="5" FontSize="19"
+                       Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                       Text="{Binding MyTask.ImportanceName}"></TextBlock>
+            <TextBlock Padding="5"
+                FontSize="20" TextWrapping="Wrap"
+                Style="{StaticResource MaterialDesignBody2TextBlock}"
+                Text="{Binding MyTask.Description}">
+            </TextBlock>
+        </StackPanel>
     </Grid>
 </UserControl>

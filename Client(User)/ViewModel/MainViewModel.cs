@@ -71,6 +71,9 @@ namespace EmployeeManagement.ViewModel
 
 		public void GetMyTask() => ServerClient.GetMyTask();
 
+		public void SubmitTask(int taskId, string branchName, string message) => 
+			ServerClient.SubmitTask(taskId, branchName, message); 
+
 
 		private async void SendAllTasksQuerry()
 		{

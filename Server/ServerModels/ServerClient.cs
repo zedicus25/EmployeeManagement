@@ -88,6 +88,12 @@ namespace Server.ServerModels
                                 _serverController.SendTask(strs[1].Substring(strs[1].IndexOf('=') + 1),
                                      Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
                             }
+                            else if(msg.Contains("--submitTask") && msg.Contains("id=") && msg.Contains("userDataBaseId="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SubmitTask(Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)),
+                                    Convert.ToInt32(strs[3].Substring(strs[3].IndexOf('=') + 1)));
+                            }
                             else
                                 _serverController.SetMessagesFromClient(sb.ToString());
                             sb.Clear();

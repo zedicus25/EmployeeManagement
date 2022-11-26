@@ -101,10 +101,8 @@ namespace Server.Controllers
             _isEnabled = false;
         }
 
-        public void SetMessagesFromClient(string msg)
-        {
-            StateUpdating?.Invoke(msg);
-        }
+        public void SetMessagesFromClient(string msg) => StateUpdating?.Invoke(msg);
+
 
         public void CheckUserLoginPasswordData(string data)
         {
@@ -192,10 +190,9 @@ namespace Server.Controllers
             SendMessageToClient(client, sb.ToString());
         }
 
-        public void GiveTaskToUser(int userId, int taskId)
-        {
+        public void GiveTaskToUser(int userId, int taskId) => 
             _userTaskController.SetTaskCondition(userId, taskId, 3);
-        }
+
 
         public void SendTask(string id, int userId)
         {
@@ -205,6 +202,10 @@ namespace Server.Controllers
             sb.Append(JsonConvert.SerializeObject(task));
             SendMessageToClient(id, sb.ToString());
         }
+
+        public void SubmitTask(int userId, int taskId) =>
+            _userTaskController.SetTaskCondition(userId, taskId, 1);
+
     }
 }
 

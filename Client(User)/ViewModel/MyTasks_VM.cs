@@ -21,16 +21,45 @@ namespace EmployeeManagement.ViewModel
         }
 
         
+        public string BranchName
+        {
+            get => _branchName;
+            set
+            {
+                _branchName = value;
+                OnPropertyChanged("BranchName");
+            }
+        }
+
+        public string Message
+        {
+            get => _message;
+            set
+            {
+                _message = value;
+                OnPropertyChanged("Message");
+            }
+        }
+
         public RelayCommand SubmitTask
         {
             get
             {
                 return _submitTaskCommand ?? (_submitTaskCommand = new RelayCommand(() =>
                 {
-                    
+                    if (BranchName.Equals(String.Empty) || Message.Equals(String.Empty))
+                        return;
+
+                    MainViewModel.GetInstance().SubmitTask(MyTask.Id, BranchName, Message);
+                    Message = String.Empty;
+                    BranchName = String.Empty;
+                    MyTask = null;
                 }));
             }
         }
+
+        private string _branchName;
+        private string _message;
 
         private RelayCommand _submitTaskCommand;
         
@@ -39,6 +68,8 @@ namespace EmployeeManagement.ViewModel
         public MyTasks_VM()
         {
             MyTask = new UserTask();
+            Message = String.Empty;
+            BranchName = String.Empty;
             MainViewModel.GetInstance().ServerClient.MyTask += SetUserTask;
         }
 

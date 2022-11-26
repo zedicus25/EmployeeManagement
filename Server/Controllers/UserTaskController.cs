@@ -22,7 +22,7 @@ namespace Server.Controllers
                 return new List<UserTask>();
 
             List<ProjectTask> models = _dbContext.ProjectTasks
-                .Where(x => x.ProjectId == projectId && x.TaskConditionId != 3).ToList();
+                .Where(x => x.ProjectId == projectId && x.TaskConditionId != 3 && x.TaskConditionId != 1).ToList();
 
             List<UserTask> tasks = new List<UserTask>();
 
@@ -46,9 +46,13 @@ namespace Server.Controllers
         {
             if (_dbContext == null)
                 return;
-
+            
             _dbContext.Employees.FirstOrDefault(x => x.Id == userId).TaskId = taskId;
             _dbContext.ProjectTasks.FirstOrDefault(x => x.Id == taskId).TaskConditionId = conditionId;
+            if (conditionId == 1)
+            {
+                _dbContext.Employees.FirstOrDefault(x => x.Id == userId).TaskId = null;
+            }
             _dbContext.SaveChanges();
         }
 
@@ -58,6 +62,8 @@ namespace Server.Controllers
                 return new UserTask();
 
             Employee employee = _dbContext.Employees.FirstOrDefault(x => x.Id == userId);
+            if (employee.TaskId == null)
+                return new UserTask();
             ProjectTask item = _dbContext.ProjectTasks.FirstOrDefault(x => x.Id == employee.TaskId);
 
             Description taskDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == item.DescriptionId);

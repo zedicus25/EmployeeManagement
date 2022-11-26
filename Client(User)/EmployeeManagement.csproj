@@ -84,10 +84,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="CustomControls\AboutProject.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="CustomControls\Account.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -115,9 +111,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CustomControls\AboutProject.xaml.cs">
-      <DependentUpon>AboutProject.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\Account.xaml.cs">
       <DependentUpon>Account.xaml</DependentUpon>
@@ -149,7 +142,6 @@
     <Compile Include="ViewModel\LoginWindow_VM.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MyTasks_VM.cs" />
-    <Compile Include="ViewModel\Project_VM.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

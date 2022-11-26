@@ -95,7 +95,6 @@ namespace EmployeeManagement.ViewModel
             _allVMs.Add(new AllTask_VM());
             _allVMs.Add(new MyTasks_VM());
             _allVMs.Add(new Account_VM());
-            _allVMs.Add(new Project_VM());
             _cancellationToken.Cancel();
         }
 

@@ -89,6 +89,19 @@ namespace EmployeeManagement.Model
             _stringBuilder.Clear();
         }
 
+        public void SubmitTask(int taskId,string branchName, string message)
+        {
+            if (MainViewModel.GetInstance().User == null)
+                return;
+            _stringBuilder.Append("--submitTask\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            _stringBuilder.Append($"userDataBaseId={MainViewModel.GetInstance().User.Id}\n");
+            _stringBuilder.Append($"taskId={taskId}\n");
+            _stringBuilder.Append($"branchName={branchName}\n");
+            _stringBuilder.Append($"message={message}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
         private void TryConnect()
         {
             try

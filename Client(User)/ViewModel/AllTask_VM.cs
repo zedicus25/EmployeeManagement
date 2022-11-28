@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace EmployeeManagement.ViewModel
 {
@@ -63,15 +64,7 @@ namespace EmployeeManagement.ViewModel
                 return;
             }
 
-            foreach (var newTask in tasks)
-            {
-                foreach (var oldTask in Tasks)
-                {
-                    if (newTask.Id == oldTask.Id)
-                        continue;
-                    Tasks.Add(newTask);
-                }
-            }
+            Tasks.Union(tasks);
         }
 
         private void FillTasks(List<UserTask> tasks)

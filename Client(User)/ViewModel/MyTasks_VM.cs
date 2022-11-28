@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using EmployeeManagement.Model;
 using GalaSoft.MvvmLight.Command;
 
@@ -17,8 +18,17 @@ namespace EmployeeManagement.ViewModel
                 OnPropertyChanged("MyTasks");
             }
         }
+        public UserTask SelectedTask
+        {
+            get => _selectedTask;
+            set
+            {
+                _selectedTask = value;
+                OnPropertyChanged("SelectedTask");
+            }
+        }
 
-        
+
         public string BranchName
         {
             get => _branchName;
@@ -58,6 +68,7 @@ namespace EmployeeManagement.ViewModel
 
         private string _branchName;
         private string _message;
+        private UserTask _selectedTask;
 
         private RelayCommand _submitTaskCommand;
         
@@ -79,18 +90,10 @@ namespace EmployeeManagement.ViewModel
                 return;
             }
 
-            foreach (var newTask in tasks)
-            {
-                foreach (var oldTask in MyTasks)
-                {
-                    if (newTask.Id == oldTask.Id)
-                        continue;
-                    MyTasks.Add(newTask);
-                }
-            }
+            MyTasks.Union(tasks);
         }
 
-        private void FillTasks(List<UserTask> tasks)
+        private void FillTasks(IEnumerable<UserTask> tasks)
         {
             MyTasks = new ObservableCollection<UserTask>(tasks);
             OnPropertyChanged("MyTasks");

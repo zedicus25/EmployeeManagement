@@ -55,13 +55,13 @@ namespace EmployeeManagement.ViewModel
             {
                 return _submitTaskCommand ?? (_submitTaskCommand = new RelayCommand(() =>
                 {
-                    if (BranchName.Equals(String.Empty) || Message.Equals(String.Empty))
+                    if (BranchName.Equals(String.Empty) || Message.Equals(String.Empty) || SelectedTask == null)
                         return;
 
-                    /*MainViewModel.GetInstance().SubmitTask(MyTask.Id, BranchName, Message);
+                    MainViewModel.GetInstance().SubmitTask(SelectedTask.Id, BranchName, Message);
                     Message = String.Empty;
                     BranchName = String.Empty;
-                    MyTask = null;*/
+                    MyTasks.Remove(SelectedTask);
                 }));
             }
         }

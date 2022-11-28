@@ -16,11 +16,11 @@ namespace Server.Models
 
         public int Id { get; set; }
 
-        public int? Description_Id { get; set; }
-
-        public virtual Description Description { get; set; }
+        public int? DescriptionId { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectTask> ProjectTasks { get; set; }
+
+        public virtual TaskConditionDescription TaskConditionDescription { get; set; }
     }
 }

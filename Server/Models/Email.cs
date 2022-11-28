@@ -14,8 +14,7 @@ namespace Server.Models
 
         [Column("Email")]
         [Required]
-        [StringLength(30, MinimumLength = 10)]
-        [DataType(DataType.EmailAddress)]
+        [StringLength(30)]
         public string Email1 { get; set; }
 
         public virtual Person Person { get; set; }

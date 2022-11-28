@@ -144,34 +144,21 @@ namespace Server.Controllers
                 Adress adress = _dbContext.Adresses.FirstOrDefault(x => x.Id == person.Id);
                 EmployeesRole employeeRole = _dbContext.EmployeesRoles.FirstOrDefault(x => x.Id == employee.RoleId);
                 UsersRole userRole = _dbContext.UsersRoles.FirstOrDefault(x => x.Id == employeeRole.UserRoleId);
-                Description employeeDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == employeeRole.DescriptionId);
-                if(employee.ProjectTask != null)
-                {
-                    ProjectTask task = _dbContext.ProjectTasks.FirstOrDefault(x => x.Id == employee.TaskId);
-                    Description taskDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == task.DescriptionId);
-                    TaskCondition taskCondition = _dbContext.TaskConditions.FirstOrDefault(x => x.Id == task.TaskConditionId);
-                    Description conditionDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == taskCondition.Description_Id);
-                    Importance taskImportance = _dbContext.Importances.FirstOrDefault(x => x.Id == task.ImportanceId);
-                    Description importanceDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == taskImportance.DescriptionId);
-                    Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id == task.TermId);
-                    Project project = _dbContext.Projects.FirstOrDefault(x => x.Id == task.ProjectId);
-                    Description projectDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == project.Description_Id);
+                var employeeDesc = _dbContext.EmployeeRoleDescriptions.FirstOrDefault(x => x.Id == employeeRole.DescriptionId);
+                Project project = _dbContext.Projects.FirstOrDefault(x => x.Id == employee.ProjectId);
+                var projectDesc = _dbContext.ProjectDescriptions.FirstOrDefault(x => x.Id == project.DescriptionId);
+                userData.FillUserProject(project.Id, projectDesc.Title, projectDesc.Description);
 
-                    userData.FillUserTask(task.Id, taskDesc.Title, taskDesc.Description1, taskCondition.Id, conditionDesc.Title,
-                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete);
-
-                    userData.FillUserProject(project.Id, projectDesc.Title, projectDesc.Description1);
-                }
                 
                 userData.FillFio(employee.Id, fio.First_Name, fio.Last_Name, fio.Patronymic, person.Birthday);
                 userData.FillAddress(adress.Country, adress.City, adress.Street, adress.House_Number, adress.Full_Adress);
                 userData.FillPhoneNumbers(phoneNumbers);
                 userData.FillEmails(emails);
-                userData.FillRoleInfo(userRole.Id, userRole.Name, employeeDesc.Title, employeeDesc.Description1);
+                userData.FillRoleInfo(userRole.Id, userRole.Name, employeeDesc.Title, employeeDesc.Description);
 
                 userData.FillLoginData(loginData.Login, loginData.Password);
 
-                userData.FillEmployeeDate((float)employee.Salary, employee.Avatar);
+                userData.FillEmployeeDate((float)employee.Salary);
 
                 string user = userData.ToJson();
                 string res = $"loginigResult={true}\n{user}";
@@ -192,7 +179,7 @@ namespace Server.Controllers
 
         public void SendTasks(string client, int projectId)
         {
-            IEnumerable<UserTask> tasks = _userTaskController.GetUserTasks(projectId);
+            IEnumerable<UserTask> tasks = _userTaskController.GetAllProjectTasks(projectId);
             StringBuilder sb = new StringBuilder();
             sb.Append("allTasks=");
             sb.Append(JsonConvert.SerializeObject(tasks));
@@ -205,10 +192,10 @@ namespace Server.Controllers
 
         public void SendTask(string id, int userId)
         {
-            UserTask task = _userTaskController.GetUserTask(userId);
+            IEnumerable<UserTask> tasks = _userTaskController.GetUsersTask(userId);
             StringBuilder sb = new StringBuilder();
             sb.Append("myTask=");
-            sb.Append(JsonConvert.SerializeObject(task));
+            sb.Append(JsonConvert.SerializeObject(tasks));
             SendMessageToClient(id, sb.ToString());
         }
 

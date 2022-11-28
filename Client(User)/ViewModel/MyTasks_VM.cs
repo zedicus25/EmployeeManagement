@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using EmployeeManagement.Model;
 using GalaSoft.MvvmLight.Command;
 
@@ -10,13 +8,13 @@ namespace EmployeeManagement.ViewModel
 {
     public class MyTasks_VM : BaseVM
     {
-        public UserTask MyTask 
+        public ObservableCollection<UserTask> MyTasks
         {
-            get => _task;
+            get => _tasks;
             set 
             { 
-                _task = value;
-                OnPropertyChanged("MyTask");
+                _tasks = value;
+                OnPropertyChanged("MyTasks");
             }
         }
 
@@ -50,10 +48,10 @@ namespace EmployeeManagement.ViewModel
                     if (BranchName.Equals(String.Empty) || Message.Equals(String.Empty))
                         return;
 
-                    MainViewModel.GetInstance().SubmitTask(MyTask.Id, BranchName, Message);
+                    /*MainViewModel.GetInstance().SubmitTask(MyTask.Id, BranchName, Message);
                     Message = String.Empty;
                     BranchName = String.Empty;
-                    MyTask = null;
+                    MyTask = null;*/
                 }));
             }
         }
@@ -63,16 +61,39 @@ namespace EmployeeManagement.ViewModel
 
         private RelayCommand _submitTaskCommand;
         
-        private UserTask _task;
+        private ObservableCollection<UserTask> _tasks;
 
         public MyTasks_VM()
         {
-            MyTask = new UserTask();
+            MyTasks = new ObservableCollection<UserTask>();
             Message = String.Empty;
             BranchName = String.Empty;
-            MainViewModel.GetInstance().ServerClient.MyTask += SetUserTask;
+            MainViewModel.GetInstance().ServerClient.MyTask += SetUserTasks;
         }
 
-        private void SetUserTask(UserTask task) => MyTask = task;
+        private void SetUserTasks(List<UserTask> tasks)
+        {
+            if (MyTasks.Count <= 0)
+            {
+                FillTasks(tasks);
+                return;
+            }
+
+            foreach (var newTask in tasks)
+            {
+                foreach (var oldTask in MyTasks)
+                {
+                    if (newTask.Id == oldTask.Id)
+                        continue;
+                    MyTasks.Add(newTask);
+                }
+            }
+        }
+
+        private void FillTasks(List<UserTask> tasks)
+        {
+            MyTasks = new ObservableCollection<UserTask>(tasks);
+            OnPropertyChanged("MyTasks");
+        }
     }
 }

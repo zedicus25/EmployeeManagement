@@ -18,12 +18,11 @@ namespace Server.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(25, MinimumLength = 5)]
+        [StringLength(25)]
         public string Login { get; set; }
 
         [Required]
-        [DataType(DataType.Password)]
-        [StringLength(30, MinimumLength = 6)]
+        [StringLength(30)]
         public string Password { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

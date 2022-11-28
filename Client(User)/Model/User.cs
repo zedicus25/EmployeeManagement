@@ -181,15 +181,7 @@ namespace EmployeeManagement.Model
                 OnPropertyChanged("EmployeeRoleDescription");
             }
         }
-        public UserTask Task
-        {
-            get => _task;
-            set
-            {
-                _task = value;
-                OnPropertyChanged("Task");
-            }
-        }
+       
         public UserProject Project
         {
             get => _project;
@@ -208,15 +200,7 @@ namespace EmployeeManagement.Model
                 OnPropertyChanged("Salary");
             }
         }
-        public string Avatar
-        {
-            get => _avatar;
-            set
-            {
-                _avatar = value;
-                OnPropertyChanged("Avatar");
-            }
-        }
+       
        
 
         private string _login;
@@ -229,7 +213,6 @@ namespace EmployeeManagement.Model
         private string _country;
         private string _city;
         private string _adress;
-        private string _avatar;
         private string _houseNumber;
         private string _fullAdress;
         private List<UserEmail> _emails;
@@ -238,7 +221,6 @@ namespace EmployeeManagement.Model
         private string _userRoleName;
         private string _employeeRoleName;
         private string _employeeRoleDescription;
-        private UserTask _task;
         private UserProject _project;
         private int _id;
 

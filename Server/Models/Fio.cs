@@ -17,15 +17,15 @@ namespace Server.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(70, MinimumLength = 5)]
+        [StringLength(70)]
         public string First_Name { get; set; }
 
         [Required]
-        [StringLength(70, MinimumLength = 5)]
+        [StringLength(70)]
         public string Last_Name { get; set; }
 
         [Required]
-        [StringLength(70, MinimumLength = 5)]
+        [StringLength(70)]
         public string Patronymic { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

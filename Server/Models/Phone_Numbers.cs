@@ -13,7 +13,7 @@ namespace Server.Models
         public int PersonId { get; set; }
 
         [Required]
-        [StringLength(15, MinimumLength = 10)]
+        [StringLength(15)]
         public string Phone_Number { get; set; }
 
         public virtual Person Person { get; set; }

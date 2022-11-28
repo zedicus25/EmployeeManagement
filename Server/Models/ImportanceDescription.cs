@@ -6,25 +6,25 @@ namespace Server.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class EmployeesRole
+    public partial class ImportanceDescription
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public EmployeesRole()
+        public ImportanceDescription()
         {
-            Employees = new HashSet<Employee>();
+            Importances = new HashSet<Importance>();
         }
 
         public int Id { get; set; }
 
-        public int DescriptionId { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string Title { get; set; }
 
-        public int UserRoleId { get; set; }
-
-        public virtual EmployeeRoleDescription EmployeeRoleDescription { get; set; }
+        [Required]
+        [StringLength(1000)]
+        public string Description { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Employee> Employees { get; set; }
-
-        public virtual UsersRole UsersRole { get; set; }
+        public virtual ICollection<Importance> Importances { get; set; }
     }
 }

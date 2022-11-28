@@ -30,7 +30,6 @@ namespace Server.ServerModels
         public string EmployeeRoleDescription { get; set; }
         #endregion
 
-        public UserTask Task { get; set; }
         public UserProject Project { get; set; }
 
         #region LoginData
@@ -39,7 +38,6 @@ namespace Server.ServerModels
         #endregion
 
         public float Salary { get; set; }
-        public string Avatar { get; set; }
 
         public void FillFio(int id,string firstName, string lastName, string patronymic, DateTime birthday)
         {
@@ -84,20 +82,6 @@ namespace Server.ServerModels
             EmployeeRoleDescription = employeeRoleDescription;
         }
 
-        public void FillUserTask(int id, string title, string description, int conditionId, string conditionName, int importanceId,
-            string importanceName, DateTime creationDate, DateTime toComplete)
-        {
-            Task = new UserTask();
-            Task.Id = id;
-            Task.Title = title;
-            Task.Description = description;
-            Task.ConditionId = conditionId;
-            Task.ConditionName = conditionName;
-            Task.ImportanceId = importanceId;
-            Task.ImportanceName = importanceName;
-            Task.CreationDate = creationDate;
-            Task.ToComplete = toComplete;
-        }
 
         public void FillUserProject(int id, string title, string description)
         {
@@ -114,10 +98,9 @@ namespace Server.ServerModels
             Password = password;
         }
 
-        public void FillEmployeeDate(float salary, string avatar)
+        public void FillEmployeeDate(float salary)
         {
             Salary = salary;
-            Avatar = avatar;
         }
 
         public string ToJson()

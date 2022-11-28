@@ -15,7 +15,7 @@ namespace EmployeeManagement.Model
         public event Action<string> GetServerMessage;
         public event Action<bool, User> LoginingResult;
         public event Action<List<UserTask>> AllTasks;
-        public event Action<UserTask> MyTask;
+        public event Action<List<UserTask>> MyTask;
 
         public string IdOnServer { get; private set; }
 
@@ -165,7 +165,7 @@ namespace EmployeeManagement.Model
                         }
                         else if (msg.Contains("myTask="))
                         {
-                            MyTask?.Invoke(Parser.GetInstance().GetTask(msg.Substring(msg.IndexOf('=') + 1)));
+                            MyTask?.Invoke(Parser.GetInstance().GetTasks(msg.Substring(msg.IndexOf('=') + 1)));
                         }
                         else
                         {

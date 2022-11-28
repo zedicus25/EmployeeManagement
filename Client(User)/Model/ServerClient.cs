@@ -57,7 +57,7 @@ namespace EmployeeManagement.Model
         }
         public void GetAllTasks()
         {
-            if(MainViewModel.GetInstance().User == null)
+            if(MainViewModel.GetInstance().User == null || MainViewModel.GetInstance().User.Project == null)
                 return;
             _stringBuilder.Append("--getAllTasks\n");
             _stringBuilder.Append($"id={IdOnServer}\n");
@@ -70,6 +70,8 @@ namespace EmployeeManagement.Model
         {
             if (MainViewModel.GetInstance().User == null)
                 return;
+            if (_stringBuilder == null)
+                _stringBuilder = new StringBuilder();
             _stringBuilder.Append("--setMyTask\n");
             _stringBuilder.Append($"id={IdOnServer}\n");
             _stringBuilder.Append($"userDataBaseId={MainViewModel.GetInstance().User.Id}\n");
@@ -82,6 +84,8 @@ namespace EmployeeManagement.Model
         {
             if (MainViewModel.GetInstance().User == null)
                 return;
+            if (_stringBuilder == null)
+                _stringBuilder = new StringBuilder();
             _stringBuilder.Append("--getMyTask\n");
             _stringBuilder.Append($"id={IdOnServer}\n");
             _stringBuilder.Append($"userDataBaseId={MainViewModel.GetInstance().User.Id}\n");
@@ -93,6 +97,8 @@ namespace EmployeeManagement.Model
         {
             if (MainViewModel.GetInstance().User == null)
                 return;
+            if (_stringBuilder == null)
+                _stringBuilder = new StringBuilder();
             _stringBuilder.Append("--submitTask\n");
             _stringBuilder.Append($"id={IdOnServer}\n");
             _stringBuilder.Append($"userDataBaseId={MainViewModel.GetInstance().User.Id}\n");
@@ -177,7 +183,7 @@ namespace EmployeeManagement.Model
             }
         }
 
-        private void Disconnect()
+        public void Disconnect()
         {
             _tokenSource.Cancel();
             _tcpStream?.Close();

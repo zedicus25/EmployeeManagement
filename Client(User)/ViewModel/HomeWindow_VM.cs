@@ -62,7 +62,7 @@ namespace EmployeeManagement.ViewModel
             {
                 return _logOutCommand ?? (_logOutCommand = new RelayCommand(() =>
                 {
-                    //MainViewModel.GetInstance().LogOut();
+                    MainViewModel.GetInstance().LogOut();
                 }));
             }
         }

@@ -34,6 +34,7 @@ namespace EmployeeManagement.ViewModel
                     {
                         string msg = $"id={MainViewModel.GetInstance().ServerClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
                         MainViewModel.GetInstance().ServerClient.SendMessageToServer(msg);
+                        AddListeners();
                     }
                 }));
             }

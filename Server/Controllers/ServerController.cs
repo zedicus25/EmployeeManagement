@@ -82,8 +82,12 @@ namespace Server.Controllers
         public void RemoveConnection(string id)
         {
             ServerClient client = _clients.FirstOrDefault(c => c.Id.Equals(id));
+            
             if (client != null)
+            {
+                client.Close();
                 _clients.Remove(client);
+            }
         }
 
         public void StopServer()
@@ -129,6 +133,9 @@ namespace Server.Controllers
                     SendMessageToClient(datas[0].Substring(datas[0].IndexOf('=') + 1), "loginigResult=false\n");
                     return;
                 }
+
+                User userData = new User();
+
                 Employee employee = _dbContext.Employees.FirstOrDefault(x => x.LoginDataId == loginData.Id);
                 Person person = _dbContext.Persons.FirstOrDefault(x => x.Id == employee.PersonId);
                 IEnumerable<Email> emails = _dbContext.Emails.Where(x => x.PersonId == person.Id);
@@ -138,27 +145,29 @@ namespace Server.Controllers
                 EmployeesRole employeeRole = _dbContext.EmployeesRoles.FirstOrDefault(x => x.Id == employee.RoleId);
                 UsersRole userRole = _dbContext.UsersRoles.FirstOrDefault(x => x.Id == employeeRole.UserRoleId);
                 Description employeeDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == employeeRole.DescriptionId);
-                ProjectTask task = _dbContext.ProjectTasks.FirstOrDefault(x => x.Id == employee.TaskId);
-                Description taskDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == task.DescriptionId);
-                TaskCondition taskCondition = _dbContext.TaskConditions.FirstOrDefault(x => x.Id == task.TaskConditionId);
-                Description conditionDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == taskCondition.Description_Id);
-                Importance taskImportance = _dbContext.Importances.FirstOrDefault(x => x.Id == task.ImportanceId);
-                Description importanceDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == taskImportance.DescriptionId);
-                Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id == task.TermId);
-                Project project = _dbContext.Projects.FirstOrDefault(x => x.Id == task.ProjectId);
-                Description projectDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == project.Description_Id);
+                if(employee.ProjectTask != null)
+                {
+                    ProjectTask task = _dbContext.ProjectTasks.FirstOrDefault(x => x.Id == employee.TaskId);
+                    Description taskDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == task.DescriptionId);
+                    TaskCondition taskCondition = _dbContext.TaskConditions.FirstOrDefault(x => x.Id == task.TaskConditionId);
+                    Description conditionDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == taskCondition.Description_Id);
+                    Importance taskImportance = _dbContext.Importances.FirstOrDefault(x => x.Id == task.ImportanceId);
+                    Description importanceDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == taskImportance.DescriptionId);
+                    Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id == task.TermId);
+                    Project project = _dbContext.Projects.FirstOrDefault(x => x.Id == task.ProjectId);
+                    Description projectDesc = _dbContext.Descriptions.FirstOrDefault(x => x.Id == project.Description_Id);
 
-                User userData = new User();
+                    userData.FillUserTask(task.Id, taskDesc.Title, taskDesc.Description1, taskCondition.Id, conditionDesc.Title,
+                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete);
+
+                    userData.FillUserProject(project.Id, projectDesc.Title, projectDesc.Description1);
+                }
+                
                 userData.FillFio(employee.Id, fio.First_Name, fio.Last_Name, fio.Patronymic, person.Birthday);
                 userData.FillAddress(adress.Country, adress.City, adress.Street, adress.House_Number, adress.Full_Adress);
                 userData.FillPhoneNumbers(phoneNumbers);
                 userData.FillEmails(emails);
                 userData.FillRoleInfo(userRole.Id, userRole.Name, employeeDesc.Title, employeeDesc.Description1);
-
-                userData.FillUserTask(task.Id, taskDesc.Title, taskDesc.Description1, taskCondition.Id, conditionDesc.Title,
-                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete);
-
-                userData.FillUserProject(project.Id, projectDesc.Title, projectDesc.Description1);
 
                 userData.FillLoginData(loginData.Login, loginData.Password);
 

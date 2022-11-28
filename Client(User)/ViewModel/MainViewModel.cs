@@ -84,6 +84,15 @@ namespace EmployeeManagement.ViewModel
             }
         }
 
+
+		public void LogOut()
+		{
+			ServerClient.SendMessageToServer($"--disconnect\nid={ServerClient.IdOnServer}\n");
+			ServerClient.Disconnect();
+			_instance = new MainViewModel();
+			//SetViewModel(new LoginWindow_VM());
+			
+		}
 		~MainViewModel()
 		{
 			_tokenSourceListenTasks.Cancel();

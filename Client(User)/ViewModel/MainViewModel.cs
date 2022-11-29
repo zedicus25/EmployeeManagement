@@ -89,10 +89,12 @@ namespace EmployeeManagement.ViewModel
 		{
 			ServerClient.SendMessageToServer($"--disconnect\nid={ServerClient.IdOnServer}\n");
 			ServerClient.Disconnect();
-			_instance = new MainViewModel();
-			//SetViewModel(new LoginWindow_VM());
-			
-		}
+			_tokenSourceListenTasks.Cancel();
+			_tokenSourceListenTasks = new CancellationTokenSource();
+            ServerClient = new ServerClient();
+            SetViewModel(new LoginWindow_VM());
+            
+        }
 		~MainViewModel()
 		{
 			_tokenSourceListenTasks.Cancel();

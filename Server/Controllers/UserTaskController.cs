@@ -46,19 +46,13 @@ namespace Server.Controllers
                 return;
             
             var task = _dbContext.ProjectTasks.FirstOrDefault(x => x.Id == taskId);
+            task.TaskConditionId = conditionId;
 
             if (task.TaskConditionId == 3)
-            {
-                task.TaskConditionId = conditionId;
-
-                if (task.TaskConditionId == 1)
-                    task.EmployeeId = null;
-            }
-            else
-            {
+                task.EmployeeId = userId;
+            else if (task.TaskConditionId == 1 || task.TaskConditionId == 4 || task.TaskConditionId == 2)
                 task.EmployeeId = null;
-            }
-
+           
             _dbContext.SaveChanges();
         }
 

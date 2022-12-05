@@ -55,6 +55,7 @@ namespace Client_User__.ViewModel
         private string _loginInput;
         private string _serverMessage;
         private bool _loginigResult;
+        
 
         public LoginFormVM()
         {
@@ -75,11 +76,14 @@ namespace Client_User__.ViewModel
 
         private void SetLoginigResult(bool res, User user)
         {
+            if (MainVM.GetInstance().IsLoginig)
+                return;
             _loginigResult = res;
             if (_loginigResult && user.UserRoleId != 1)
             {
-                MainVM.GetInstance().SetViewModel(new HomeControlVM());
                 MainVM.GetInstance().User = user;
+                MainVM.GetInstance().SetViewModel(new HomeControlVM());
+                MainVM.GetInstance().SetLogining(true);
             }
 
         }

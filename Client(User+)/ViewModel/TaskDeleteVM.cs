@@ -8,5 +8,9 @@ namespace Client_User__.ViewModel
 {
     public class TaskDeleteVM :BaseVM
     {
+        public TaskDeleteVM()
+        {
+
+        }
     }
 }

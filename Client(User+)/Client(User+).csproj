@@ -81,6 +81,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Employee.cs" />
+    <Compile Include="Model\TaskImportant.cs" />
+    <Compile Include="Model\UserTask.cs" />
     <Compile Include="ViewModel\TaskCreateVM.cs" />
     <Compile Include="ViewModel\TaskDeleteVM.cs" />
     <Compile Include="ViewModel\TaskSetVM.cs" />

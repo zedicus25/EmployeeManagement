@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Client_User__.Model
 {
-    [Serializable]
-    public class UserProject : INotifyPropertyChanged
+    public class TaskImportant : INotifyPropertyChanged
     {
         public int Id
         {
@@ -26,25 +28,13 @@ namespace Client_User__.Model
                 OnPropertyChanged("Title");
             }
         }
-        public string Description
-        {
-            get => _description;
-            set
-            {
-                _description = value;
-                OnPropertyChanged("Description");
-            }
-        }
-
-
 
         private int _id;
         private string _title;
-        private string _description;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnPropertyChanged([CallerMemberName] string prop = "") =>
-           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 }
-

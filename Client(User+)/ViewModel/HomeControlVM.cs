@@ -22,8 +22,6 @@ namespace Client_User__.ViewModel
             }
         }
 
-
-
         public RelayCommand ShowCreateMenu
         {
             get => _showCreateMenu ?? new RelayCommand(() =>
@@ -64,33 +62,31 @@ namespace Client_User__.ViewModel
             });
         }
 
-
-
-        private CancellationTokenSource _tokenSource;
-        private Task _vmCreation;
         private List<BaseVM> _allVMs;
 
         private RelayCommand _showCreateMenu;
         private RelayCommand _showDeleteMenu;
         private RelayCommand _showUpdateMenu;
         private RelayCommand _showSetTaskMenu;
+        
         public HomeControlVM()
         {
-            _tokenSource = new CancellationTokenSource();
             _allVMs = new List<BaseVM>();
-            _vmCreation = new Task(CreateVMs, _tokenSource.Token);
-            _vmCreation.Start();
+            CreateVMs();
         }
 
-        private async void CreateVMs()
+        private void CreateVMs()
         {
-            while (MainVM.GetInstance().User == null)
-                await Task.Delay(10);
+            while (true)
+            {
+                if (MainVM.GetInstance().User != null)
+                    break;
+            }
+                
             _allVMs.Add(new TaskCreateVM());
             _allVMs.Add(new TaskDeleteVM());
             _allVMs.Add(new TaskUpdateVM());
             _allVMs.Add(new TaskSetVM());
-            _tokenSource.Cancel();
         }
     }
 }

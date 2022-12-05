@@ -1,5 +1,6 @@
 ﻿using Client_User__.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -13,6 +14,10 @@ namespace Client_User__.Model
         public event Action<string> GetServerMessage;
         public event Action<bool, User> LoginingResult;
 
+        public event Action<IEnumerable<TaskImportant>> GetTaskImportants;
+        public event Action<IEnumerable<Employee>> GetEmployees;
+        public event Action<IEnumerable<UserProject>> GetProjects;
+
         public string IdOnServer { get; private set; }
 
         private TcpClient _tcpClient;
@@ -21,7 +26,7 @@ namespace Client_User__.Model
         private readonly int PORT = 8008;
         private readonly string HOST = "127.0.0.1";
         private StringBuilder _stringBuilder;
-        
+
 
 
         private CancellationTokenSource _tokenSource;
@@ -35,10 +40,31 @@ namespace Client_User__.Model
             TryConnect();
         }
 
+        public void SendQuerryForImportance()
+        {
+            _stringBuilder.Append("--getImportance\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void SendQuerryForEmployees()
+        {
+            _stringBuilder.Append("--getEmployees\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void SendQuerryForProjects()
+        {
+            _stringBuilder.Append("--getProjects\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+
         public void SendMessageToServer(string message)
         {
             if (message.ToLower().Contains("drop") || message.ToLower().Contains("delete") ||
-                message.ToLower().Contains("update") || message.ToLower().Contains("add") ||
                 message.ToLower().Contains("alter") || message.ToLower().Contains("table"))
                 return;
             try
@@ -101,7 +127,18 @@ namespace Client_User__.Model
                             if (res)
                                 user = Parser.GetInstance().GetUser(msg.Substring(msg.IndexOf('\n') + 1));
                             LoginingResult?.Invoke(res, user);
-                            continue;
+                        }
+                        else if (msg.Contains("allImportances="))
+                        {
+                            GetTaskImportants?.Invoke(Parser.GetInstance().GetTaskImportances(msg.Substring(msg.IndexOf('=') + 1)));
+                        }
+                        else if (msg.Contains("allEmployees="))
+                        {
+                            GetEmployees?.Invoke(Parser.GetInstance().GetEmployees(msg.Substring(msg.IndexOf('=') + 1)));
+                        }
+                        else if (msg.Contains("allProjects="))
+                        {
+                            GetProjects?.Invoke(Parser.GetInstance().GetProjects(msg.Substring(msg.IndexOf('=') + 1)));
                         }
                         else
                         {
@@ -125,6 +162,11 @@ namespace Client_User__.Model
             _tcpStream?.Close();
             _tcpClient.Close();
             StateUpdating?.Invoke("You disconnected from server");
+        }
+
+        ~ServerClient()
+        {
+            Disconnect();
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿
 
 using Client_User__.Model;
+using Newtonsoft.Json;
+using System;
 
 namespace Client_User__.ViewModel
 {
@@ -43,11 +45,13 @@ namespace Client_User__.ViewModel
 
         private BaseVM _selectedVM;
         private User _user;
+        public bool IsLoginig { get; private set; }
 
         private MainVM()
         {
             SelectedViewModel = new LoginFormVM();
             ServerClient = new ServerClient();
+            IsLoginig = false;
         }
 
         public void SetViewModel(BaseVM baseVM)
@@ -56,5 +60,10 @@ namespace Client_User__.ViewModel
                 return;
             SelectedViewModel = baseVM;
         }
+
+        public void SetLogining(bool res) => IsLoginig = res;
+
+        public void CreateTask(UserTask newTask) =>
+            ServerClient.SendMessageToServer($"--createTask\n{JsonConvert.SerializeObject(newTask)}");
     }
 }

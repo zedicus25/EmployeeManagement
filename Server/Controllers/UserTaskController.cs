@@ -1,18 +1,17 @@
 ﻿using Server.Models;
 using Server.ServerModels;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
 namespace Server.Controllers
 {
-    public class UserTaskController
+    public class UserTaskController : BaseController
     {
-        EmployeeManagement _dbContext;
 
-        public UserTaskController(DbContext dbContext)
+        public UserTaskController(DbContext dbContext) :base(dbContext)
         {
-            _dbContext = dbContext as EmployeeManagement;
         }
         public IEnumerable<UserTask> GetAllProjectTasks(int projectId)
         {
@@ -82,5 +81,43 @@ namespace Server.Controllers
 
             return tasks;
         }
+
+        public IEnumerable<TaskImportance> GetImportances()
+        {
+            List<TaskImportance> importances = new List<TaskImportance>();
+            if (_dbContext == null)
+                return importances;
+
+            List<Importance> import = _dbContext.Importances.ToList();
+            List<ImportanceDescription> importDesc = _dbContext.ImportanceDescriptions.ToList();
+            foreach (var item in import)
+            {
+                importances.Add(new TaskImportance() { Id = item.Id, 
+                    Title = importDesc.FirstOrDefault(x => x.Id == item.DescriptionId)?.Title });
+            }
+            return importances;
+        }
+
+        public void AddTask(UserTask task)
+        {
+            ProjectTaskDescription project = new ProjectTaskDescription();
+            project.TaskDescription = task.Description;
+            project.Title = task.Title;
+            Term term = new Term();
+            term.CreationDate = DateTime.Parse(task.CreationDate.ToString("u"));
+            term.ToComplete = DateTime.Parse(task.ToComplete.ToString("u"));
+
+            ProjectTask newTask = new ProjectTask();
+            newTask.Term = term;
+            newTask.ProjectId = task.ProjectId;
+            newTask.TaskConditionId = task.ConditionId;
+            newTask.EmployeeId = task.EmployeeId;
+            newTask.ProjectTaskDescription = project;
+            newTask.ImportanceId = task.ImportanceId;
+
+            _dbContext.ProjectTasks.Add(newTask);
+            _dbContext.SaveChanges();
+        }
+
     }
 }

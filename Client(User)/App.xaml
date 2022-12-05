@@ -1,0 +1,36 @@
+﻿<Application x:Class="EmployeeManagement.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:EmployeeManagement.View"
+             xmlns:viewModels="clr-namespace:EmployeeManagement.ViewModel"
+             xmlns:views="clr-namespace:EmployeeManagement.CustomControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             StartupUri="View/MainWindow.xaml">
+    <Application.Resources>
+
+        
+
+        <ResourceDictionary x:Key="MaterialDesign">
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:CustomColorTheme BaseTheme="Dark" PrimaryColor="#3f51b5" SecondaryColor="#3d5afe" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type viewModels:LoginWindow_VM}">
+                <views:LoginForm></views:LoginForm>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:HomeWindow_VM}">
+                <views:HomeWindow></views:HomeWindow>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:AllTask_VM}">
+                <views:AllTasks></views:AllTasks>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:MyTasks_VM}">
+                <views:MyTasks></views:MyTasks>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:Account_VM}">
+                <views:Account></views:Account>
+            </DataTemplate>
+        </ResourceDictionary>
+        
+    </Application.Resources>
+</Application>

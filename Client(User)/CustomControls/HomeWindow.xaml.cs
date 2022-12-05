@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EmployeeManagement
+namespace EmployeeManagement.CustomControls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for HomeWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class HomeWindow : UserControl
     {
-        public MainWindow()
+        public HomeWindow()
         {
             InitializeComponent();
         }

@@ -5,8 +5,22 @@
              StartupUri="./View/MainWindow.xaml" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              d1p1:Ignorable="d" 
-             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:view="clr-namespace:Client_User__.View"
+             xmlns:viewModel="clr-namespace:Client_User__.ViewModel">
   <Application.Resources>
-
-  </Application.Resources>
+        <ResourceDictionary x:Key="MaterialDesign">
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:CustomColorTheme BaseTheme="Dark" PrimaryColor="#3f51b5" SecondaryColor="#3d5afe" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type viewModel:LoginFormVM}">
+                <view:LoginControl></view:LoginControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:HomeControlVM}">
+                <view:HomeControl></view:HomeControl>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

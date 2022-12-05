@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace EmployeeManagement.Model
+namespace Client_User__.Model
 {
     [Serializable]
     public class User : INotifyPropertyChanged
@@ -40,110 +39,6 @@ namespace EmployeeManagement.Model
             }
         }
 
-        public string First_Name
-        {
-            get => _name;
-            set
-            {
-                _name = value;
-                OnPropertyChanged("First_Name");
-            }
-        }
-
-        public string Last_Name
-        {
-            get => _lastName;
-            set
-            {
-                _lastName = value;
-                OnPropertyChanged("Last_Name");
-            }
-        }
-        public string Patronymic
-        {
-            get => _patronymic;
-            set
-            {
-                _patronymic = value;
-                OnPropertyChanged("Patronymic");
-            }
-        }
-        public string Country
-        {
-            get => _country;
-            set
-            {
-                _country = value;
-                OnPropertyChanged("Country");
-            }
-        }
-        public string City
-        {
-            get => _city;
-            set
-            {
-                _city = value;
-                OnPropertyChanged("City");
-            }
-        }
-        public string Street
-        {
-            get => _adress;
-            set
-            {
-                _adress = value;
-                OnPropertyChanged("Street");
-            }
-        }
-        public string House_Number
-        {
-            get => _houseNumber;
-            set
-            {
-                _houseNumber = value;
-                OnPropertyChanged("House_Number");
-            }
-        }
-        public string Full_Adress
-        {
-            get => _fullAdress;
-            set
-            {
-                _fullAdress = value;
-                OnPropertyChanged("Full_Adress");
-            }
-        }
-        public DateTime Birthday
-        {
-            get => _birthday;
-            set
-            {
-                _birthday = value;
-                OnPropertyChanged("Birthday");
-            }
-        }
-        
-
-        public List<UserPhoneNumber> PhoneNumbers
-        {
-            get => _phoneNumbers;
-            set 
-            { 
-                _phoneNumbers = value;
-                OnPropertyChanged("PhoneNumbers");
-            }
-        }
-
-
-        public List<UserEmail> Emails
-        {
-            get => _emails;
-            set
-            {
-                _emails = value;
-                OnPropertyChanged("Emails");
-            }
-        }
 
         public int UserRoleId
         {
@@ -191,32 +86,10 @@ namespace EmployeeManagement.Model
                 OnPropertyChanged("Project");
             }
         }
-        public float Salary
-        {
-            get => _salary;
-            set
-            {
-                _salary = value;
-                OnPropertyChanged("Salary");
-            }
-        }
-       
-       
+
 
         private string _login;
         private string _password;
-        private string _name;
-        private string _lastName;
-        private string _patronymic;
-        private DateTime _birthday;
-        private float _salary;
-        private string _country;
-        private string _city;
-        private string _adress;
-        private string _houseNumber;
-        private string _fullAdress;
-        private List<UserEmail> _emails;
-        private List<UserPhoneNumber> _phoneNumbers;
         private int _userRoleId;
         private string _userRoleName;
         private string _employeeRoleName;

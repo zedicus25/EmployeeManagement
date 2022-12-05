@@ -1,21 +1,17 @@
-﻿using EmployeeManagement.Utilities;
-using EmployeeManagement.ViewModel;
+﻿using Client_User__.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Model
+namespace Client_User__.Model
 {
     public class ServerClient
     {
         public event Action<string> StateUpdating;
         public event Action<string> GetServerMessage;
         public event Action<bool, User> LoginingResult;
-        public event Action<List<UserTask>> AllTasks;
-        public event Action<List<UserTask>> MyTask;
 
         public string IdOnServer { get; private set; }
 
@@ -55,59 +51,7 @@ namespace EmployeeManagement.Model
                 StateUpdating?.Invoke($"Connection error {ex.Message}");
             }
         }
-        public void GetAllTasks()
-        {
-            if(MainViewModel.GetInstance().User == null || MainViewModel.GetInstance().User.Project == null)
-                return;
-            _stringBuilder.Append("--getAllTasks\n");
-            _stringBuilder.Append($"id={IdOnServer}\n");
-            _stringBuilder.Append($"projectId={MainViewModel.GetInstance().User.Project.Id}\n");
-            SendMessageToServer(_stringBuilder.ToString());
-            _stringBuilder.Clear();
-        }
-
-        public void GetTaskFromAll(int taskId)
-        {
-            if (MainViewModel.GetInstance().User == null)
-                return;
-            if (_stringBuilder == null)
-                _stringBuilder = new StringBuilder();
-            _stringBuilder.Append("--setMyTask\n");
-            _stringBuilder.Append($"id={IdOnServer}\n");
-            _stringBuilder.Append($"userDataBaseId={MainViewModel.GetInstance().User.Id}\n");
-            _stringBuilder.Append($"taskId={taskId}\n");
-            SendMessageToServer(_stringBuilder.ToString());
-            _stringBuilder.Clear();
-        }
-
-        public void GetMyTask()
-        {
-            if (MainViewModel.GetInstance().User == null)
-                return;
-            if (_stringBuilder == null)
-                _stringBuilder = new StringBuilder();
-            _stringBuilder.Append("--getMyTask\n");
-            _stringBuilder.Append($"id={IdOnServer}\n");
-            _stringBuilder.Append($"userDataBaseId={MainViewModel.GetInstance().User.Id}\n");
-            SendMessageToServer(_stringBuilder.ToString());
-            _stringBuilder.Clear();
-        }
-
-        public void SubmitTask(int taskId,string branchName, string message)
-        {
-            if (MainViewModel.GetInstance().User == null)
-                return;
-            if (_stringBuilder == null)
-                _stringBuilder = new StringBuilder();
-            _stringBuilder.Append("--submitTask\n");
-            _stringBuilder.Append($"id={IdOnServer}\n");
-            _stringBuilder.Append($"userDataBaseId={MainViewModel.GetInstance().User.Id}\n");
-            _stringBuilder.Append($"taskId={taskId}\n");
-            _stringBuilder.Append($"branchName={branchName}\n");
-            _stringBuilder.Append($"message={message}\n");
-            SendMessageToServer(_stringBuilder.ToString());
-            _stringBuilder.Clear();
-        }
+        
         private void TryConnect()
         {
             try
@@ -159,14 +103,6 @@ namespace EmployeeManagement.Model
                             LoginingResult?.Invoke(res, user);
                             continue;
                         }
-                        else if (msg.Contains("allTasks="))
-                        {
-                            AllTasks?.Invoke(Parser.GetInstance().GetTasks(msg.Substring(msg.IndexOf('=') + 1)));
-                        }
-                        else if (msg.Contains("myTask="))
-                        {
-                            MyTask?.Invoke(Parser.GetInstance().GetTasks(msg.Substring(msg.IndexOf('=') + 1)));
-                        }
                         else
                         {
                             GetServerMessage?.Invoke(msg);
@@ -189,11 +125,6 @@ namespace EmployeeManagement.Model
             _tcpStream?.Close();
             _tcpClient.Close();
             StateUpdating?.Invoke("You disconnected from server");
-        }
-
-        ~ServerClient()
-        {
-            Disconnect();
         }
     }
 }

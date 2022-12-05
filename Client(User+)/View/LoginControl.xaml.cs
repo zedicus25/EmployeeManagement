@@ -24,5 +24,18 @@ namespace Client_User__.View
         {
             InitializeComponent();
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                ((dynamic)this.DataContext).PasswordInput = ((PasswordBox)sender).Password;
+            }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((dynamic)this.DataContext).AddListeners();
+        }
     }
 }

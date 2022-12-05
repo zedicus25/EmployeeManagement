@@ -98,6 +98,15 @@ namespace Client_User__.Model
             _stringBuilder.Clear();
         }
 
+        public void QuerrySetTaskToEmployee(int taskId, int employeeId)
+        {
+            _stringBuilder.Append("--setTaskToEmployee\n");
+            _stringBuilder.Append($"userId={employeeId}\n");
+            _stringBuilder.Append($"taskId={taskId}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+
         public void SendMessageToServer(string message)
         {
             if (message.ToLower().Contains("drop") || message.ToLower().Contains("delete") ||

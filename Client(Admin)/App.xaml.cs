@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Client_Admin_
+namespace Client_Admin
 {
     /// <summary>
     /// Interaction logic for App.xaml

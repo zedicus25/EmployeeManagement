@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client_Admin_.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client_Admin_
+namespace Client_Admin_.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,6 +24,7 @@ namespace Client_Admin_
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = MainVM.GetInstance();
         }
     }
 }

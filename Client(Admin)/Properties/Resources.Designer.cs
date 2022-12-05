@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Client_Admin_.Properties
+namespace Client_Admin.Properties
 {
 
 

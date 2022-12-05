@@ -21,6 +21,18 @@
             <DataTemplate DataType="{x:Type viewModel:HomeControlVM}">
                 <view:HomeControl></view:HomeControl>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:TaskCreateVM}">
+                <view:TaskCreateMenu></view:TaskCreateMenu>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:TaskDeleteVM}">
+                <view:TaskDeleteMenu></view:TaskDeleteMenu>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:TaskUpdateVM}">
+                <view:TaskUpdateMenu></view:TaskUpdateMenu>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:TaskSetVM}">
+                <view:SetTaskMenu></view:SetTaskMenu>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

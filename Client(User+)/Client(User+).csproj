@@ -81,6 +81,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\TaskCreateVM.cs" />
+    <Compile Include="ViewModel\TaskDeleteVM.cs" />
+    <Compile Include="ViewModel\TaskSetVM.cs" />
+    <Compile Include="ViewModel\TaskUpdateVM.cs" />
+    <Compile Include="View\SetTaskMenu.xaml.cs">
+      <DependentUpon>SetTaskMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskCreateMenu.xaml.cs">
+      <DependentUpon>TaskCreateMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskDeleteMenu.xaml.cs">
+      <DependentUpon>TaskDeleteMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskUpdateMenu.xaml.cs">
+      <DependentUpon>TaskUpdateMenu.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\HomeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -115,6 +131,22 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\SetTaskMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskCreateMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskDeleteMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskUpdateMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -4,9 +4,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client_User__.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:viewmodel="clr-namespace:Client_User__.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:HomeControlVM}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label> Home vonc</Label>
+        <ToolBarTray  Orientation="Vertical">
+            <ToolBar
+                Style="{StaticResource MaterialDesignToolBar}"
+                ClipToBounds="False">
+                <Button Command="{Binding ShowCreateMenu}"
+                    ToolTip="Create task"
+                    Content="{materialDesign:PackIcon Kind=PlusCircleOutline}" />
+                <Button Command="{Binding ShowDeleteMenu}"
+                    ToolTip="Delete task"
+                    Content="{materialDesign:PackIcon Kind=MinusCircleOutline}" />
+                <Button Command="{Binding ShowUpdateMenu}"
+                    ToolTip="Update task"
+                    Content="{materialDesign:PackIcon Kind=Update}" />
+                <Separator />
+                <Button Command="{Binding ShowSetTaskMenu}"
+                    ToolTip="Set task to user"
+                    Content="{materialDesign:PackIcon Kind=LinkPlus}" />
+            </ToolBar>
+        </ToolBarTray>
+        <ContentControl Content="{Binding CurrentViewModel, UpdateSourceTrigger=PropertyChanged}" Margin="50,0,0,0"></ContentControl>
     </Grid>
 </UserControl>

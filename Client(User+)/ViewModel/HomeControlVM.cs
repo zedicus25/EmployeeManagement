@@ -1,12 +1,96 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Client_User__.ViewModel
 {
     public class HomeControlVM : BaseVM
     {
+        private BaseVM _currentViewModel;
+
+        public BaseVM CurrentViewModel
+        {
+            get => _currentViewModel;
+            set 
+            { 
+                _currentViewModel = value;
+                OnPropertyChanged("CurrentViewModel");
+            }
+        }
+
+
+
+        public RelayCommand ShowCreateMenu
+        {
+            get => _showCreateMenu ?? new RelayCommand(() =>
+            {
+                if (CurrentViewModel is TaskCreateVM)
+                    return;
+                CurrentViewModel = _allVMs[0];
+            });
+        }
+
+        public RelayCommand ShowDeleteMenu
+        {
+            get => _showDeleteMenu ?? new RelayCommand(() =>
+            {
+                if (CurrentViewModel is TaskDeleteVM)
+                    return;
+                CurrentViewModel = _allVMs[1];
+            });
+        }
+
+        public RelayCommand ShowUpdateMenu
+        {
+            get => _showUpdateMenu ?? new RelayCommand(() =>
+            {
+                if (CurrentViewModel is TaskUpdateVM)
+                    return;
+                CurrentViewModel = _allVMs[2];
+            });
+        }
+
+        public RelayCommand ShowSetTaskMenu
+        {
+            get => _showSetTaskMenu ?? new RelayCommand(() =>
+            {
+                if (CurrentViewModel is TaskSetVM)
+                    return;
+                CurrentViewModel = _allVMs[3];
+            });
+        }
+
+
+
+        private CancellationTokenSource _tokenSource;
+        private Task _vmCreation;
+        private List<BaseVM> _allVMs;
+
+        private RelayCommand _showCreateMenu;
+        private RelayCommand _showDeleteMenu;
+        private RelayCommand _showUpdateMenu;
+        private RelayCommand _showSetTaskMenu;
+        public HomeControlVM()
+        {
+            _tokenSource = new CancellationTokenSource();
+            _allVMs = new List<BaseVM>();
+            _vmCreation = new Task(CreateVMs, _tokenSource.Token);
+            _vmCreation.Start();
+        }
+
+        private async void CreateVMs()
+        {
+            while (MainVM.GetInstance().User == null)
+                await Task.Delay(10);
+            _allVMs.Add(new TaskCreateVM());
+            _allVMs.Add(new TaskDeleteVM());
+            _allVMs.Add(new TaskUpdateVM());
+            _allVMs.Add(new TaskSetVM());
+            _tokenSource.Cancel();
+        }
     }
 }

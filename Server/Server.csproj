@@ -87,6 +87,7 @@
     <Compile Include="Models\Term.cs" />
     <Compile Include="Models\UsersRole.cs" />
     <Compile Include="ServerModels\ServerClient.cs" />
+    <Compile Include="ServerModels\UserTaskCondtion.cs" />
     <Compile Include="ServerModels\TaskImportance.cs" />
     <Compile Include="ServerModels\User.cs" />
     <Compile Include="ServerModels\UserEmail.cs" />

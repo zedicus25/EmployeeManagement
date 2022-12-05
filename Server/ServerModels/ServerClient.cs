@@ -90,6 +90,11 @@ namespace Server.ServerModels
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendImportances(strs[1].Substring(strs[1].IndexOf('=') + 1));
                             }
+                            else if (msg.Contains("--getConditions") && msg.Contains("id="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SendConditions(strs[1].Substring(strs[1].IndexOf('=') + 1));
+                            }
                             else if (msg.Contains("--getEmployees") && msg.Contains("id="))
                             {
                                 string[] strs = msg.Split('\n');

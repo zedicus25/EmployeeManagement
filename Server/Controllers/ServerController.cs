@@ -214,6 +214,14 @@ namespace Server.Controllers
             sb.Append(JsonConvert.SerializeObject(importances));
             SendMessageToClient(id, sb.ToString());
         }
+        public void SendConditions(string id)
+        {
+            IEnumerable<UserTaskCondtion> conditions = _userTaskController.GetConditions();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("allConditions=");
+            sb.Append(JsonConvert.SerializeObject(conditions));
+            SendMessageToClient(id, sb.ToString());
+        }
 
         public void SendEmployees(string id)
         {

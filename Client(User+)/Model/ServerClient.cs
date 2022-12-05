@@ -1,4 +1,5 @@
 ﻿using Client_User__.Utilities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -15,9 +16,11 @@ namespace Client_User__.Model
         public event Action<bool, User> LoginingResult;
 
         public event Action<IEnumerable<TaskImportant>> GetTaskImportants;
+        public event Action<IEnumerable<TaskCondition>> GetTaskConditions;
         public event Action<IEnumerable<Employee>> GetEmployees;
         public event Action<IEnumerable<UserProject>> GetProjects;
         public event Action<IEnumerable<UserTask>> GetAllTasks;
+        public event Action<UserTask> GetTaskById;
 
         public string IdOnServer { get; private set; }
 
@@ -44,6 +47,13 @@ namespace Client_User__.Model
         public void SendQuerryForImportance()
         {
             _stringBuilder.Append("--getImportance\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void SendQuerryForConditions()
+        {
+            _stringBuilder.Append("--getConditions\n");
             _stringBuilder.Append($"id={IdOnServer}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
@@ -76,6 +86,14 @@ namespace Client_User__.Model
             _stringBuilder.Append("--removeTask\n");
             _stringBuilder.Append($"id={IdOnServer}\n");
             _stringBuilder.Append($"taskId={taskId}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void UpdateTask(int taskId, UserTask task)
+        {
+            _stringBuilder.Append("--updateTask\n");
+            _stringBuilder.Append($"oldTaskId={taskId}\n");
+            _stringBuilder.Append($"newTask={JsonConvert.SerializeObject(task)}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }
@@ -150,6 +168,10 @@ namespace Client_User__.Model
                         {
                             GetTaskImportants?.Invoke(Parser.GetInstance().GetTaskImportances(msg.Substring(msg.IndexOf('=') + 1)));
                         }
+                        else if (msg.Contains("allConditions="))
+                        {
+                            GetTaskConditions?.Invoke(Parser.GetInstance().GetTaskConditions(msg.Substring(msg.IndexOf('=') + 1)));
+                        }
                         else if (msg.Contains("allEmployees="))
                         {
                             GetEmployees?.Invoke(Parser.GetInstance().GetEmployees(msg.Substring(msg.IndexOf('=') + 1)));
@@ -160,7 +182,11 @@ namespace Client_User__.Model
                         }
                         else if (msg.Contains("allTasksAdmin="))
                         {
-                            GetAllTasks?.Invoke(Parser.GetInstance().GetUserTasks(msg.Substring(msg.IndexOf('=') + 1)));
+                            GetAllTasks?.Invoke(Parser.GetInstance().GetAllUserTasks(msg.Substring(msg.IndexOf('=') + 1)));
+                        }
+                        else if (msg.Contains("taskByIdAdmin="))
+                        {
+                            GetTaskById?.Invoke(Parser.GetInstance().GetUserTask(msg.Substring(msg.IndexOf('=') + 1)));
                         }
                         else
                         {

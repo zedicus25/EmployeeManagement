@@ -101,7 +101,6 @@ namespace Client_User__.ViewModel
 
         private UserTask _newTask;
         private DateTime _toCompleteDate;
-        private DateTime _toCompleteTime;
 
         private UserProject _selectedProject;
         private TaskImportant _selectedImportance;

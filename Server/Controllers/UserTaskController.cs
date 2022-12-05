@@ -99,6 +99,24 @@ namespace Server.Controllers
             }
             return importances;
         }
+        public IEnumerable<UserTaskCondtion> GetConditions()
+        {
+            List<UserTaskCondtion> conditions = new List<UserTaskCondtion>();
+            if (_dbContext == null)
+                return conditions;
+
+            List<TaskCondition> import = _dbContext.TaskConditions.ToList();
+            List<TaskConditionDescription> importDesc = _dbContext.TaskConditionDescriptions.ToList();
+            foreach (var item in import)
+            {
+                conditions.Add(new UserTaskCondtion()
+                {
+                    Id = item.Id,
+                    Title = importDesc.FirstOrDefault(x => x.Id == item.DescriptionId)?.Title
+                });
+            }
+            return conditions;
+        }
 
         public void AddTask(UserTask task)
         {

@@ -17,6 +17,7 @@ namespace Client_User__.Model
         public event Action<IEnumerable<TaskImportant>> GetTaskImportants;
         public event Action<IEnumerable<Employee>> GetEmployees;
         public event Action<IEnumerable<UserProject>> GetProjects;
+        public event Action<IEnumerable<UserTask>> GetAllTasks;
 
         public string IdOnServer { get; private set; }
 
@@ -58,6 +59,23 @@ namespace Client_User__.Model
         {
             _stringBuilder.Append("--getProjects\n");
             _stringBuilder.Append($"id={IdOnServer}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+
+        public void SendQuerryForAllTasks()
+        {
+            _stringBuilder.Append("--getAllTasksAdmin\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+
+        public void DeleteTask(int taskId)
+        {
+            _stringBuilder.Append("--removeTask\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            _stringBuilder.Append($"taskId={taskId}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }
@@ -139,6 +157,10 @@ namespace Client_User__.Model
                         else if (msg.Contains("allProjects="))
                         {
                             GetProjects?.Invoke(Parser.GetInstance().GetProjects(msg.Substring(msg.IndexOf('=') + 1)));
+                        }
+                        else if (msg.Contains("allTasksAdmin="))
+                        {
+                            GetAllTasks?.Invoke(Parser.GetInstance().GetUserTasks(msg.Substring(msg.IndexOf('=') + 1)));
                         }
                         else
                         {

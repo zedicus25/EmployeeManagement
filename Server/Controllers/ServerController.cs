@@ -181,7 +181,7 @@ namespace Server.Controllers
             client.NetworkStream.Write(bytes, 0, bytes.Length);
         }
 
-        public void SendTasks(string client, int projectId)
+        public void SendProjectTasks(string client, int projectId)
         {
             IEnumerable<UserTask> tasks = _userTaskController.GetAllProjectTasks(projectId);
             StringBuilder sb = new StringBuilder();
@@ -232,9 +232,20 @@ namespace Server.Controllers
             SendMessageToClient(id, sb.ToString());
         }
 
-        public void CreateTask(UserTask task)
+        public void CreateTask(UserTask task) => _userTaskController.AddTask(task);
+
+        public void DeleteTask(int taskId) => _userTaskController.DeleteTask(taskId);
+        
+
+        public void UpdateTask(int id, UserTask newTask) => _userTaskController.UpdateTask(id, newTask);
+
+        public void SendAllTasks(string id)
         {
-            _userTaskController.AddTask(task);
+            IEnumerable<UserTask> tasks = _userTaskController.GetAllTasks();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("allTasksAdmin=");
+            sb.Append(JsonConvert.SerializeObject(tasks));
+            SendMessageToClient(id, sb.ToString());
         }
 
     }

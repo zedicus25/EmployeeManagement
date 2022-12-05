@@ -69,7 +69,7 @@ namespace Server.ServerModels
                             else if (msg.Contains("--getAllTasks") && msg.Contains("id=") && msg.Contains("projectId="))
                             {
                                 string[] strs = msg.Split('\n');
-                                _serverController.SendTasks(strs[1].Substring(strs[1].IndexOf('=') + 1),
+                                _serverController.SendProjectTasks(strs[1].Substring(strs[1].IndexOf('=') + 1),
                                     Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
                                 sb.Clear();
                             }
@@ -110,6 +110,22 @@ namespace Server.ServerModels
                             {
                                 string[] strs = msg.Split('\n');
                                 _serverController.CreateTask(JsonConvert.DeserializeObject<UserTask>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--removeTask"))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.DeleteTask(Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--updateTask"))
+                            {
+                                string[] strs = msg.Split('\n');        
+                                _serverController.UpdateTask(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
+                                    JsonConvert.DeserializeObject<UserTask>(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--getAllTasksAdmin"))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SendAllTasks(strs[1].Substring(strs[1].IndexOf('=') + 1));
                             }
                             else if(msg.Contains("--disconnect") && msg.Contains("id="))
                             {

@@ -65,5 +65,9 @@ namespace Client_User__.ViewModel
 
         public void CreateTask(UserTask newTask) =>
             ServerClient.SendMessageToServer($"--createTask\n{JsonConvert.SerializeObject(newTask)}");
+
+        public void GetAllTasks() => ServerClient.SendQuerryForAllTasks();
+
+        public void DeleteTask(int taskId) => ServerClient.DeleteTask(taskId);
     }
 }

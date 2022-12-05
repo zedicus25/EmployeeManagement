@@ -28,5 +28,8 @@ namespace Client_User__.Utilities
             JsonConvert.DeserializeObject<List<Employee>>(data);
         public IEnumerable<UserProject> GetProjects(string data) =>
             JsonConvert.DeserializeObject<List<UserProject>>(data);
+
+        public IEnumerable<UserTask> GetUserTasks(string data) =>
+            JsonConvert.DeserializeObject<List<UserTask>>(data);
     }
 }

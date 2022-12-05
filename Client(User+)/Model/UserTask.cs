@@ -39,6 +39,17 @@ namespace Client_User__.Model
                 OnPropertyChanged("ProjectId");
             }
         }
+        
+        public string ProjectTitle
+        {
+            get { return _projectTitle; }
+            set 
+            { 
+                _projectTitle = value;
+                OnPropertyChanged("ProjectTitle");
+            }
+        }
+
         public string Title
         {
             get => _title;
@@ -104,6 +115,7 @@ namespace Client_User__.Model
         private int _importanceId;
         private DateTime _toComplete;
         private DateTime _creationDate;
+        private string _projectTitle;
 
         public UserTask()
         {

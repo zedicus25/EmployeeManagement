@@ -131,8 +131,16 @@ namespace Client_User__.ViewModel
             NewTask.ConditionId = 4;
             NewTask.ImportanceId = SelectedImportance.Id;
             if (SelectedEmployee != null)
+            {
                 NewTask.EmployeeId = SelectedEmployee.Id;
+                NewTask.ConditionId = 3;
+            }
             MainVM.GetInstance().CreateTask(NewTask);
+            ToCompleteDate = DateTime.Now;
+            SelectedEmployee = null;
+            SelectedImportance = null;
+            SelectedProject = null;
+            NewTask = new UserTask();
         }
 
         private void AddListeners()

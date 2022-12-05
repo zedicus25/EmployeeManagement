@@ -23,6 +23,8 @@ namespace Server.Controllers
         private bool _isEnabled;
         private EmployeeManagement _dbContext;
         private UserTaskController _userTaskController;
+        private EmployeeController _employeeController;
+        private ProjectsController _projectController;
 
         public ServerController(int port = 8008)
         {
@@ -42,6 +44,8 @@ namespace Server.Controllers
             _listenTask.Start();
             _dbContext = new EmployeeManagement();
             _userTaskController = new UserTaskController(_dbContext);
+            _employeeController = new EmployeeController(_dbContext);
+            _projectController = new ProjectsController(_dbContext);
         }
 
         private void Listen()
@@ -177,7 +181,7 @@ namespace Server.Controllers
             client.NetworkStream.Write(bytes, 0, bytes.Length);
         }
 
-        public void SendTasks(string client, int projectId)
+        public void SendProjectTasks(string client, int projectId)
         {
             IEnumerable<UserTask> tasks = _userTaskController.GetAllProjectTasks(projectId);
             StringBuilder sb = new StringBuilder();
@@ -201,6 +205,56 @@ namespace Server.Controllers
 
         public void SubmitTask(int userId, int taskId) =>
             _userTaskController.SetTaskCondition(userId, taskId, 1);
+
+        public void SendImportances(string id)
+        {
+            IEnumerable<TaskImportance> importances = _userTaskController.GetImportances();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("allImportances=");
+            sb.Append(JsonConvert.SerializeObject(importances));
+            SendMessageToClient(id, sb.ToString());
+        }
+        public void SendConditions(string id)
+        {
+            IEnumerable<UserTaskCondtion> conditions = _userTaskController.GetConditions();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("allConditions=");
+            sb.Append(JsonConvert.SerializeObject(conditions));
+            SendMessageToClient(id, sb.ToString());
+        }
+
+        public void SendEmployees(string id)
+        {
+            IEnumerable<UserEmployee> employees = _employeeController.GetAllShortEmployeeData();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("allEmployees=");
+            sb.Append(JsonConvert.SerializeObject(employees));
+            SendMessageToClient(id, sb.ToString());
+        }
+        public void SendProjects(string id)
+        {
+            IEnumerable<UserProject> projects = _projectController.GetAllProjects();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("allProjects=");
+            sb.Append(JsonConvert.SerializeObject(projects));
+            SendMessageToClient(id, sb.ToString());
+        }
+
+        public void CreateTask(UserTask task) => _userTaskController.AddTask(task);
+
+        public void DeleteTask(int taskId) => _userTaskController.DeleteTask(taskId);
+        
+
+        public void UpdateTask(int id, UserTask newTask) => _userTaskController.UpdateTask(id, newTask);
+
+        public void SendAllTasks(string id)
+        {
+            IEnumerable<UserTask> tasks = _userTaskController.GetAllTasks();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("allTasksAdmin=");
+            sb.Append(JsonConvert.SerializeObject(tasks));
+            SendMessageToClient(id, sb.ToString());
+        }
 
     }
 }

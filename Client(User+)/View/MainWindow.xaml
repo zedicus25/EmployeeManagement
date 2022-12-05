@@ -1,0 +1,16 @@
+﻿<Window x:Class="Client_User__.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client_User__" xmlns:viewmodel="clr-namespace:Client_User__.ViewModel"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        d:DataContext="{d:DesignInstance Type=viewmodel:MainVM}"
+        mc:Ignorable="d"
+        Title="Employee Management Client Plus" Height="730" Width="1125"
+        MinHeight="730" MinWidth="1125">
+    <Grid>
+        <ContentControl Content="{Binding SelectedViewModel}"></ContentControl>
+    </Grid>
+</Window>

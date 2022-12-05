@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="Client_User__.View.TaskUpdateMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:Client_User__.View" xmlns:viewmodel="clr-namespace:Client_User__.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:TaskUpdateVM}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate x:Key="itemTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="Bold"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Margin="5" FontSize="13"> Project:</TextBlock>
+                    <TextBlock Margin="0 5" FontSize="12" Text="{Binding ProjectTitle}"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+           
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ListBox Margin="10" 
+                 ItemsSource="{Binding Tasks}"
+                 ItemTemplate="{StaticResource itemTemplate}" 
+                 SelectedItem="{Binding NewTask}">
+        </ListBox>
+        <StackPanel Grid.Column="1">
+            <TextBox FontSize="12" Margin="10"
+                Style="{StaticResource MaterialDesignFilledTextBox}"
+                     TextWrapping="Wrap"
+                     MaxLength="100"
+                     materialDesign:HintAssist.Hint="Task title"
+                     Text="{Binding NewTask.Title}"/>
+            <ComboBox SelectedItem="{Binding SelectedImportance}" FontSize="12"  Margin="10" ItemsSource="{Binding Importances}"
+                Style="{StaticResource MaterialDesignFilledComboBox}"
+                materialDesign:HintAssist.Hint="Task Importance"
+                materialDesign:TextFieldAssist.HasClearButton="True">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox SelectedItem="{Binding SelectedCondition}" FontSize="12"  Margin="10" ItemsSource="{Binding Conditions}"
+                Style="{StaticResource MaterialDesignFilledComboBox}"
+                materialDesign:HintAssist.Hint="Task Conditions"
+                materialDesign:TextFieldAssist.HasClearButton="True">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox SelectedItem="{Binding SelectedEmployee}" FontSize="12"  Margin="10" ItemsSource="{Binding Employees}"
+                Style="{StaticResource MaterialDesignFilledComboBox}"
+                materialDesign:HintAssist.Hint="Employee"
+                materialDesign:TextFieldAssist.HasClearButton="True">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding FullName}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox FontSize="12"  Margin="10" ItemsSource="{Binding Projects}"
+                      SelectedItem="{Binding SelectedProject}"
+                Style="{StaticResource MaterialDesignFilledComboBox}"
+                materialDesign:HintAssist.Hint="Project"
+                materialDesign:TextFieldAssist.HasClearButton="True">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <DatePicker SelectedDate="{Binding ToCompleteDate, Mode=TwoWay}" FontSize="12" 
+                Margin="10"
+                materialDesign:HintAssist.Hint="To complete(Date)"
+                materialDesign:TextFieldAssist.HasClearButton="True"
+                Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+        </StackPanel>
+        <TextBox FontSize="13"  Grid.Column="2" TextWrapping="Wrap" Margin="10 10 10 85"
+                 MaxLength="2500"
+                 Text="{Binding NewTask.Description}"
+                 VerticalScrollBarVisibility="Auto"
+                 Style="{StaticResource MaterialDesignFilledTextBox}"
+                 materialDesign:HintAssist.Hint="Task description">
+
+        </TextBox>
+        <Button Grid.Column="2" VerticalAlignment="Bottom" Margin="10" HorizontalAlignment="Right"
+            Style="{StaticResource MaterialDesignFloatingActionButton}"
+            ToolTip="MaterialDesignFloatingActionButton" Command="{Binding UpdateCommand}">
+            <materialDesign:PackIcon Width="40" Height="40" Kind="Update" />
+        </Button>
+    </Grid>
+</UserControl>

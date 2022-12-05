@@ -1,5 +1,7 @@
-﻿using Server.Controllers;
+﻿using Newtonsoft.Json;
+using Server.Controllers;
 using System;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -55,43 +57,86 @@ namespace Server.ServerModels
                         {
                             string msg = sb.ToString();
                             if(msg.ToLower().Contains("drop") || msg.ToLower().Contains("delete") || 
-                                msg.ToLower().Contains("clear") || msg.ToLower().Contains("update") ||
                                 msg.ToLower().Contains("table") || msg.ToLower().Contains("alter"))
                             {
                                 sb.Clear();
-                                continue;
                             }
                             if (msg.Contains("id=") && msg.Contains("login=") && msg.Contains("password="))
                             {
                                 _serverController.CheckUserLoginPasswordData(msg);
                                 sb.Clear();
-                                continue;
                             }
                             else if (msg.Contains("--getAllTasks") && msg.Contains("id=") && msg.Contains("projectId="))
                             {
                                 string[] strs = msg.Split('\n');
-                                _serverController.SendTasks(strs[1].Substring(strs[1].IndexOf('=') + 1),
+                                _serverController.SendProjectTasks(strs[1].Substring(strs[1].IndexOf('=') + 1),
                                     Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
                                 sb.Clear();
-                                continue;
                             }
-                            else if(msg.Contains("--setMyTask") && msg.Contains("id=") && msg.Contains("taskId=")) 
+                            else if (msg.Contains("--setMyTask") && msg.Contains("id=") && msg.Contains("taskId="))
                             {
                                 string[] strs = msg.Split('\n');
-                                _serverController.GiveTaskToUser(Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)), 
+                                _serverController.GiveTaskToUser(Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)),
                                     Convert.ToInt32(strs[3].Substring(strs[3].IndexOf('=') + 1)));
                             }
-                            else if(msg.Contains("--getMyTask") && msg.Contains("id=") && msg.Contains("userDataBaseId="))
+                            else if(msg.Contains("--setTaskToEmployee") && msg.Contains("taskId=") && msg.Contains("userId="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.GiveTaskToUser(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
+                                    Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--getMyTask") && msg.Contains("id=") && msg.Contains("userDataBaseId="))
                             {
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendTask(strs[1].Substring(strs[1].IndexOf('=') + 1),
                                      Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
                             }
-                            else if(msg.Contains("--submitTask") && msg.Contains("id=") && msg.Contains("userDataBaseId="))
+                            else if (msg.Contains("--getImportance") && msg.Contains("id="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SendImportances(strs[1].Substring(strs[1].IndexOf('=') + 1));
+                            }
+                            else if (msg.Contains("--getConditions") && msg.Contains("id="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SendConditions(strs[1].Substring(strs[1].IndexOf('=') + 1));
+                            }
+                            else if (msg.Contains("--getEmployees") && msg.Contains("id="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SendEmployees(strs[1].Substring(strs[1].IndexOf('=') + 1));
+                            }
+                            else if (msg.Contains("--getProjects") && msg.Contains("id="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SendProjects(strs[1].Substring(strs[1].IndexOf('=') + 1));
+                            }
+                            else if (msg.Contains("--submitTask") && msg.Contains("id=") && msg.Contains("userDataBaseId="))
                             {
                                 string[] strs = msg.Split('\n');
                                 _serverController.SubmitTask(Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)),
                                     Convert.ToInt32(strs[3].Substring(strs[3].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--createTask")) 
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.CreateTask(JsonConvert.DeserializeObject<UserTask>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--removeTask"))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.DeleteTask(Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--updateTask"))
+                            {
+                                string[] strs = msg.Split('\n');        
+                                _serverController.UpdateTask(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
+                                    JsonConvert.DeserializeObject<UserTask>(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--getAllTasksAdmin"))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SendAllTasks(strs[1].Substring(strs[1].IndexOf('=') + 1));
                             }
                             else if(msg.Contains("--disconnect") && msg.Contains("id="))
                             {

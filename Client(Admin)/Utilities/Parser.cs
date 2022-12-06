@@ -30,5 +30,7 @@ namespace Client_Admin_.Utilities
             JsonConvert.DeserializeObject<List<Project>>(data);
         public IEnumerable<Employee> GetEmployees(string data) =>
             JsonConvert.DeserializeObject<List<Employee>>(data);
+        public IEnumerable<UserRole> GetUserRoles(string data) =>
+            JsonConvert.DeserializeObject<List<UserRole>>(data);
     }
 }

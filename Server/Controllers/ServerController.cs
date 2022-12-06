@@ -280,7 +280,19 @@ namespace Server.Controllers
 
         public void UpdateEmployee(int id, UserEmployeeLong newEmployee) =>
             _employeeController.UpdateEmployee(id, newEmployee);
-        
+
+        public void SendAllUserRoles(string id)
+        {
+            IEnumerable<UserRole> empls = _employeeController.GetUsersRoles();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("allUserRoles=");
+            sb.Append(JsonConvert.SerializeObject(empls));
+            SendMessageToClient(id, sb.ToString());
+        }
+
+        public void CreateEmployeeRole(UserEmployeeRole role) =>
+            _employeeController.AddEmployeeRole(role);
+       
     }
 }
 

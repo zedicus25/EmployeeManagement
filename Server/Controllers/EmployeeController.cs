@@ -241,5 +241,27 @@ namespace Server.Controllers
 
             _dbContext.SaveChanges();
         }
+
+        public IEnumerable<UserRole> GetUsersRoles()
+        {
+            List<UserRole> roles = new List<UserRole>();
+            foreach (var item in _dbContext.UsersRoles)
+            {
+                roles.Add(new UserRole { Id = item.Id, Name = item.Name });
+            }
+            return roles;
+        }
+
+        public void AddEmployeeRole(UserEmployeeRole role)
+        {
+            EmployeesRole newRole = new EmployeesRole();
+            newRole.UserRoleId = role.UserRoleId;
+            EmployeeRoleDescription description = new EmployeeRoleDescription();
+            description.Description = role.Description;
+            description.Title = role.Title;
+            newRole.EmployeeRoleDescription = description;
+            _dbContext.EmployeesRoles.Add(newRole);
+            _dbContext.SaveChanges();
+        }
     }
 }

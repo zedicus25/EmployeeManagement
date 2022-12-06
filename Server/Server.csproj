@@ -89,6 +89,7 @@
     <Compile Include="ServerModels\ServerClient.cs" />
     <Compile Include="ServerModels\UserEmployeeLong.cs" />
     <Compile Include="ServerModels\UserEmployeeRole.cs" />
+    <Compile Include="ServerModels\UserRole.cs" />
     <Compile Include="ServerModels\UserTaskCondtion.cs" />
     <Compile Include="ServerModels\TaskImportance.cs" />
     <Compile Include="ServerModels\User.cs" />

@@ -59,5 +59,6 @@ namespace Client_Admin_.ViewModel
                 return;
             SelectedViewModel = baseVM;
         }
+
     }
 }

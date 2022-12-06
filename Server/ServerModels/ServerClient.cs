@@ -164,6 +164,17 @@ namespace Server.ServerModels
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendAllTasks(strs[1].Substring(strs[1].IndexOf('=') + 1));
                             }
+                            else if(msg.Contains("--getUserRoles") && msg.Contains("id="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SendAllUserRoles(strs[1].Substring(strs[1].IndexOf('=') + 1));
+                            }
+                            else if (msg.Contains("--createEmployeeRole"))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.CreateEmployeeRole(
+                                    JsonConvert.DeserializeObject<UserEmployeeRole>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
+                            }
                             else if(msg.Contains("--disconnect") && msg.Contains("id="))
                             {
                                 string[] strs = msg.Split('\n');

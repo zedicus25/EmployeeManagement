@@ -84,6 +84,7 @@
     <Compile Include="Model\Employee.cs" />
     <Compile Include="Model\EmployeeRole.cs" />
     <Compile Include="Model\Project.cs" />
+    <Compile Include="Model\UserRole.cs" />
     <Compile Include="ViewModel\EmployeeRoleWindows\CreateEmployeeRoleVM.cs" />
     <Compile Include="ViewModel\EmployeeRoleWindows\DeleteEmployeeRoleVM.cs" />
     <Compile Include="ViewModel\EmployeeRoleWindows\EmployeeRoleWindowVM.cs" />

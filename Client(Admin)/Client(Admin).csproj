@@ -81,6 +81,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="View\EmployeeRoleWindow.xaml.cs">
+      <DependentUpon>EmployeeRoleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProjectsWindow.xaml.cs">
+      <DependentUpon>ProjectsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskConditionWindow.xaml.cs">
+      <DependentUpon>TaskConditionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskImportanceWindow.xaml.cs">
+      <DependentUpon>TaskImportanceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserRoleWindow.xaml.cs">
+      <DependentUpon>UserRoleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeWindow.xaml.cs">
+      <DependentUpon>EmployeeWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="View\EmployeeRoleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -114,6 +136,26 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\ProjectsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskConditionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskImportanceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserRoleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

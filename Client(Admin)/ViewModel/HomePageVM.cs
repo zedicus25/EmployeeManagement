@@ -1,28 +1,61 @@
-﻿using System.Collections.Generic;
+﻿using Client_Admin_.View;
+using GalaSoft.MvvmLight.Command;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Client_Admin_.ViewModel
 {
     public class HomePageVM : BaseVM
     {
 
-        private CancellationTokenSource _tokenSource;
-        private Task _vmCreation;
-        private List<BaseVM> _allVMs;
+        private RelayCommand _showEmployeeWindow;
+
+        public RelayCommand ShowEmployeeWindow
+        {
+            get { return _showEmployeeWindow ?? new RelayCommand(() => ShowWindow(new EmployeeWindow())); }
+        }
+
+        private RelayCommand _showEmployeeRoleWindow;
+
+        public RelayCommand ShowEmployeeRoleWindow
+        {
+            get { return _showEmployeeRoleWindow ?? new RelayCommand(() => ShowWindow(new EmployeeRoleWindow())); }
+        }
+
+        private RelayCommand _showUserRoleWindow;
+
+        public RelayCommand ShowUserRoleWindow
+        {
+            get { return _showUserRoleWindow ?? new RelayCommand(() => ShowWindow(new UserRoleWindow())); }
+        }
+        private RelayCommand _showProjectWindow;
+
+        public RelayCommand ShowProjectWindow
+        {
+            get { return _showProjectWindow ?? new RelayCommand(() => ShowWindow(new ProjectsWindow())); }
+        }
+        private RelayCommand _showTaskConditionWindow;
+
+        public RelayCommand ShowTaskConditionWindow
+        {
+            get { return _showTaskConditionWindow ?? new RelayCommand(() => ShowWindow(new TaskConditionWindow())); }
+        }
+        private RelayCommand _showTaskImportanceWindow;
+
+        public RelayCommand ShowTaskImportanceWindow
+        {
+            get { return _showTaskImportanceWindow ?? new RelayCommand(() => ShowWindow(new TaskImportanceWindow())); }
+        }
+
         public HomePageVM()
         {
-            _tokenSource = new CancellationTokenSource();
-            _allVMs = new List<BaseVM>();
-            _vmCreation = new Task(CreateVMs, _tokenSource.Token);
+
         }
 
-        private async void CreateVMs()
-        {
-            while (MainVM.GetInstance().User == null)
-                await Task.Delay(10);
+        private void ShowWindow(Window window) => window.ShowDialog();
 
-            _tokenSource.Cancel();
-        }
+
     }
 }

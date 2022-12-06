@@ -25,7 +25,7 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
         {
             get => _showCreateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is CreateEmployeeVM)
+                if (CurrentViewModel is CreateEmployeeVM || _allVMs.Count < 1)
                     return;
                 CurrentViewModel = _allVMs[0];
             });
@@ -35,7 +35,7 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
         {
             get => _showDeleteMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is DeleteEmployeeVM)
+                if (CurrentViewModel is DeleteEmployeeVM || _allVMs.Count < 2)
                     return;
                 CurrentViewModel = _allVMs[1];
             });
@@ -45,7 +45,7 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
         {
             get => _showUpdateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is UpdateEmployeeVM)
+                if (CurrentViewModel is UpdateEmployeeVM || _allVMs.Count < 3)
                     return;
                 CurrentViewModel = _allVMs[2];
             });
@@ -62,7 +62,7 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
             CreateVMs();
         }
 
-        private void CreateVMs()
+        private async void CreateVMs()
         {
             while (true)
             {
@@ -71,7 +71,9 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
             }
 
             _allVMs.Add(new CreateEmployeeVM());
+            await Task.Delay(8000);
             _allVMs.Add(new DeleteEmployeeVM());
+            await Task.Delay(5000);
             _allVMs.Add(new UpdateEmployeeVM());
         }
 

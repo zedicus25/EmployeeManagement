@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-             xmlns:local="clr-namespace:Client_Admin_.View.EmployeeWindows"
+             xmlns:local="clr-namespace:Client_Admin_.View.EmployeeWindows" xmlns:employeewindows="clr-namespace:Client_Admin_.ViewModel.EmployeeWindows" d:DataContext="{d:DesignInstance Type=employeewindows:UpdateEmployeeVM}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -13,50 +13,79 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <ListBox Margin="10">
+        <ListBox Margin="10" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text=""></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding LastName}" Margin="0 0 5 0"></TextBlock>
+                        <TextBlock Text="{Binding FirstName}"></TextBlock>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <TextBox Foreground="White" Margin="10 8 10 10"
+                <TextBox Text="{Binding SelectedEmployee.FirstName}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="70"
                 materialDesign:HintAssist.Hint="First Name" />
-                <TextBox  Foreground="White" Margin="10 8 10 10"
+                <TextBox Text="{Binding SelectedEmployee.LastName}"  Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="70"
                 materialDesign:HintAssist.Hint="Last Name" />
-                <TextBox Foreground="White" Margin="10 8 10 10"
+                <TextBox Text="{Binding SelectedEmployee.Patronymic}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="70"
                 materialDesign:HintAssist.Hint="Patronymic" />
-                <DatePicker Foreground="White" SelectedDate="{Binding ToCompleteDate, Mode=TwoWay}"
+                <DatePicker Foreground="White" SelectedDate="{Binding SelectedEmployee.Birthday, Mode=TwoWay}"
                 Margin="10"
                 materialDesign:HintAssist.Hint="Birthday"
                 materialDesign:TextFieldAssist.HasClearButton="True"
                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
                 <Separator Margin="10"></Separator>
-                <TextBox Foreground="White" Margin="10 8 10 10"
+                <ComboBox IsEnabled="False" ItemsSource="{Binding SelectedEmployee.Emails}" SelectedItem="{Binding SelectedEmail}" Foreground="White"  Margin="10" 
+                Style="{StaticResource MaterialDesignFilledComboBox}"
+                materialDesign:HintAssist.Hint="Emails"
+                materialDesign:TextFieldAssist.HasClearButton="True">
+                </ComboBox>
+                <StackPanel IsEnabled="False" Orientation="Horizontal">
+                    <TextBox Text="{Binding SelectedEmail}" Foreground="White" Margin="10 8 10 10"
+                Style="{StaticResource MaterialDesignFilledTextBox}"
+                MaxLength="30" MinWidth="150"
+                materialDesign:HintAssist.Hint="Email" />
+                    <Button Command="{Binding DeleteEmail}" Content="Del"></Button>
+                </StackPanel>
+                <Separator Margin="10"></Separator>
+                <ComboBox IsEnabled="False" ItemsSource="{Binding SelectedEmployee.PhoneNumbers}" SelectedItem="{Binding SelectedPhone}" Foreground="White"  Margin="10" 
+                Style="{StaticResource MaterialDesignFilledComboBox}"
+                materialDesign:HintAssist.Hint="Phone numbers"
+                materialDesign:TextFieldAssist.HasClearButton="True">
+                </ComboBox>
+                <StackPanel IsEnabled="False" Orientation="Horizontal">
+                    <TextBox Text="{Binding SelectedPhone}" Foreground="White" Margin="10 8 10 10"
+                Style="{StaticResource MaterialDesignFilledTextBox}"
+                MaxLength="15" MinWidth="150"
+                materialDesign:HintAssist.Hint="Phone Number" />
+                    <Button Command="{Binding DeleteNumber}" Content="Del"></Button>
+                </StackPanel>
+                <Separator Margin="10"></Separator>
+                <TextBox Text="{Binding SelectedEmployee.Country}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="90"
                 materialDesign:HintAssist.Hint="Country" />
-                <TextBox Foreground="White" Margin="10 8 10 10"
+                <TextBox Text="{Binding SelectedEmployee.City}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="90"
                 materialDesign:HintAssist.Hint="City" />
-                <TextBox Foreground="White" Margin="10 8 10 10"
+                <TextBox Text="{Binding SelectedEmployee.Street}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="90"
                 materialDesign:HintAssist.Hint="Street" />
-                <TextBox Foreground="White" Margin="10 8 10 10"
+                <TextBox Text="{Binding SelectedEmployee.House_Number}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="10"
                 materialDesign:HintAssist.Hint="House Number" />
-                <TextBox Foreground="White" Margin="10 8 10 10"
+                <TextBox Text="{Binding SelectedEmployee.Full_Adress}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="250"
                 materialDesign:HintAssist.Hint="Full adress" />
@@ -64,39 +93,42 @@
         </ScrollViewer>
         <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
             <StackPanel Grid.Column="1">
-                <TextBox Foreground="White" Margin="10 8 10 10"
+                <TextBox Text="{Binding SelectedEmployee.Login}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="25"
                 materialDesign:HintAssist.Hint="Login" />
-                <TextBox Foreground="White" Margin="10 8 10 10"
+                <TextBox Text="{Binding NewPassword}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="30"
                 materialDesign:HintAssist.Hint="Password" />
-                <TextBox Foreground="White" Margin="10 8 10 10"
+                <TextBox Text="{Binding SelectedEmployee.Salary}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="6"
                 materialDesign:HintAssist.Hint="Salary" />
-                <ComboBox Foreground="White"  Margin="10" 
+                <ComboBox ItemsSource="{Binding Roles}" SelectedItem="{Binding SelectedRole}" Foreground="White"  Margin="10" 
                 Style="{StaticResource MaterialDesignFilledComboBox}"
                 materialDesign:HintAssist.Hint="Role"
                 materialDesign:TextFieldAssist.HasClearButton="True">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text=""></TextBlock>
+                            <TextBlock Text="{Binding Title}"></TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Foreground="White" Margin="10" 
+                <ComboBox ItemsSource="{Binding Projects}" SelectedItem="{Binding SelectedProject}" Foreground="White" Margin="10" 
                 Style="{StaticResource MaterialDesignFilledComboBox}"
                 materialDesign:HintAssist.Hint="Project"
                 materialDesign:TextFieldAssist.HasClearButton="True">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text=""></TextBlock>
+                            <TextBlock Text="{Binding Title}"></TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
         </ScrollViewer>
+        <Button Command="{Binding UpdateCommand}" Grid.Column="2" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+            <materialDesign:PackIcon Kind="Update" Width="30" Height="30"/>
+        </Button>
     </Grid>
 </UserControl>

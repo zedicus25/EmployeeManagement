@@ -19,6 +19,7 @@ namespace Client_Admin_.Model
         public event Action<IEnumerable<EmployeeRole>> GetEmployeeRoles;
         public event Action<IEnumerable<Project>> GetProjects;
         public event Action<IEnumerable<Employee>> GetEmployees;
+        public event Action<IEnumerable<Employee>> GetAllEmployees;
 
         public string IdOnServer { get; private set; }
 
@@ -60,6 +61,13 @@ namespace Client_Admin_.Model
         public void SendQuerryForEmployees()
         {
             _stringBuilder.Append("--getEmployees\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void SendQuerryForAllEmployees()
+        {
+            _stringBuilder.Append("--getEmployeesAdmin\n");
             _stringBuilder.Append($"id={IdOnServer}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
@@ -137,6 +145,10 @@ namespace Client_Admin_.Model
                         else if (msg.Contains("allEmployees="))
                         {
                             GetEmployees?.Invoke(Parser.GetInstance().GetEmployees(msg.Substring(msg.IndexOf('=') + 1)));
+                        }
+                        else if (msg.Contains("allEmployeesAdmin="))
+                        {
+                            GetAllEmployees?.Invoke(Parser.GetInstance().GetEmployees(msg.Substring(msg.IndexOf('=') + 1)));
                         }
                         else if (msg.Contains("allProjects="))
                         {

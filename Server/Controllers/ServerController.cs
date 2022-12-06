@@ -268,6 +268,18 @@ namespace Server.Controllers
         public void CreateEmployee(UserEmployeeLong empl) => _employeeController.AddEmployee(empl);
 
         public void DeleteEmployee(int employeId) => _employeeController.DeleteEmployee(employeId);
+
+        public void SendAllEmployees(string id)
+        {
+            IEnumerable<UserEmployeeLong> empls = _employeeController.GetAllLongEmployeeData();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("allEmployeesAdmin=");
+            sb.Append(JsonConvert.SerializeObject(empls));
+            SendMessageToClient(id, sb.ToString());
+        }
+
+        public void UpdateEmployee(int id, UserEmployeeLong newEmployee) =>
+            _employeeController.UpdateEmployee(id, newEmployee);
         
     }
 }

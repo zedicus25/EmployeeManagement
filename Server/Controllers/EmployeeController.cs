@@ -31,7 +31,60 @@ namespace Server.Controllers
                 employees.Add(new UserEmployeeShort() { Id = item.Id, FirstName = fio.First_Name, LastName = fio.Last_Name });
             }
             return employees;
+        }
 
+        public IEnumerable<UserEmployeeLong> GetAllLongEmployeeData()
+        {
+            List<UserEmployeeLong> employees = new List<UserEmployeeLong>();
+            if (_dbContext == null)
+                return employees;
+
+            List<Employee> users = _dbContext.Employees.ToList();
+            List<Person> persons = _dbContext.Persons.ToList();
+            List<FIO> fIOs = _dbContext.FIOs.ToList();
+            List<LoginData> loginDatas = _dbContext.LoginDatas.ToList();
+            List<Adress> adresses = _dbContext.Adresses.ToList();
+            foreach (var item in users)
+            {
+                Person person = persons.FirstOrDefault(x => x.Id == item.PersonId);
+                FIO fio = fIOs.FirstOrDefault(x => x.Id == person.FIO_Id);
+                LoginData login = loginDatas.FirstOrDefault(x => x.Id == item.LoginDataId);
+                Adress adress = adresses.FirstOrDefault(x => x.Id == person.Adress_Id);
+                List<Email> emails = _dbContext.Emails.Where(x => x.PersonId == person.Id).ToList();
+                List<string> eml = new List<string>();
+                foreach (var email in emails)
+                {
+                    eml.Add(email.Email1);
+                }
+                List<Phone_Numbers> numbers = _dbContext.Phone_Numbers.Where(x => x.PersonId == person.Id).ToList();
+                List<string> num = new List<string>();
+                foreach (var number in numbers)
+                {
+                    num.Add(number.Phone_Number);
+                }
+                employees.Add(new UserEmployeeLong()
+                {
+                    Id = item.Id,
+                    Login = login.Login,
+                    Password = login.Password,
+                    FirstName = fio.First_Name,
+                    LastName = fio.Last_Name,
+                    Patronymic = fio.Patronymic,
+                    Country = adress.Country,
+                    City = adress.City,
+                    Street = adress.Street,
+                    House_Number = adress.House_Number,
+                    Full_Adress = adress.Full_Adress,
+                    Birthday = person.Birthday,
+                    Salary = (float)item.Salary,
+                    EmployeeRoleId = (int)item.RoleId,
+                    ProjectId = (int)item.ProjectId,
+                    Emails = new List<string>(eml),
+                    PhoneNumbers = new List<string>(num)
+
+                });
+            }
+            return employees;
         }
 
         public IEnumerable<UserEmployeeRole> GetAllEmployeeRoles()
@@ -130,6 +183,62 @@ namespace Server.Controllers
             _dbContext.Phone_Numbers.RemoveRange(numbers);
             _dbContext.FIOs.Remove(fio);
             _dbContext.Adresses.Remove(adress);
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateEmployee(int id, UserEmployeeLong newEmp)
+        {
+            Employee emp = _dbContext.Employees.FirstOrDefault(x => x.Id == id);
+            if (emp == null)
+                return;
+            Person person = _dbContext.Persons.FirstOrDefault(x => x.Id == emp.PersonId);
+            FIO fio = _dbContext.FIOs.FirstOrDefault(x => x.Id == person.FIO_Id);
+            Adress adress = _dbContext.Adresses.FirstOrDefault(x => x.Id == person.Adress_Id);
+            LoginData data = _dbContext.LoginDatas.FirstOrDefault(x => x.Id == emp.LoginDataId);
+            List<Email> emails = _dbContext.Emails.Where(x => x.PersonId == person.Id).ToList();
+            List<Phone_Numbers> numbers = _dbContext.Phone_Numbers.Where(x => x.PersonId == person.Id).ToList();
+            if (fio.First_Name == newEmp.FirstName && fio.Last_Name == newEmp.LastName && fio.Patronymic == newEmp.Patronymic
+                && person.Birthday == newEmp.Birthday && adress.Country == newEmp.Country && adress.City == newEmp.City
+                && adress.Street == newEmp.Street && adress.House_Number == newEmp.House_Number && adress.Full_Adress == newEmp.Full_Adress
+                && data.Login == newEmp.Login && data.Password == newEmp.Password)
+                return;
+            _dbContext.Emails.RemoveRange(emails);
+            _dbContext.Phone_Numbers.RemoveRange(numbers);
+
+            List<Email> newEmails = new List<Email>();
+            foreach (var item in newEmp.Emails)
+            {
+                emails.Add(new Email() { Email1 = item, Person = person });
+            }
+
+            List<Phone_Numbers> newNumbers = new List<Phone_Numbers>();
+            foreach (var item in newEmp.PhoneNumbers)
+            {
+                numbers.Add(new Phone_Numbers() { Phone_Number = item, Person = person });
+            }
+            _dbContext.Phone_Numbers.AddRange(newNumbers);
+            _dbContext.Emails.AddRange(newEmails);
+
+            person.Birthday = newEmp.Birthday;
+
+            fio.First_Name = newEmp.FirstName;
+            fio.Last_Name = newEmp.LastName;
+            fio.Patronymic = newEmp.Patronymic;
+
+            adress.Country = newEmp.Country;
+            adress.City = newEmp.City;
+            adress.Street = newEmp.Street;
+            adress.House_Number = newEmp.House_Number;
+            adress.Full_Adress = newEmp.Full_Adress;
+
+            data.Login = newEmp.Login;
+            if(newEmp.Password != null)
+                data.Password = newEmp.Password;
+
+            emp.Salary = (decimal)newEmp.Salary;
+            emp.RoleId = newEmp.EmployeeRoleId;
+            emp.ProjectId = newEmp.ProjectId;
+
             _dbContext.SaveChanges();
         }
     }

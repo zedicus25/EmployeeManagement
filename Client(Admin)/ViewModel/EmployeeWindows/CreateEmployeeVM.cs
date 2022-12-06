@@ -140,10 +140,15 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
 			Projects = new ObservableCollection<Project>();
 			MainVM.GetInstance().ServerClient.GetEmployeeRoles += GetEmployeeRoles;
 			MainVM.GetInstance().ServerClient.GetProjects += GetProjects;
-			MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
-			MainVM.GetInstance().ServerClient.SendQuerryForProjects();
+			SendQuerrys();
+			
 		}
-
+		private async void SendQuerrys()
+		{
+            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
+			await Task.Delay(3000);
+            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
+        }
 		private void AddUser()
 		{
 			if (SelectedRole == null || SelectedProject == null)

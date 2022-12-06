@@ -24,13 +24,7 @@ namespace Client_Admin_.ViewModel
         {
             get { return _showEmployeeRoleWindow ?? new RelayCommand(() => ShowWindow(new EmployeeRoleWindow())); }
         }
-
-        private RelayCommand _showUserRoleWindow;
-
-        public RelayCommand ShowUserRoleWindow
-        {
-            get { return _showUserRoleWindow ?? new RelayCommand(() => ShowWindow(new UserRoleWindow())); }
-        }
+    
         private RelayCommand _showProjectWindow;
 
         public RelayCommand ShowProjectWindow

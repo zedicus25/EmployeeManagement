@@ -84,12 +84,29 @@
     <Compile Include="Model\Employee.cs" />
     <Compile Include="Model\EmployeeRole.cs" />
     <Compile Include="Model\Project.cs" />
+    <Compile Include="ViewModel\EmployeeRoleWindows\CreateEmployeeRoleVM.cs" />
+    <Compile Include="ViewModel\EmployeeRoleWindows\DeleteEmployeeRoleVM.cs" />
+    <Compile Include="ViewModel\EmployeeRoleWindows\EmployeeRoleWindowVM.cs" />
+    <Compile Include="ViewModel\EmployeeRoleWindows\LinkEmployeeRoleVM.cs" />
+    <Compile Include="ViewModel\EmployeeRoleWindows\UpdateEmployeeRoleVM.cs" />
     <Compile Include="ViewModel\EmployeeWindows\CreateEmployeeVM.cs" />
     <Compile Include="ViewModel\EmployeeWindows\DeleteEmployeeVM.cs" />
     <Compile Include="ViewModel\EmployeeWindows\EmployeeWindowVM.cs" />
     <Compile Include="ViewModel\EmployeeWindows\UpdateEmployeeVM.cs" />
-    <Compile Include="View\EmployeeRoleWindow.xaml.cs">
+    <Compile Include="View\EmployeeRoleWindows\CreateEmployeeRoleControl.xaml.cs">
+      <DependentUpon>CreateEmployeeRoleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeRoleWindows\DeleteEmployeeRoleControl.xaml.cs">
+      <DependentUpon>DeleteEmployeeRoleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeRoleWindows\EmployeeRoleWindow.xaml.cs">
       <DependentUpon>EmployeeRoleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeRoleWindows\LinkEmployeeRoleControl.xaml.cs">
+      <DependentUpon>LinkEmployeeRoleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeRoleWindows\UpdateEmployeeRoleControl.xaml.cs">
+      <DependentUpon>UpdateEmployeeRoleControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EmployeeWindows\CreateEmployeeControl.xaml.cs">
       <DependentUpon>CreateEmployeeControl.xaml</DependentUpon>
@@ -109,13 +126,26 @@
     <Compile Include="View\TaskImportanceWindow.xaml.cs">
       <DependentUpon>TaskImportanceWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserRoleWindow.xaml.cs">
-      <DependentUpon>UserRoleWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\EmployeeWindows\EmployeeWindow.xaml.cs">
       <DependentUpon>EmployeeWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\EmployeeRoleWindow.xaml">
+    <Page Include="View\EmployeeRoleWindows\CreateEmployeeRoleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeRoleWindows\DeleteEmployeeRoleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeRoleWindows\EmployeeRoleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeRoleWindows\LinkEmployeeRoleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeRoleWindows\UpdateEmployeeRoleControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -173,10 +203,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\TaskImportanceWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserRoleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

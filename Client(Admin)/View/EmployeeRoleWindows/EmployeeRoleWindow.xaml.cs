@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client_Admin_.ViewModel.EmployeeRoleWindows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace Client_Admin_.View
         public EmployeeRoleWindow()
         {
             InitializeComponent();
+            this.DataContext = new EmployeeRoleWindowVM();
         }
     }
 }

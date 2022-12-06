@@ -11,7 +11,9 @@
     xmlns:view="clr-namespace:Client_Admin_.View"
     xmlns:viewModel="clr-namespace:Client_Admin_.ViewModel"
     xmlns:employeeVM="clr-namespace:Client_Admin_.ViewModel.EmployeeWindows"
-    xmlns:employeeView="clr-namespace:Client_Admin_.View.EmployeeWindows">
+    xmlns:employeeView="clr-namespace:Client_Admin_.View.EmployeeWindows"
+    xmlns:employeeRoleVM="clr-namespace:Client_Admin_.ViewModel.EmployeeRoleWindows"
+    xmlns:employeeRoleView="clr-namespace:Client_Admin_.View.EmployeeRoleWindows">
 
     <Application.Resources>
         <ResourceDictionary x:Key="MaterialDesign">
@@ -33,6 +35,18 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type employeeVM:UpdateEmployeeVM}">
                 <employeeView:UpdateEmployeeControl></employeeView:UpdateEmployeeControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeRoleVM:CreateEmployeeRoleVM}">
+                <employeeRoleView:CreateEmployeeRoleControl></employeeRoleView:CreateEmployeeRoleControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeRoleVM:DeleteEmployeeRoleVM}">
+                <employeeRoleView:DeleteEmployeeRoleControl></employeeRoleView:DeleteEmployeeRoleControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeRoleVM:UpdateEmployeeRoleVM}">
+                <employeeRoleView:UpdateEmployeeRoleControl></employeeRoleView:UpdateEmployeeRoleControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeRoleVM:LinkEmployeeRoleVM}">
+                <employeeRoleView:LinkEmployeeRoleControl></employeeRoleView:LinkEmployeeRoleControl>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

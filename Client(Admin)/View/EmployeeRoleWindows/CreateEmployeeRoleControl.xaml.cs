@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client_Admin_.View
+namespace Client_Admin_.View.EmployeeRoleWindows
 {
     /// <summary>
-    /// Interaction logic for UserRoleWindow.xaml
+    /// Interaction logic for CreateEmployeeRoleControl.xaml
     /// </summary>
-    public partial class UserRoleWindow : Window
+    public partial class CreateEmployeeRoleControl : UserControl
     {
-        public UserRoleWindow()
+        public CreateEmployeeRoleControl()
         {
             InitializeComponent();
         }

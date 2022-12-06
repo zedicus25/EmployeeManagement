@@ -28,7 +28,7 @@ namespace Server.Controllers
             foreach (var item in users)
             {
                 FIO fio = fIOs.FirstOrDefault(x => x.Id == persons.FirstOrDefault(y => y.Id == item.Id)?.FIO_Id);
-                employees.Add(new UserEmployeeShort() { Id = item.Id, Name = fio.First_Name, LastName = fio.Last_Name });
+                employees.Add(new UserEmployeeShort() { Id = item.Id, FirstName = fio.First_Name, LastName = fio.Last_Name });
             }
             return employees;
 
@@ -110,6 +110,27 @@ namespace Server.Controllers
             _dbContext.Phone_Numbers.AddRange(numbers);
             _dbContext.SaveChanges();
 
+        }
+
+        public void DeleteEmployee(int employeId)
+        {
+            Employee emp = _dbContext.Employees.FirstOrDefault(x => x.Id == employeId);
+            if (emp == null)
+                return;
+            Person person = _dbContext.Persons.FirstOrDefault(x => x.Id == emp.PersonId);
+            FIO fio = _dbContext.FIOs.FirstOrDefault(x => x.Id == person.FIO_Id);
+            Adress adress = _dbContext.Adresses.FirstOrDefault(x => x.Id == person.Adress_Id);
+            LoginData data = _dbContext.LoginDatas.FirstOrDefault(x => x.Id == emp.LoginDataId);
+            List<Email> emails = _dbContext.Emails.Where(x => x.PersonId == person.Id).ToList();
+            List<Phone_Numbers> numbers = _dbContext.Phone_Numbers.Where(x => x.PersonId == person.Id).ToList();  
+            _dbContext.Employees.Remove(emp);
+            _dbContext.LoginDatas.Remove(data);
+            _dbContext.Persons.Remove(person);
+            _dbContext.Emails.RemoveRange(emails);
+            _dbContext.Phone_Numbers.RemoveRange(numbers);
+            _dbContext.FIOs.Remove(fio);
+            _dbContext.Adresses.Remove(adress);
+            _dbContext.SaveChanges();
         }
     }
 }

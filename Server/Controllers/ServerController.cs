@@ -266,6 +266,8 @@ namespace Server.Controllers
         }
 
         public void CreateEmployee(UserEmployeeLong empl) => _employeeController.AddEmployee(empl);
+
+        public void DeleteEmployee(int employeId) => _employeeController.DeleteEmployee(employeId);
         
     }
 }

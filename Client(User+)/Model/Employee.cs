@@ -19,13 +19,13 @@ namespace Client_User__.Model
                 OnPropertyChanged("Id");
             }
         }
-        public string Name
+        public string FirstName
         {
             get => _name;
             set
             {
                 _name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged("FirstName");
             }
         }
         public string LastName
@@ -40,7 +40,7 @@ namespace Client_User__.Model
 
         public string FullName 
         {
-            get => $"{LastName} {Name}";
+            get => $"{LastName} {FirstName}";
         }
 
         private int _id;

@@ -145,7 +145,12 @@ namespace Server.Controllers
             if (task == null)
                 return false;
 
+            ProjectTaskDescription description = _dbContext.ProjectTaskDescriptions.FirstOrDefault(x => x.Id == task.DescriptionId);
+            Term term = _dbContext.Terms.FirstOrDefault(x => x.Id == task.TermId);
+
             _dbContext.ProjectTasks.Remove(task);
+            _dbContext.Terms.Remove(term);
+            _dbContext.ProjectTaskDescriptions.Remove(description);
             if (_dbContext.SaveChanges() > 0)
                 return true;
             return false;

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Documents;
+using System.Windows.Markup;
 
 namespace Client_Admin_.Utilities
 {
@@ -27,5 +28,7 @@ namespace Client_Admin_.Utilities
             => JsonConvert.DeserializeObject<List<EmployeeRole>>(data);
         public IEnumerable<Project> GetProjects(string data) =>
             JsonConvert.DeserializeObject<List<Project>>(data);
+        public IEnumerable<Employee> GetEmployees(string data) =>
+            JsonConvert.DeserializeObject<List<Employee>>(data);
     }
 }

@@ -5,17 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client_Admin_.View.EmployeeWindows"
              mc:Ignorable="d" 
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:employeewindows="clr-namespace:Client_Admin_.ViewModel.EmployeeWindows" d:DataContext="{d:DesignInstance Type=employeewindows:DeleteEmployeeVM}"
              d:DesignHeight="450" d:DesignWidth="400">
     <Grid>
-        <ListBox Margin="10">
+        <ListBox Margin="10" ItemsSource="{Binding Employees}"
+                 SelectedItem="{Binding SelectedEmployee}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text=""></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding LastName}" Margin="0 0 5 0"></TextBlock>
+                        <TextBlock Text="{Binding FirstName}"></TextBlock>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+        <Button Command="{Binding DeleteCommand}" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
             <materialDesign:PackIcon Kind="Delete" Width="30" Height="30"/>
         </Button>
     </Grid>

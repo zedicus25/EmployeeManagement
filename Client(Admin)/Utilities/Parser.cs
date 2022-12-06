@@ -1,5 +1,8 @@
 ﻿using Client_Admin_.Model;
 using Newtonsoft.Json;
+using System.Collections;
+using System.Collections.Generic;
+using System.Windows.Documents;
 
 namespace Client_Admin_.Utilities
 {
@@ -20,5 +23,9 @@ namespace Client_Admin_.Utilities
         }
 
         public User GetUser(string data) => JsonConvert.DeserializeObject<User>(data);
+        public IEnumerable<EmployeeRole> GetEmployeeRoles(string data) 
+            => JsonConvert.DeserializeObject<List<EmployeeRole>>(data);
+        public IEnumerable<Project> GetProjects(string data) =>
+            JsonConvert.DeserializeObject<List<Project>>(data);
     }
 }

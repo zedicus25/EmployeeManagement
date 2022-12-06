@@ -81,6 +81,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Employee.cs" />
+    <Compile Include="Model\EmployeeRole.cs" />
+    <Compile Include="Model\Project.cs" />
     <Compile Include="ViewModel\EmployeeWindows\CreateEmployeeVM.cs" />
     <Compile Include="ViewModel\EmployeeWindows\DeleteEmployeeVM.cs" />
     <Compile Include="ViewModel\EmployeeWindows\EmployeeWindowVM.cs" />

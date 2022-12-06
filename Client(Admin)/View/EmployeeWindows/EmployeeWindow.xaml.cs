@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client_Admin_.ViewModel.EmployeeWindows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace Client_Admin_.View.EmployeeWindows
         public EmployeeWindow()
         {
             InitializeComponent();
+            this.DataContext = new EmployeeWindowVM();
         }
     }
 }

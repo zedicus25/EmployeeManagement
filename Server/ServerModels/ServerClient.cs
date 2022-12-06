@@ -101,10 +101,20 @@ namespace Server.ServerModels
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendConditions(strs[1].Substring(strs[1].IndexOf('=') + 1));
                             }
+                            else if (msg.Contains("--getEmployeeRole") && msg.Contains("id="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SendEmployeeRoles(strs[1].Substring(strs[1].IndexOf('=') + 1));
+                            }
                             else if (msg.Contains("--getEmployees") && msg.Contains("id="))
                             {
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendEmployees(strs[1].Substring(strs[1].IndexOf('=') + 1));
+                            }
+                            else if (msg.Contains("--addNewEmployee"))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.CreateEmployee(JsonConvert.DeserializeObject<UserEmployeeLong>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
                             }
                             else if (msg.Contains("--getProjects") && msg.Contains("id="))
                             {

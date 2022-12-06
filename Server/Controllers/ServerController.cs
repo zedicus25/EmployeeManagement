@@ -225,7 +225,7 @@ namespace Server.Controllers
 
         public void SendEmployees(string id)
         {
-            IEnumerable<UserEmployee> employees = _employeeController.GetAllShortEmployeeData();
+            IEnumerable<UserEmployeeShort> employees = _employeeController.GetAllShortEmployeeData();
             StringBuilder sb = new StringBuilder();
             sb.Append("allEmployees=");
             sb.Append(JsonConvert.SerializeObject(employees));
@@ -238,6 +238,15 @@ namespace Server.Controllers
             sb.Append("allProjects=");
             sb.Append(JsonConvert.SerializeObject(projects));
             SendMessageToClient(id, sb.ToString());
+        }
+
+        public void SendEmployeeRoles(string id)
+        {
+            IEnumerable<UserEmployeeRole> roles = _employeeController.GetAllEmployeeRoles();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("employeeRoles=");
+            sb.Append(JsonConvert.SerializeObject(roles));
+            SendMessageToClient(id,sb.ToString());
         }
 
         public void CreateTask(UserTask task) => _userTaskController.AddTask(task);
@@ -256,6 +265,8 @@ namespace Server.Controllers
             SendMessageToClient(id, sb.ToString());
         }
 
+        public void CreateEmployee(UserEmployeeLong empl) => _employeeController.AddEmployee(empl);
+        
     }
 }
 

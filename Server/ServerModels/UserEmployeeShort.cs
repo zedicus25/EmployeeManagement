@@ -1,6 +1,6 @@
 ﻿namespace Server.ServerModels
 {
-    public class UserEmployee
+    public class UserEmployeeShort
     {
         public int Id { get; set; }
         public string Name { get; set; }

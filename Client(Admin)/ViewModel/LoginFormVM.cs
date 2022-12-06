@@ -80,7 +80,7 @@ namespace Client_Admin_.ViewModel
         private void SetLoginigResult(bool res, User user)
         {
             _loginigResult = res;
-            if (_loginigResult && user.UserRoleId != 1)
+            if (_loginigResult && user.UserRoleId == 7)
             {
                 MainVM.GetInstance().SetViewModel(new HomePageVM());
                 MainVM.GetInstance().User = user;

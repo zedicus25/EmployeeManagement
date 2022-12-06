@@ -22,41 +22,41 @@
         </ListBox>
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <TextBox Margin="10 8 10 10"
+                <TextBox Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="70"
                 materialDesign:HintAssist.Hint="First Name" />
-                <TextBox Margin="10 8 10 10"
+                <TextBox  Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="70"
                 materialDesign:HintAssist.Hint="Last Name" />
-                <TextBox Margin="10 8 10 10"
+                <TextBox Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="70"
                 materialDesign:HintAssist.Hint="Patronymic" />
-                <DatePicker SelectedDate="{Binding ToCompleteDate, Mode=TwoWay}"
+                <DatePicker Foreground="White" SelectedDate="{Binding ToCompleteDate, Mode=TwoWay}"
                 Margin="10"
                 materialDesign:HintAssist.Hint="Birthday"
                 materialDesign:TextFieldAssist.HasClearButton="True"
                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
                 <Separator Margin="10"></Separator>
-                <TextBox Margin="10 8 10 10"
+                <TextBox Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="90"
                 materialDesign:HintAssist.Hint="Country" />
-                <TextBox Margin="10 8 10 10"
+                <TextBox Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="90"
                 materialDesign:HintAssist.Hint="City" />
-                <TextBox Margin="10 8 10 10"
+                <TextBox Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="90"
                 materialDesign:HintAssist.Hint="Street" />
-                <TextBox Margin="10 8 10 10"
+                <TextBox Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="10"
                 materialDesign:HintAssist.Hint="House Number" />
-                <TextBox Margin="10 8 10 10"
+                <TextBox Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="250"
                 materialDesign:HintAssist.Hint="Full adress" />
@@ -64,19 +64,19 @@
         </ScrollViewer>
         <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
             <StackPanel Grid.Column="1">
-                <TextBox Margin="10 8 10 10"
+                <TextBox Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="25"
                 materialDesign:HintAssist.Hint="Login" />
-                <TextBox Margin="10 8 10 10"
+                <TextBox Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="30"
                 materialDesign:HintAssist.Hint="Password" />
-                <TextBox Margin="10 8 10 10"
+                <TextBox Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="6"
                 materialDesign:HintAssist.Hint="Salary" />
-                <ComboBox   Margin="10" 
+                <ComboBox Foreground="White"  Margin="10" 
                 Style="{StaticResource MaterialDesignFilledComboBox}"
                 materialDesign:HintAssist.Hint="Role"
                 materialDesign:TextFieldAssist.HasClearButton="True">
@@ -86,7 +86,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox  Margin="10" 
+                <ComboBox Foreground="White" Margin="10" 
                 Style="{StaticResource MaterialDesignFilledComboBox}"
                 materialDesign:HintAssist.Hint="Project"
                 materialDesign:TextFieldAssist.HasClearButton="True">

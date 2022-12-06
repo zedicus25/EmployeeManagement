@@ -1,6 +1,8 @@
 ﻿using Client_Admin_.Utilities;
 using Client_Admin_.ViewModel;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -13,6 +15,9 @@ namespace Client_Admin_.Model
         public event Action<string> StateUpdating;
         public event Action<string> GetServerMessage;
         public event Action<bool, User> LoginingResult;
+
+        public event Action<IEnumerable<EmployeeRole>> GetEmployeeRoles;
+        public event Action<IEnumerable<Project>> GetProjects;
 
         public string IdOnServer { get; private set; }
 
@@ -36,10 +41,24 @@ namespace Client_Admin_.Model
             TryConnect();
         }
 
+        public void SendQuerryForEmployeeRoles()
+        {
+            _stringBuilder.Append("--getEmployeeRole\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void SendQuerryForProjects()
+        {
+            _stringBuilder.Append("--getProjects\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+
         public void SendMessageToServer(string message)
         {
             if (message.ToLower().Contains("drop") || message.ToLower().Contains("delete") ||
-                message.ToLower().Contains("update") || message.ToLower().Contains("add") ||
                 message.ToLower().Contains("alter") || message.ToLower().Contains("table"))
                 return;
             try
@@ -101,6 +120,14 @@ namespace Client_Admin_.Model
                             if (res)
                                 user = Parser.GetInstance().GetUser(msg.Substring(msg.IndexOf('\n') + 1));
                             LoginingResult?.Invoke(res, user);
+                        }
+                        else if(msg.Contains("employeeRoles="))
+                        {
+                            GetEmployeeRoles?.Invoke(Parser.GetInstance().GetEmployeeRoles(msg.Substring(msg.IndexOf('=') + 1)));
+                        }
+                        else if (msg.Contains("allProjects="))
+                        {
+                            GetProjects?.Invoke(Parser.GetInstance().GetProjects(msg.Substring(msg.IndexOf('=') + 1)));
                         }
                         else
                         {

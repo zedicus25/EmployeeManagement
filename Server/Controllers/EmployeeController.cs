@@ -263,5 +263,14 @@ namespace Server.Controllers
             _dbContext.EmployeesRoles.Add(newRole);
             _dbContext.SaveChanges();
         }
+
+        public void SetNewUserRoleForEmployeeRole(int userRoleId, int employeeRoleId)
+        {
+            EmployeesRole role = _dbContext.EmployeesRoles.FirstOrDefault(x => x.Id == employeeRoleId);
+            if (role == null)
+                return;
+            role.UserRoleId = userRoleId;
+            _dbContext.SaveChanges();
+        }
     }
 }

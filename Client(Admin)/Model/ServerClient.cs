@@ -81,6 +81,15 @@ namespace Client_Admin_.Model
             _stringBuilder.Clear();
         }
 
+        public void SetUserRoleForEmployeeRole(int userRole, int employeeRole)
+        {
+            _stringBuilder.Append("--setEmployeeRole\n");
+            _stringBuilder.Append($"userRole={userRole}\n");
+            _stringBuilder.Append($"employeeRole={employeeRole}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+
         public void SendMessageToServer(string message)
         {
             if (message.ToLower().Contains("drop") || message.ToLower().Contains("delete") ||

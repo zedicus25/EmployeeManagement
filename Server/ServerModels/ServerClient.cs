@@ -175,6 +175,12 @@ namespace Server.ServerModels
                                 _serverController.CreateEmployeeRole(
                                     JsonConvert.DeserializeObject<UserEmployeeRole>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
                             }
+                            else if (msg.Contains("--setEmployeeRole") && msg.Contains("userRole=") && msg.Contains("employeeRole="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SetNewUserRoleForEmployeeRole(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
+                                    Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                            }
                             else if(msg.Contains("--disconnect") && msg.Contains("id="))
                             {
                                 string[] strs = msg.Split('\n');

@@ -292,7 +292,11 @@ namespace Server.Controllers
 
         public void CreateEmployeeRole(UserEmployeeRole role) =>
             _employeeController.AddEmployeeRole(role);
-       
+
+        public void SetNewUserRoleForEmployeeRole(int userRoleId, int employeeRoleId) =>
+            _employeeController.SetNewUserRoleForEmployeeRole(userRoleId, employeeRoleId);
+
+
     }
 }
 

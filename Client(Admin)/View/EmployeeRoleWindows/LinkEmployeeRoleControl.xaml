@@ -3,10 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Client_Admin_.View.EmployeeRoleWindows"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:Client_Admin_.View.EmployeeRoleWindows" xmlns:employeerolewindows="clr-namespace:Client_Admin_.ViewModel.EmployeeRoleWindows" d:DataContext="{d:DesignInstance Type=employeerolewindows:LinkEmployeeRoleVM}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <ComboBox ItemsSource="{Binding EmployeeRoles}" SelectedItem="{Binding SelectedEmployeeRole}"  Foreground="White"  Margin="10" 
+                Style="{StaticResource MaterialDesignFilledComboBox}"
+                materialDesign:HintAssist.Hint="Employee role"
+                materialDesign:TextFieldAssist.HasClearButton="True">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox ItemsSource="{Binding UserRoles}" SelectedItem="{Binding SelectedUserRole}"  Foreground="White"  Margin="10" 
+                Style="{StaticResource MaterialDesignFilledComboBox}"
+                materialDesign:HintAssist.Hint="User role"
+                materialDesign:TextFieldAssist.HasClearButton="True">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+        <Button Command="{Binding LinkCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+            <materialDesign:PackIcon Kind="Link" Width="30" Height="30"/>
+        </Button>
     </Grid>
 </UserControl>

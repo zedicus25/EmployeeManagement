@@ -1,0 +1,28 @@
+﻿<Window x:Class="Client_Admin_.View.EmployeeWindows.EmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client_Admin_.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        mc:Ignorable="d"
+        Title="UserWindow" Height="450" Width="800">
+    <Grid>
+        <ToolBarTray  Orientation="Vertical">
+            <ToolBar
+                Style="{StaticResource MaterialDesignToolBar}"
+                ClipToBounds="False">
+                <Button Command="{Binding ShowCreateMenu}"
+                    ToolTip="Create employee"
+                    Content="{materialDesign:PackIcon Kind=PlusCircleOutline}" />
+                <Button Command="{Binding ShowDeleteMenu}"
+                    ToolTip="Delete employee"
+                    Content="{materialDesign:PackIcon Kind=MinusCircleOutline}" />
+                <Button Command="{Binding ShowUpdateMenu}"
+                    ToolTip="Update employee"
+                    Content="{materialDesign:PackIcon Kind=Update}" />
+
+            </ToolBar>
+        </ToolBarTray>
+    </Grid>
+</Window>

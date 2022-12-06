@@ -9,7 +9,9 @@
     xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:view="clr-namespace:Client_Admin_.View"
-    xmlns:viewModel="clr-namespace:Client_Admin_.ViewModel">
+    xmlns:viewModel="clr-namespace:Client_Admin_.ViewModel"
+    xmlns:employeeVM="clr-namespace:Client_Admin_.ViewModel.EmployeeWindows"
+    xmlns:employeeView="clr-namespace:Client_Admin_.View.EmployeeWindows">
 
     <Application.Resources>
         <ResourceDictionary x:Key="MaterialDesign">
@@ -22,6 +24,15 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModel:HomePageVM}">
                 <view:HomePage></view:HomePage>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeVM:CreateEmployeeVM}">
+                <employeeView:CreateEmployeeControl></employeeView:CreateEmployeeControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeVM:DeleteEmployeeVM}">
+                <employeeView:DeleteEmployeeControl></employeeView:DeleteEmployeeControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeVM:UpdateEmployeeVM}">
+                <employeeView:UpdateEmployeeControl></employeeView:UpdateEmployeeControl>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

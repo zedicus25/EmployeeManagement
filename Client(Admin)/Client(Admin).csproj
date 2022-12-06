@@ -81,8 +81,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\EmployeeWindows\CreateEmployeeVM.cs" />
+    <Compile Include="ViewModel\EmployeeWindows\DeleteEmployeeVM.cs" />
+    <Compile Include="ViewModel\EmployeeWindows\EmployeeWindowVM.cs" />
+    <Compile Include="ViewModel\EmployeeWindows\UpdateEmployeeVM.cs" />
     <Compile Include="View\EmployeeRoleWindow.xaml.cs">
       <DependentUpon>EmployeeRoleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeWindows\CreateEmployeeControl.xaml.cs">
+      <DependentUpon>CreateEmployeeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeWindows\DeleteEmployeeControl.xaml.cs">
+      <DependentUpon>DeleteEmployeeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmployeeWindows\UpdateEmployeeControl.xaml.cs">
+      <DependentUpon>UpdateEmployeeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ProjectsWindow.xaml.cs">
       <DependentUpon>ProjectsWindow.xaml</DependentUpon>
@@ -96,10 +109,22 @@
     <Compile Include="View\UserRoleWindow.xaml.cs">
       <DependentUpon>UserRoleWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EmployeeWindow.xaml.cs">
+    <Compile Include="View\EmployeeWindows\EmployeeWindow.xaml.cs">
       <DependentUpon>EmployeeWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="View\EmployeeRoleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeWindows\CreateEmployeeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeWindows\DeleteEmployeeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeWindows\UpdateEmployeeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -152,7 +177,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EmployeeWindow.xaml">
+    <Page Include="View\EmployeeWindows\EmployeeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

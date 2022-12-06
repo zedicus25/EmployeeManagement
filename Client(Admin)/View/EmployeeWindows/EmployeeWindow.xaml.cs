@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Client_Admin_.View
+namespace Client_Admin_.View.EmployeeWindows
 {
     /// <summary>
     /// Interaction logic for UserWindow.xaml

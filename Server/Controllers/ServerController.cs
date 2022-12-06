@@ -296,7 +296,8 @@ namespace Server.Controllers
         public void SetNewUserRoleForEmployeeRole(int userRoleId, int employeeRoleId) =>
             _employeeController.SetNewUserRoleForEmployeeRole(userRoleId, employeeRoleId);
 
-
+        public void RemoveEmployeeRole(int empRoleId) =>
+            _employeeController.RemoveEmployeeRole(empRoleId);
     }
 }
 

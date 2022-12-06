@@ -121,6 +121,11 @@ namespace Server.ServerModels
                                 string[] strs = msg.Split('\n');
                                 _serverController.CreateEmployee(JsonConvert.DeserializeObject<UserEmployeeLong>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
                             }
+                            else if (msg.Contains("--removeEmployeeRole") && msg.Contains("id="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.RemoveEmployeeRole(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)));
+                            }
                             else if (msg.Contains("--removeEmployee"))
                             {
                                 string[] strs = msg.Split('\n');
@@ -181,6 +186,7 @@ namespace Server.ServerModels
                                 _serverController.SetNewUserRoleForEmployeeRole(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
                                     Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
                             }
+                            
                             else if(msg.Contains("--disconnect") && msg.Contains("id="))
                             {
                                 string[] strs = msg.Split('\n');

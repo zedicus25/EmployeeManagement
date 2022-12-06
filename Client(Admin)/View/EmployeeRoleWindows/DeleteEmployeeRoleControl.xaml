@@ -3,10 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Client_Admin_.View.EmployeeRoleWindows"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:local="clr-namespace:Client_Admin_.View.EmployeeRoleWindows" xmlns:employeerolewindows="clr-namespace:Client_Admin_.ViewModel.EmployeeRoleWindows" d:DataContext="{d:DesignInstance Type=employeerolewindows:DeleteEmployeeRoleVM}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="400">
     <Grid>
-            
+        <ComboBox VerticalAlignment="Top" ItemsSource="{Binding EmployeeRoles}" SelectedItem="{Binding SelectedEmployeeRole}"  Foreground="White"  Margin="10" 
+                Style="{StaticResource MaterialDesignFilledComboBox}"
+                materialDesign:HintAssist.Hint="Employee role"
+                materialDesign:TextFieldAssist.HasClearButton="True" MaxHeight="50">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button Command="{Binding DeleteCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+            <materialDesign:PackIcon Kind="Delete" Width="30" Height="30"/>
+        </Button>
     </Grid>
 </UserControl>

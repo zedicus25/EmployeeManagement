@@ -1,0 +1,86 @@
+<Application 
+    x:Class="Client_Admin.App" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:local="clr-namespace:Client_Admin" 
+    StartupUri="./View/MainWindow.xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    d1p1:Ignorable="d" 
+    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:view="clr-namespace:Client_Admin_.View"
+    xmlns:viewModel="clr-namespace:Client_Admin_.ViewModel"
+    xmlns:employeeVM="clr-namespace:Client_Admin_.ViewModel.EmployeeWindows"
+    xmlns:employeeView="clr-namespace:Client_Admin_.View.EmployeeWindows"
+    xmlns:employeeRoleVM="clr-namespace:Client_Admin_.ViewModel.EmployeeRoleWindows"
+    xmlns:employeeRoleView="clr-namespace:Client_Admin_.View.EmployeeRoleWindows"
+    xmlns:projectVM ="clr-namespace:Client_Admin_.ViewModel.ProjectWindows"
+    xmlns:projectView="clr-namespace:Client_Admin_.View.ProjectWindows"
+    xmlns:taskConditionVM="clr-namespace:Client_Admin_.ViewModel.TaskConditionWindows"
+    xmlns:taskConditonView="clr-namespace:Client_Admin_.View.TaskConditionWindows"
+    xmlns:taskImportanceVM="clr-namespace:Client_Admin_.ViewModel.TaskImportanceWindows"
+    xmlns:taskImportanceView="clr-namespace:Client_Admin_.View.TaskImportanceWindows">
+
+    <Application.Resources>
+        <ResourceDictionary x:Key="MaterialDesign">
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:CustomColorTheme BaseTheme="Dark" PrimaryColor="#3f51b5" SecondaryColor="#3d5afe" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type viewModel:LoginFormVM}">
+                <view:LoginControl></view:LoginControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:HomePageVM}">
+                <view:HomePage></view:HomePage>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeVM:CreateEmployeeVM}">
+                <employeeView:CreateEmployeeControl></employeeView:CreateEmployeeControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeVM:DeleteEmployeeVM}">
+                <employeeView:DeleteEmployeeControl></employeeView:DeleteEmployeeControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeVM:UpdateEmployeeVM}">
+                <employeeView:UpdateEmployeeControl></employeeView:UpdateEmployeeControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeRoleVM:CreateEmployeeRoleVM}">
+                <employeeRoleView:CreateEmployeeRoleControl></employeeRoleView:CreateEmployeeRoleControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeRoleVM:DeleteEmployeeRoleVM}">
+                <employeeRoleView:DeleteEmployeeRoleControl></employeeRoleView:DeleteEmployeeRoleControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeRoleVM:UpdateEmployeeRoleVM}">
+                <employeeRoleView:UpdateEmployeeRoleControl></employeeRoleView:UpdateEmployeeRoleControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type employeeRoleVM:LinkEmployeeRoleVM}">
+                <employeeRoleView:LinkEmployeeRoleControl></employeeRoleView:LinkEmployeeRoleControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type projectVM:CreateProjectVM}">
+                <projectView:CreateProjectControl></projectView:CreateProjectControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type projectVM:DeleteProjectVM}">
+                <projectView:DeleteProjectControl></projectView:DeleteProjectControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type projectVM:UpdateProjectVM}">
+                <projectView:UpdateProjectControl></projectView:UpdateProjectControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskConditionVM:CreateTaskConditionVM}">
+                <taskConditonView:CreateTaskConditionControl></taskConditonView:CreateTaskConditionControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskConditionVM:DeleteTaskConditionVM}">
+                <taskConditonView:DeleteTaskConditionControl></taskConditonView:DeleteTaskConditionControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskConditionVM:UpdateTaskConditionVM}">
+                <taskConditonView:UpdateTaskConditionControl></taskConditonView:UpdateTaskConditionControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskImportanceVM:CreateTaskImportanceVM}">
+                <taskImportanceView:CreateTaskImportanceControl></taskImportanceView:CreateTaskImportanceControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskImportanceVM:DeleteTaskImportanceVM}">
+                <taskImportanceView:DeleteTaskImportanceControl></taskImportanceView:DeleteTaskImportanceControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskImportanceVM:UpdateTaskImportanceVM}">
+                <taskImportanceView:UpdateTaskImportanceControl></taskImportanceView:UpdateTaskImportanceControl>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="EmployeeManagement.CustomControls.Account"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EmployeeManagement.CustomControls" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+       <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.ColumnSpan="5" Grid.RowSpan="3" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Image Margin="30 10" Width="200" HorizontalAlignment="Left" Height="200" Source="/CustomControls/defaultUser.png" Stretch="Uniform"/>
+                <TextBlock Padding="10" FontSize="30" Text="{Binding User.First_Name}"></TextBlock>
+                <TextBlock Padding="10" FontSize="30" Text="{Binding User.Last_Name}"></TextBlock>
+                <TextBlock Padding="10" FontSize="30" Text="{Binding User.Patronymic}"></TextBlock>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="30 10" Grid.Row="3" Grid.RowSpan="3" Grid.ColumnSpan="6">
+            <StackPanel Orientation="Vertical">
+                <TextBlock FontSize="18" HorizontalAlignment="Center">About you</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Cake" Margin="0 10" VerticalAlignment="Top"/>
+                    <TextBlock  VerticalAlignment="Top" FontSize="15" Padding="10 10" Text="Birthday: "></TextBlock>
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="0 10"  Text="{Binding User.Birthday, StringFormat=dd MMMM yyyy}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="CityVariantOutline" Margin="0 10" VerticalAlignment="Top" />
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="10 10" Text="Country: "></TextBlock>
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="0 10"  Text="{Binding User.Country}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="CityVariantOutline" Margin="0 10" VerticalAlignment="Top" />
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="10 10" Text="City: "></TextBlock>
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="0 10"  Text="{Binding User.City}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="MapMarkerOutline" Margin="0 10" VerticalAlignment="Top" />
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="10 10" Text="Street: "></TextBlock>
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="0 10"  Text="{Binding User.Street}"></TextBlock>
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="0 10"  Text=" "></TextBlock>
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="0 10"  Text="{Binding User.House_Number}"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Margin="50 0" Orientation="Vertical">
+                <TextBlock FontSize="18" HorizontalAlignment="Center">Your contacts</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="PhoneOutline" Margin="0 10" VerticalAlignment="Top"/>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock  VerticalAlignment="Top" FontSize="15" Padding="10 10" Text="Phones: "></TextBlock>
+                        <ListBox ItemsSource="{Binding User.PhoneNumbers, UpdateSourceTrigger=PropertyChanged}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding PhoneNumber}">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="EmailEditOutline" Margin="0 10" VerticalAlignment="Top" />
+                    <StackPanel>
+                        <TextBlock  VerticalAlignment="Top" FontSize="15" Padding="10 10" Text="Emails: "></TextBlock>
+                        <ListBox ItemsSource="{Binding User.Emails, UpdateSourceTrigger=PropertyChanged}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Email}">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Margin="50 0" Orientation="Vertical">
+                <TextBlock FontSize="18" HorizontalAlignment="Center">Work place information</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="BadgeAccountOutline" Margin="0 10" VerticalAlignment="Top" />
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="10 10" Text="Position: "></TextBlock>
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="0 10"  Text="{Binding User.EmployeeRoleName}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="DesktopClassic" Margin="0 10" VerticalAlignment="Top" />
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="10 10" Text="Project: "></TextBlock>
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="0 10"  Text="{Binding User.Project.Title}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="CreditCardOutline" Margin="0 10" VerticalAlignment="Top" />
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="10 10" Text="Salary: "></TextBlock>
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="0 10" Text="$"></TextBlock>
+                    <TextBlock VerticalAlignment="Top" FontSize="15" Padding="0 10"  Text="{Binding User.Salary}"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        
+
+    </Grid>
+</UserControl>

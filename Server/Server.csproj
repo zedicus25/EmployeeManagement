@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8B33D993-5AA2-4154-AF80-02246689CE4F}</ProjectGuid>
+    <ProjectGuid>{76C2E3A4-AEBE-4B8A-8518-DF8E4365C9A0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Server</RootNamespace>
     <AssemblyName>Server</AssemblyName>
@@ -12,6 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,11 +36,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,17 +61,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\ServerController.cs" />
-    <Compile Include="Controller\UserController.cs" />
-    <Compile Include="Model\ServerClient.cs" />
-    <Compile Include="Utilities\IDataController.cs" />
-    <Compile Include="Utilities\JsonDataController.cs" />
-    <Compile Include="Model\User.cs" />
-    <Compile Include="View\Form1.cs">
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\ServerController.cs" />
+    <Compile Include="Controllers\UserTaskController.cs" />
+    <Compile Include="Models\Adress.cs" />
+    <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeeManagement.cs" />
+    <Compile Include="Models\EmployeeRoleDescription.cs" />
+    <Compile Include="Models\EmployeesRole.cs" />
+    <Compile Include="Models\FIO.cs" />
+    <Compile Include="Models\Importance.cs" />
+    <Compile Include="Models\ImportanceDescription.cs" />
+    <Compile Include="Models\LoginData.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Phone_Numbers.cs" />
+    <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\ProjectDescription.cs" />
+    <Compile Include="Models\ProjectTask.cs" />
+    <Compile Include="Models\ProjectTaskDescription.cs" />
+    <Compile Include="Models\TaskCondition.cs" />
+    <Compile Include="Models\TaskConditionDescription.cs" />
+    <Compile Include="Models\Term.cs" />
+    <Compile Include="Models\UsersRole.cs" />
+    <Compile Include="ServerModels\ServerClient.cs" />
+    <Compile Include="ServerModels\UserEmployeeLong.cs" />
+    <Compile Include="ServerModels\UserEmployeeRole.cs" />
+    <Compile Include="ServerModels\UserRole.cs" />
+    <Compile Include="ServerModels\UserTaskCondtion.cs" />
+    <Compile Include="ServerModels\TaskImportance.cs" />
+    <Compile Include="ServerModels\User.cs" />
+    <Compile Include="ServerModels\UserEmail.cs" />
+    <Compile Include="ServerModels\UserEmployeeShort.cs" />
+    <Compile Include="ServerModels\UserPhoneNumber.cs" />
+    <Compile Include="ServerModels\UserProject.cs" />
+    <Compile Include="ServerModels\UserTask.cs" />
+    <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="View\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,8 +115,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="View\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="View\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -91,4 +134,12 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
 </Project>

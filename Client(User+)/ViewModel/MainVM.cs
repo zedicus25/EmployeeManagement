@@ -51,7 +51,6 @@ namespace Client_User__.ViewModel
         private MainVM()
         {
             SelectedViewModel = new LoginFormVM();
-            ServerClient = new ServerClient();
             IsLoginig = false;
         }
 
@@ -60,6 +59,15 @@ namespace Client_User__.ViewModel
             if (baseVM == null)
                 return;
             SelectedViewModel = baseVM;
+        }
+
+        public void ConnectToServer()
+        {
+            if (ServerClient != null && ServerClient.IsConnected)
+                return;
+
+            ServerClient = new ServerClient();
+
         }
 
         public void SetLogining(bool res) => IsLoginig = res;

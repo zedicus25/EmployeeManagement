@@ -170,12 +170,21 @@ namespace Server.Controllers
             ProjectTask task = _dbContext.ProjectTasks.FirstOrDefault(x => x.Id == id);
             ProjectTaskDescription project = _dbContext.ProjectTaskDescriptions.FirstOrDefault(x => x.Id == task.DescriptionId);
             Term term = _dbContext.Terms.FirstOrDefault(x => x.Id == task.TermId);
+
+            if (project.Title == newTask.Title && project.TaskDescription == project.TaskDescription
+                && task.TaskConditionId == newTask.ConditionId && task.EmployeeId == newTask.EmployeeId &&
+                task.ImportanceId == newTask.ImportanceId && task.ProjectId == newTask.ProjectId && term.ToComplete == newTask.ToComplete)
+                return;
+
             project.Title = newTask.Title;  
             project.TaskDescription = newTask.Description;
             term.ToComplete = newTask.ToComplete;
             task.ProjectId = newTask.ProjectId;
             task.ImportanceId = newTask.ImportanceId;
-            task.EmployeeId = newTask.EmployeeId;
+            if (newTask.EmployeeId == 0)
+                task.EmployeeId = null;
+            else
+                task.EmployeeId = newTask.EmployeeId;
             task.TaskConditionId = newTask.ConditionId;
             _dbContext.SaveChanges();
         }

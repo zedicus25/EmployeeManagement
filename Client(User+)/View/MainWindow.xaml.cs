@@ -25,6 +25,7 @@ namespace Client_User__
         {
             InitializeComponent();
             this.DataContext = MainVM.GetInstance();
+            MainVM.GetInstance().ConnectToServer();
         }
     }
 }

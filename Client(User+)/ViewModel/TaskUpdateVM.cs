@@ -85,15 +85,6 @@ namespace Client_User__.ViewModel
                 OnPropertyChanged("Projects");
             }
         }
-        public UserTask NewTask
-        {
-            get => _newTask;
-            set
-            {
-                _newTask = value;
-                OnPropertyChanged("NewTask");
-            }
-        }
         public DateTime ToCompleteDate
         {
             get => _toCompleteDate;
@@ -103,7 +94,6 @@ namespace Client_User__.ViewModel
                 OnPropertyChanged("ToCompleteDate");
             }
         }
-
 
 
         public UserProject SelectedProject
@@ -156,7 +146,6 @@ namespace Client_User__.ViewModel
         private ObservableCollection<Employee> _employees;
         private ObservableCollection<UserProject> _projects;
 
-        private UserTask _newTask;
         private DateTime _toCompleteDate;
 
         private UserProject _selectedProject;
@@ -173,6 +162,7 @@ namespace Client_User__.ViewModel
             Importances = new ObservableCollection<TaskImportant>();
             Projects = new ObservableCollection<UserProject>();
             Conditions = new ObservableCollection<TaskCondition>();
+            SelectedTask = new UserTask();
         }
         private void AddListeners()
         {
@@ -184,7 +174,6 @@ namespace Client_User__.ViewModel
             MainVM.GetInstance().ServerClient.GetTaskConditions += GetTaskConditions;
             MainVM.GetInstance().ServerClient.GetEmployees += GetEmployees;
             MainVM.GetInstance().ServerClient.GetProjects += GetProjects;
-            MainVM.GetInstance().ServerClient.GetTaskById += GetTaskById;
         }
 
         private void GetAllTasks(List<UserTask> obj)
@@ -209,36 +198,28 @@ namespace Client_User__.ViewModel
             Conditions.Union(obj);
         }
 
-        private void GetTaskById(UserTask obj)
-        {
-            NewTask.Id = obj.Id;
-            NewTask.Title = obj.Title;
-            NewTask.Description = obj.Description;
-            ToCompleteDate = obj.ToComplete;
-            if (obj.EmployeeId != 0)
-                SelectedEmployee = Employees.FirstOrDefault(x => x.Id == obj.EmployeeId);
-            SelectedProject = Projects.FirstOrDefault(x => x.Id == obj.ProjectId);
-            SelectedImportance = Importances.FirstOrDefault(x => x.Id == obj.ImportanceId);
-            SelectedCondition = Conditions.FirstOrDefault(x => x.Id == obj.ConditionId);
-        }
-
         private void UpdateTask()
         {
-            if (NewTask.Title.Equals(String.Empty) || NewTask.Description.Equals(String.Empty) || ToCompleteDate == null
+            if (SelectedTask.Title.Equals(String.Empty) || SelectedTask.Description.Equals(String.Empty) || ToCompleteDate == null
                 || SelectedImportance == null || SelectedProject == null)
                 return;
-           
+            if (SelectedTask.ToComplete < DateTime.Now)
+                return;
 
-            NewTask.ToComplete = ToCompleteDate;
-            NewTask.ProjectId = SelectedProject.Id;
-            NewTask.ConditionId = SelectedCondition.Id;
-            NewTask.ImportanceId = SelectedImportance.Id;
-            if (NewTask.ConditionId == 3)
+            SelectedTask.ProjectId = SelectedProject.Id;
+            SelectedTask.ConditionId = SelectedCondition.Id;
+            SelectedTask.ImportanceId = SelectedImportance.Id;
+            if(SelectedEmployee != null)
             {
-                NewTask.EmployeeId = SelectedEmployee.Id;
+                SelectedTask.EmployeeId = SelectedEmployee.Id;
             }
-
-            MainVM.GetInstance().ServerClient.UpdateTask(NewTask.Id,NewTask);
+            else
+            {
+                SelectedTask.EmployeeId = 0;
+            }
+                
+            MainVM.GetInstance().ServerClient.UpdateTask(SelectedTask.Id,SelectedTask);
+            SendQuerrys();
         }
 
         private void GetProjects(IEnumerable<UserProject> obj)

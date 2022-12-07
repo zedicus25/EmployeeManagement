@@ -81,9 +81,20 @@ namespace Client_User__.ViewModel
 
         private void SetTask()
         {
-            if (SelectedEmployee == null || SelectedTask == null)
+            if (SelectedTask == null)
                 return;
-            MainVM.GetInstance().ServerClient.QuerrySetTaskToEmployee(SelectedTask.Id, SelectedEmployee.Id);
+            if(SelectedEmployee == null)
+            {
+                MainVM.GetInstance().ServerClient.QuerrySetTaskToEmployee(SelectedTask.Id, 0);
+                SelectedTask.EmployeeId = 0;
+            }
+            else
+            {
+                MainVM.GetInstance().ServerClient.QuerrySetTaskToEmployee(SelectedTask.Id, SelectedEmployee.Id);
+                SelectedTask.EmployeeId = SelectedEmployee.Id;
+            }
+            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
+
         }
 
         private void GetEmployees(List<Employee> obj)

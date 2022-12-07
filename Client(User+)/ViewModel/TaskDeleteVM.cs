@@ -47,16 +47,18 @@ namespace Client_User__.ViewModel
         {
             Tasks = new ObservableCollection<UserTask>();
             MainVM.GetInstance().ServerClient.GetAllTasks += GetAllTasks;
-            MainVM.GetInstance().GetAllTasks();
+            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }
 
-        private void GetAllTasks(IEnumerable<UserTask> obj)
+        private void GetAllTasks(List<UserTask> obj)
         {
-            Tasks.Clear();
-            foreach (var item in obj)
+            if (Tasks.Count <= 0)
             {
-                Tasks.Add(item);
+                Tasks = new ObservableCollection<UserTask>(obj);
+                return;
             }
+
+            Tasks.Union(obj);
         }
 
         private void DeleteTask()

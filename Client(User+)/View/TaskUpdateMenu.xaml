@@ -29,7 +29,7 @@
         <ListBox Margin="10" 
                  ItemsSource="{Binding Tasks}"
                  ItemTemplate="{StaticResource itemTemplate}" 
-                 SelectedItem="{Binding NewTask}">
+                 SelectedItem="{Binding SelectedTask}">
         </ListBox>
         <StackPanel Grid.Column="1">
             <TextBox FontSize="12" Margin="10"
@@ -37,7 +37,7 @@
                      TextWrapping="Wrap"
                      MaxLength="100"
                      materialDesign:HintAssist.Hint="Task title"
-                     Text="{Binding NewTask.Title}"/>
+                     Text="{Binding SelectedTask.Title}"/>
             <ComboBox SelectedItem="{Binding SelectedImportance}" FontSize="12"  Margin="10" ItemsSource="{Binding Importances}"
                 Style="{StaticResource MaterialDesignFilledComboBox}"
                 materialDesign:HintAssist.Hint="Task Importance"
@@ -79,7 +79,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <DatePicker SelectedDate="{Binding ToCompleteDate, Mode=TwoWay}" FontSize="12" 
+            <DatePicker SelectedDate="{Binding SelectedTask.ToComplete, Mode=TwoWay}" FontSize="12" 
                 Margin="10"
                 materialDesign:HintAssist.Hint="To complete(Date)"
                 materialDesign:TextFieldAssist.HasClearButton="True"
@@ -87,7 +87,7 @@
         </StackPanel>
         <TextBox FontSize="13"  Grid.Column="2" TextWrapping="Wrap" Margin="10 10 10 85"
                  MaxLength="2500"
-                 Text="{Binding NewTask.Description}"
+                 Text="{Binding SelectedTask.Description}"
                  VerticalScrollBarVisibility="Auto"
                  Style="{StaticResource MaterialDesignFilledTextBox}"
                  materialDesign:HintAssist.Hint="Task description">

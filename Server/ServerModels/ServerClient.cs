@@ -248,8 +248,16 @@ namespace Server.ServerModels
                             else if(msg.Contains("--disconnect") && msg.Contains("id="))
                             {
                                 string[] strs = msg.Split('\n');
-                                if (strs[2] == "true")
+                                if(strs.Length >= 3)
+                                {
+                                    if (strs[2] == "true")
+                                        _serverController.RemoveConnection(strs[1].Substring(strs[1].IndexOf('=') + 1));
+                                }
+                                else
+                                {
                                     _serverController.RemoveConnection(strs[1].Substring(strs[1].IndexOf('=') + 1));
+                                }
+                                
                             }
                             else
                                 _serverController.SetMessagesFromClient(sb.ToString());
@@ -258,7 +266,7 @@ namespace Server.ServerModels
 
                     }
                     catch (Exception ex)
-                        {
+                    { 
                         _serverController.SetMessagesFromClient($"Disconected {Id}");
                         break;
                     }

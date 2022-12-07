@@ -180,7 +180,7 @@ namespace Server.Controllers
             byte[] bytes = Encoding.Unicode.GetBytes(msg);
             try
             {
-                client.NetworkStream.Write(bytes, 0, bytes.Length);
+                client.NetworkStream.WriteAsync(bytes, 0, bytes.Length);
 
             }
             catch (Exception ex)

@@ -31,6 +31,13 @@ namespace Client_User__.ViewModel
             {
                 _selectedTask = value;
                 OnPropertyChanged("SelectedTask");
+                if(SelectedTask != null)
+                {
+                    if (SelectedTask.EmployeeId != 0)
+                        SelectedEmployee = Employees.FirstOrDefault(x => x.Id == SelectedTask.EmployeeId);
+                    else
+                        SelectedEmployee = null;
+                }
             }
         }
         public ObservableCollection<Employee> Employees
@@ -79,22 +86,26 @@ namespace Client_User__.ViewModel
             MainVM.GetInstance().ServerClient.QuerrySetTaskToEmployee(SelectedTask.Id, SelectedEmployee.Id);
         }
 
-        private void GetEmployees(IEnumerable<Employee> obj)
+        private void GetEmployees(List<Employee> obj)
         {
-            Employees.Clear();
-            foreach (var item in obj)
+            if (Employees.Count <= 0)
             {
-                Employees.Add(item);
+                Employees = new ObservableCollection<Employee>(obj);
+                return;
             }
+
+            Employees.Union(obj);
         }
 
-        private void GetAllTasks(IEnumerable<UserTask> obj)
+        private void GetAllTasks(List<UserTask> obj)
         {
-            Tasks.Clear();
-            foreach (var item in obj)
+            if (Tasks.Count <= 0)
             {
-                Tasks.Add(item);
+                Tasks = new ObservableCollection<UserTask>(obj);
+                return;
             }
+
+            Tasks.Union(obj);
         }
     }
 }

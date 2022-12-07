@@ -22,16 +22,16 @@ namespace Client_User__.Utilities
         }
 
         public User GetUser(string data) => JsonConvert.DeserializeObject<User>(data);
-        public IEnumerable<TaskImportant> GetTaskImportances(string data) => 
+        public List<TaskImportant> GetTaskImportances(string data) => 
             JsonConvert.DeserializeObject<List<TaskImportant>>(data);
-        public IEnumerable<TaskCondition> GetTaskConditions(string data) =>
+        public List<TaskCondition> GetTaskConditions(string data) =>
             JsonConvert.DeserializeObject<List<TaskCondition>>(data);
-        public IEnumerable<Employee> GetEmployees(string data) =>
+        public List<Employee> GetEmployees(string data) =>
             JsonConvert.DeserializeObject<List<Employee>>(data);
-        public IEnumerable<UserProject> GetProjects(string data) =>
+        public List<UserProject> GetProjects(string data) =>
             JsonConvert.DeserializeObject<List<UserProject>>(data);
 
-        public IEnumerable<UserTask> GetAllUserTasks(string data) =>
+        public List<UserTask> GetAllUserTasks(string data) =>
             JsonConvert.DeserializeObject<List<UserTask>>(data);
         public UserTask GetUserTask(string data) =>
             JsonConvert.DeserializeObject<UserTask>(data);

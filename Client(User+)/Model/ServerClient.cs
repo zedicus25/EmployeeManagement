@@ -1,4 +1,5 @@
 ﻿using Client_User__.Utilities;
+using Client_User__.ViewModel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,14 +16,15 @@ namespace Client_User__.Model
         public event Action<string> GetServerMessage;
         public event Action<bool, User> LoginingResult;
 
-        public event Action<IEnumerable<TaskImportant>> GetTaskImportants;
-        public event Action<IEnumerable<TaskCondition>> GetTaskConditions;
-        public event Action<IEnumerable<Employee>> GetEmployees;
-        public event Action<IEnumerable<UserProject>> GetProjects;
-        public event Action<IEnumerable<UserTask>> GetAllTasks;
+        public event Action<List<TaskImportant>> GetTaskImportants;
+        public event Action<List<TaskCondition>> GetTaskConditions;
+        public event Action<List<Employee>> GetEmployees;
+        public event Action<List<UserProject>> GetProjects;
+        public event Action<List<UserTask>> GetAllTasks;
         public event Action<UserTask> GetTaskById;
 
         public string IdOnServer { get; private set; }
+        public bool CanSendMessagesToServer { get; private set; }
 
         private TcpClient _tcpClient;
         private NetworkStream _tcpStream;
@@ -115,7 +117,7 @@ namespace Client_User__.Model
             try
             {
                 byte[] data = Encoding.Unicode.GetBytes(message);
-                _tcpStream?.Write(data, 0, data.Length);
+                _tcpStream?.WriteAsync(data, 0, data.Length);
             }
             catch (Exception ex)
             {
@@ -130,6 +132,7 @@ namespace Client_User__.Model
                 _tcpClient.Connect(HOST, PORT);
                 _tcpStream = _tcpClient.GetStream();
                 StateUpdating?.Invoke("You connected to server!");
+                CanSendMessagesToServer = true;
                 _receiveTask = new Task(ReceiveMessages, _tokenSource.Token);
                 _receiveTask.Start();
                 
@@ -197,9 +200,17 @@ namespace Client_User__.Model
                         {
                             GetTaskById?.Invoke(Parser.GetInstance().GetUserTask(msg.Substring(msg.IndexOf('=') + 1)));
                         }
+                        else if (msg.Contains("--disconnect"))
+                        {
+                            _tokenSource.Cancel();
+                            CanSendMessagesToServer = false;
+                            MainVM.GetInstance().LogOut();
+                            CanSendMessagesToServer = true;
+                            break;
+                        }
                         else
                         {
-                            GetServerMessage?.Invoke(msg);
+                            GetServerMessage?.Invoke(msg);  
                         }
                         sb.Clear();
                     }

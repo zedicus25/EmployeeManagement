@@ -35,7 +35,8 @@ namespace Server.Controllers
                 Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id == item.TermId);
 
                 tasks.Add(new UserTask(item.Id, taskDesc.Title, taskDesc.TaskDescription, taskCondition.Id, conditionDesc.Title,
-                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title));
+                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title, 
+                    (int)item.ProjectId, item.EmployeeId == null ? 0 : (int)item.EmployeeId));
             }
             return tasks;
         }
@@ -78,7 +79,8 @@ namespace Server.Controllers
                 Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id == item.TermId);
 
                 tasks.Add(new UserTask(item.Id, taskDesc.Title, taskDesc.TaskDescription, taskCondition.Id, conditionDesc.Title,
-                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title));
+                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title, 
+                    (int)item.ProjectId, item.EmployeeId == null ? 0 : (int)item.EmployeeId));
             }
 
             return tasks;
@@ -197,7 +199,8 @@ namespace Server.Controllers
                 Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id == item.TermId);
 
                 tasks.Add(new UserTask(item.Id, taskDesc.Title, taskDesc.TaskDescription, taskCondition.Id, conditionDesc.Title,
-                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title));
+                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title, 
+                    (int)item.ProjectId, item.EmployeeId == null ? 0 : (int)item.EmployeeId));
             }
             return tasks;
         }

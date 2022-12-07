@@ -3,6 +3,7 @@
 using Client_User__.Model;
 using Newtonsoft.Json;
 using System;
+using System.Threading;
 
 namespace Client_User__.ViewModel
 {
@@ -66,8 +67,17 @@ namespace Client_User__.ViewModel
         public void CreateTask(UserTask newTask) =>
             ServerClient.SendMessageToServer($"--createTask\n{JsonConvert.SerializeObject(newTask)}");
 
-        public void GetAllTasks() => ServerClient.SendQuerryForAllTasks();
 
         public void DeleteTask(int taskId) => ServerClient.DeleteTask(taskId);
+
+        public void LogOut()
+        {
+            if (ServerClient.CanSendMessagesToServer)
+                ServerClient.SendMessageToServer($"--disconnect\nid={ServerClient.IdOnServer}\ntrue");
+            ServerClient.Disconnect();
+            ServerClient = new ServerClient();
+            SetViewModel(new LoginFormVM());
+
+        }
     }
 }

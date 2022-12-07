@@ -120,7 +120,7 @@ namespace EmployeeManagement.Model
             {
                 _tcpClient.Connect(HOST, PORT);
                 _tcpStream = _tcpClient.GetStream();
-
+                CanSendMessagesToServer = true;
                 _tryConnectCTS.Cancel();
                 _tryConnectCTS.Dispose();
 
@@ -208,7 +208,7 @@ namespace EmployeeManagement.Model
 
         public void Disconnect()
         {
-            _reciveCTS.Cancel();
+            _reciveCTS?.Cancel();
             _tcpStream?.Close();
             _tcpClient.Close();
             StateUpdating?.Invoke("You disconnected from server");

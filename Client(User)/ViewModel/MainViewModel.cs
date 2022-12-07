@@ -95,7 +95,7 @@ namespace EmployeeManagement.ViewModel
 		public void LogOut()
 		{
 			if(ServerClient.CanSendMessagesToServer)
-				ServerClient.SendMessageToServer($"--disconnect\nid={ServerClient.IdOnServer}\n");
+				ServerClient.SendMessageToServer($"--disconnect\nid={ServerClient.IdOnServer}\ntrue");
 			ServerClient.Disconnect();
 			_tokenSourceListenTasks.Cancel();
 			_tokenSourceListenTasks = new CancellationTokenSource();

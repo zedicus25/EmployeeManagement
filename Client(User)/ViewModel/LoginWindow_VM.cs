@@ -13,10 +13,26 @@ namespace EmployeeManagement.ViewModel
             set { _loginInput = value; }
         }
 
+
+        public bool LogingResult
+        {
+            get { return _loginigResult; }
+            set 
+            { 
+                _loginigResult = value;
+                OnPropertyChanged("LogingResult");
+            }
+        }
+
+
         public string PasswordInput
         {
             get => _passwordInput;
-            set { _passwordInput = value; }
+            set
+            { 
+                _passwordInput = value;
+                OnPropertyChanged("PasswordInput");
+            }
         }
         public string ServerMessages
         {
@@ -33,8 +49,12 @@ namespace EmployeeManagement.ViewModel
                     if(LoginInput != String.Empty && PasswordInput != String.Empty)
                     {
                         string msg = $"id={MainViewModel.GetInstance().ServerClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
-                        MainViewModel.GetInstance().ServerClient.SendMessageToServer(msg);
-                        AddListeners();
+                        if (MainViewModel.GetInstance().ServerClient.IsConnected)
+                        {
+                            MainViewModel.GetInstance().ServerClient.SendMessageToServer(msg);
+                            AddListeners();
+                            LogingResult = false;
+                        }   
                     }
                 }));
             }
@@ -51,6 +71,7 @@ namespace EmployeeManagement.ViewModel
 
         public LoginWindow_VM()
         {
+            LogingResult = true;
             
         }
 
@@ -68,13 +89,12 @@ namespace EmployeeManagement.ViewModel
 
         private void SetLoginigResult(bool res, User user)
         {
-            _loginigResult = res;
-            if (_loginigResult)
+            LogingResult = !res;
+            if (res)
             {
                 MainViewModel.GetInstance().SetViewModel(new HomeWindow_VM());
                 MainViewModel.GetInstance().User = user;
-            }
-               
+            }   
         }
 
     }

@@ -32,6 +32,7 @@ namespace Server.ServerModels
 
         public void Close()
         {
+            _serverController.SendMessageToClient(Id,"--disconnect");
             tcpClient.Close();
             NetworkStream.Close();
         }
@@ -265,11 +266,11 @@ namespace Server.ServerModels
             {
                 _serverController.SetMessagesFromClient($"Connection error {ex.Message}");
             }
-            finally
-            {
-                _serverController.RemoveConnection(Id);
-                Close();
-            }
+            //finally
+            //{
+            //    _serverController.RemoveConnection(Id);
+            //    Close();
+            //}
         }
     }
 }

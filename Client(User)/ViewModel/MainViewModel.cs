@@ -52,12 +52,19 @@ namespace EmployeeManagement.ViewModel
         private MainViewModel()
 		{
 			_querryDelay = new TimeSpan(0, 5, 0);
-			ServerClient = new ServerClient();
 			SelectedViewModel = new LoginWindow_VM();
-			_tokenSourceListenTasks = new CancellationTokenSource();
+		}
+
+		public void ConnectToServer()
+		{
+			if (ServerClient != null && ServerClient.IsConnected)
+				return;
+
+            ServerClient = new ServerClient();
+            _tokenSourceListenTasks = new CancellationTokenSource();
             _listenAllTask = new Task(SendAllTasksQuerry, _tokenSourceListenTasks.Token);
             _listenAllTask.Start();
-		}
+        }
 
 		public void SetViewModel(BaseVM baseVM)
 		{
@@ -87,7 +94,8 @@ namespace EmployeeManagement.ViewModel
 
 		public void LogOut()
 		{
-			ServerClient.SendMessageToServer($"--disconnect\nid={ServerClient.IdOnServer}\n");
+			if(ServerClient.CanSendMessagesToServer)
+				ServerClient.SendMessageToServer($"--disconnect\nid={ServerClient.IdOnServer}\n");
 			ServerClient.Disconnect();
 			_tokenSourceListenTasks.Cancel();
 			_tokenSourceListenTasks = new CancellationTokenSource();

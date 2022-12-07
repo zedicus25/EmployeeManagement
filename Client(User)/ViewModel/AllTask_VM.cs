@@ -53,6 +53,7 @@ namespace EmployeeManagement.ViewModel
         public AllTask_VM()
         {
             Tasks = new ObservableCollection<UserTask>();
+            MainViewModel.GetInstance().ServerClient.AllTasks += SetTasks;
         }
 
         public void SetTasks(List<UserTask> tasks)

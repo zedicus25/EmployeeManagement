@@ -46,14 +46,18 @@ namespace EmployeeManagement.ViewModel
 
         private Task _listenAllTask;
         private CancellationTokenSource _tokenSourceListenTasks;
-		private TimeSpan _querryDelay;
+        private Task _listenMyTask;
+        private CancellationTokenSource _tokenSourceListenMyTasks;
+        private TimeSpan _querryDelay;
 
 
         private MainViewModel()
 		{
 			_querryDelay = new TimeSpan(0, 5, 0);
-			SelectedViewModel = new LoginWindow_VM();
-		}
+            SelectedViewModel = new LoginWindow_VM();
+            _tokenSourceListenTasks = new CancellationTokenSource();
+            
+        }
 
 		public void ConnectToServer()
 		{
@@ -61,10 +65,11 @@ namespace EmployeeManagement.ViewModel
 				return;
 
             ServerClient = new ServerClient();
-            _tokenSourceListenTasks = new CancellationTokenSource();
-            _listenAllTask = new Task(SendTasksQuerry, _tokenSourceListenTasks.Token);
+            _listenAllTask = new Task(SendAllTasksQuerry, _tokenSourceListenTasks.Token);
             _listenAllTask.Start();
         }
+
+		
 
 		public void SetViewModel(BaseVM baseVM)
 		{
@@ -79,17 +84,15 @@ namespace EmployeeManagement.ViewModel
 		public void GetMyTask() => ServerClient.GetMyTask();
 
 		public void SubmitTask(int taskId, string branchName, string message) => 
-			ServerClient.SubmitTask(taskId, branchName, message); 
+			ServerClient.SubmitTask(taskId, branchName, message);
 
 
-		private async void SendTasksQuerry()
-		{
+        private async void SendAllTasksQuerry()
+        {
             while (_tokenSourceListenTasks.Token.IsCancellationRequested == false)
             {
                 ServerClient.GetAllTasks();
-				await Task.Delay(3000);
-				ServerClient.GetMyTask();
-				await Task.Delay(_querryDelay);
+                await Task.Delay(_querryDelay);
             }
         }
 
@@ -108,7 +111,7 @@ namespace EmployeeManagement.ViewModel
         }
 		~MainViewModel()
 		{
-			_tokenSourceListenTasks.Cancel();
+			_tokenSourceListenTasks?.Cancel();
 		}
 
     }

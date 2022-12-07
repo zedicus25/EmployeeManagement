@@ -79,9 +79,10 @@ namespace EmployeeManagement.ViewModel
             MyTasks = new ObservableCollection<UserTask>();
             Message = String.Empty;
             BranchName = String.Empty;
+            MainViewModel.GetInstance().ServerClient.MyTask += SetUserTasks;
         }
 
-        public void SetTasks(List<UserTask> tasks)
+        public void SetUserTasks(List<UserTask> tasks)
         {
             if (MyTasks.Count <= 0)
             {

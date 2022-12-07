@@ -91,6 +91,7 @@ namespace Server.ServerModels
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendTask(strs[1].Substring(strs[1].IndexOf('=') + 1),
                                      Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                                sb.Clear();
                             }
                             else if (msg.Contains("--getImportance") && msg.Contains("id="))
                             {

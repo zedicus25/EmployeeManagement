@@ -94,6 +94,10 @@
     <Compile Include="ViewModel\EmployeeWindows\DeleteEmployeeVM.cs" />
     <Compile Include="ViewModel\EmployeeWindows\EmployeeWindowVM.cs" />
     <Compile Include="ViewModel\EmployeeWindows\UpdateEmployeeVM.cs" />
+    <Compile Include="ViewModel\ProjectWindows\CreateProjectVM.cs" />
+    <Compile Include="ViewModel\ProjectWindows\DeleteProjectVM.cs" />
+    <Compile Include="ViewModel\ProjectWindows\ProjectWindowVM.cs" />
+    <Compile Include="ViewModel\ProjectWindows\UpdateProjectVM.cs" />
     <Compile Include="View\EmployeeRoleWindows\CreateEmployeeRoleControl.xaml.cs">
       <DependentUpon>CreateEmployeeRoleControl.xaml</DependentUpon>
     </Compile>
@@ -118,13 +122,22 @@
     <Compile Include="View\EmployeeWindows\UpdateEmployeeControl.xaml.cs">
       <DependentUpon>UpdateEmployeeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProjectsWindow.xaml.cs">
+    <Compile Include="View\ProjectWindows\CreateProjectControl.xaml.cs">
+      <DependentUpon>CreateProjectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProjectWindows\DeleteProjectControl.xaml.cs">
+      <DependentUpon>DeleteProjectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProjectWindows\ProjectsWindow.xaml.cs">
       <DependentUpon>ProjectsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TaskConditionWindow.xaml.cs">
+    <Compile Include="View\ProjectWindows\UpdateProjectControl.xaml.cs">
+      <DependentUpon>UpdateProjectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskConditionWindows\TaskConditionWindow.xaml.cs">
       <DependentUpon>TaskConditionWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TaskImportanceWindow.xaml.cs">
+    <Compile Include="View\TaskImportanceWindow\TaskImportanceWindow.xaml.cs">
       <DependentUpon>TaskImportanceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EmployeeWindows\EmployeeWindow.xaml.cs">
@@ -195,15 +208,27 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\ProjectsWindow.xaml">
+    <Page Include="View\ProjectWindows\CreateProjectControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\TaskConditionWindow.xaml">
+    <Page Include="View\ProjectWindows\DeleteProjectControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\TaskImportanceWindow.xaml">
+    <Page Include="View\ProjectWindows\ProjectsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ProjectWindows\UpdateProjectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskConditionWindows\TaskConditionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskImportanceWindow\TaskImportanceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -13,7 +13,9 @@
     xmlns:employeeVM="clr-namespace:Client_Admin_.ViewModel.EmployeeWindows"
     xmlns:employeeView="clr-namespace:Client_Admin_.View.EmployeeWindows"
     xmlns:employeeRoleVM="clr-namespace:Client_Admin_.ViewModel.EmployeeRoleWindows"
-    xmlns:employeeRoleView="clr-namespace:Client_Admin_.View.EmployeeRoleWindows">
+    xmlns:employeeRoleView="clr-namespace:Client_Admin_.View.EmployeeRoleWindows"
+    xmlns:projectVM ="clr-namespace:Client_Admin_.ViewModel.ProjectWindows"
+    xmlns:projectView="clr-namespace:Client_Admin_.View.ProjectWindows">
 
     <Application.Resources>
         <ResourceDictionary x:Key="MaterialDesign">
@@ -47,6 +49,15 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type employeeRoleVM:LinkEmployeeRoleVM}">
                 <employeeRoleView:LinkEmployeeRoleControl></employeeRoleView:LinkEmployeeRoleControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type projectVM:CreateProjectVM}">
+                <projectView:CreateProjectControl></projectView:CreateProjectControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type projectVM:DeleteProjectVM}">
+                <projectView:DeleteProjectControl></projectView:DeleteProjectControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type projectVM:UpdateProjectVM}">
+                <projectView:UpdateProjectControl></projectView:UpdateProjectControl>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

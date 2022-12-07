@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client_Admin_.View
+namespace Client_Admin_.View.ProjectWindows
 {
     /// <summary>
-    /// Interaction logic for ProjectsWindow.xaml
+    /// Interaction logic for CreateProjectControl.xaml
     /// </summary>
-    public partial class ProjectsWindow : Window
+    public partial class CreateProjectControl : UserControl
     {
-        public ProjectsWindow()
+        public CreateProjectControl()
         {
             InitializeComponent();
         }

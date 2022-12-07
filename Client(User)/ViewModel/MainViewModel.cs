@@ -62,7 +62,7 @@ namespace EmployeeManagement.ViewModel
 
             ServerClient = new ServerClient();
             _tokenSourceListenTasks = new CancellationTokenSource();
-            _listenAllTask = new Task(SendAllTasksQuerry, _tokenSourceListenTasks.Token);
+            _listenAllTask = new Task(SendTasksQuerry, _tokenSourceListenTasks.Token);
             _listenAllTask.Start();
         }
 
@@ -82,17 +82,20 @@ namespace EmployeeManagement.ViewModel
 			ServerClient.SubmitTask(taskId, branchName, message); 
 
 
-		private async void SendAllTasksQuerry()
+		private async void SendTasksQuerry()
 		{
             while (_tokenSourceListenTasks.Token.IsCancellationRequested == false)
             {
                 ServerClient.GetAllTasks();
+				await Task.Delay(3000);
+				ServerClient.GetMyTask();
 				await Task.Delay(_querryDelay);
             }
         }
 
 
-		public void LogOut()
+
+        public void LogOut()
 		{
 			if(ServerClient.CanSendMessagesToServer)
 				ServerClient.SendMessageToServer($"--disconnect\nid={ServerClient.IdOnServer}\ntrue");

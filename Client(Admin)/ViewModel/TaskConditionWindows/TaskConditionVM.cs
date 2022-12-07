@@ -1,4 +1,4 @@
-﻿using Client_Admin_.ViewModel.EmployeeWindows;
+﻿using Client_Admin_.ViewModel.ProjectWindows;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client_Admin_.ViewModel.ProjectWindows
+namespace Client_Admin_.ViewModel.TaskConditionWindows
 {
-    public class ProjectWindowVM : BaseVM
+    public class TaskConditionVM : BaseVM
     {
         private BaseVM _currentViewModel;
 
@@ -26,7 +26,7 @@ namespace Client_Admin_.ViewModel.ProjectWindows
         {
             get => _showCreateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is CreateProjectVM || _allVMs.Count < 1)
+                if (CurrentViewModel is CreateTaskConditionVM || _allVMs.Count < 1)
                     return;
                 CurrentViewModel = _allVMs[0];
             });
@@ -36,7 +36,7 @@ namespace Client_Admin_.ViewModel.ProjectWindows
         {
             get => _showDeleteMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is DeleteProjectVM || _allVMs.Count < 2)
+                if (CurrentViewModel is DeleteTaskConditionVM || _allVMs.Count < 2)
                     return;
                 CurrentViewModel = _allVMs[1];
             });
@@ -46,7 +46,7 @@ namespace Client_Admin_.ViewModel.ProjectWindows
         {
             get => _showUpdateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is UpdateProjectVM || _allVMs.Count < 3)
+                if (CurrentViewModel is UpdateTaskConditionVM || _allVMs.Count < 3)
                     return;
                 CurrentViewModel = _allVMs[2];
             });
@@ -57,7 +57,7 @@ namespace Client_Admin_.ViewModel.ProjectWindows
         private RelayCommand _showDeleteMenu;
         private RelayCommand _showUpdateMenu;
 
-        public ProjectWindowVM()
+        public TaskConditionVM()
         {
             _allVMs = new List<BaseVM>();
             CreateVMs();
@@ -71,11 +71,11 @@ namespace Client_Admin_.ViewModel.ProjectWindows
                     break;
             }
 
-            _allVMs.Add(new CreateProjectVM());
-            await Task.Delay(5000);
-            _allVMs.Add(new DeleteProjectVM());
-            await Task.Delay(5000);
-            _allVMs.Add(new UpdateProjectVM());
+            _allVMs.Add(new CreateTaskConditionVM());
+            await Task.Delay(3000);
+            _allVMs.Add(new DeleteTaskConditionVM());
+            await Task.Delay(3000);
+            _allVMs.Add(new UpdateTaskConditionVM());
         }
     }
 }

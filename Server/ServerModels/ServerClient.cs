@@ -182,6 +182,35 @@ namespace Server.ServerModels
                                 _serverController.SubmitTask(Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)),
                                     Convert.ToInt32(strs[3].Substring(strs[3].IndexOf('=') + 1)));
                             }
+                            else if (msg.Contains("--addTaskCondition") && msg.Contains("condition="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.AddTaskCondition(
+                                    JsonConvert.DeserializeObject<UserTaskCondtion>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--removeTaskCondition") && msg.Contains("conditionId="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.DeleteTaskCondition(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--updateTaskCondition") && msg.Contains("oldConditionId=") && msg.Contains("newCondition="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.UpdateTaskCondition(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
+                                    JsonConvert.DeserializeObject<UserTaskCondtion>(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--addTaskImportance") && msg.Contains("importance="))
+                            {
+
+                            }
+                            else if (msg.Contains("--removeTaskImportance") && msg.Contains("importanceId="))
+                            {
+
+                            }
+                            else if (msg.Contains("--updateTaskImportance") && msg.Contains("oldImportanceId=") && msg.Contains("newCondition="))
+                            {
+
+                            }
                             else if (msg.Contains("--createTask")) 
                             {
                                 string[] strs = msg.Split('\n');
@@ -203,30 +232,6 @@ namespace Server.ServerModels
                             {
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendAllTasks(strs[1].Substring(strs[1].IndexOf('=') + 1));
-                            }
-                            else if (msg.Contains("--addTaskCondition"))
-                            {
-
-                            }
-                            else if (msg.Contains("--removeTaskCondition"))
-                            {
-
-                            }
-                            else if (msg.Contains("--updateTaskCondition"))
-                            {
-
-                            }
-                            else if (msg.Contains("--addTaskImportance"))
-                            {
-
-                            }
-                            else if (msg.Contains("--removeTaskImportance"))
-                            {
-
-                            }
-                            else if (msg.Contains("--updateTaskImportance"))
-                            {
-
                             }
                             else if(msg.Contains("--getUserRoles") && msg.Contains("id="))
                             {

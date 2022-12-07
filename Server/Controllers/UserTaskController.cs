@@ -94,8 +94,13 @@ namespace Server.Controllers
             List<ImportanceDescription> importDesc = _dbContext.ImportanceDescriptions.ToList();
             foreach (var item in import)
             {
-                importances.Add(new TaskImportance() { Id = item.Id, 
-                    Title = importDesc.FirstOrDefault(x => x.Id == item.DescriptionId)?.Title });
+                importances.Add(new TaskImportance() 
+                { 
+                    Id = item.Id, 
+                    Title = importDesc.FirstOrDefault(x => x.Id == item.DescriptionId)?.Title,
+                    Description = importDesc.FirstOrDefault(x => x.Id == item.DescriptionId)?.Description
+
+                });
             }
             return importances;
         }
@@ -112,7 +117,8 @@ namespace Server.Controllers
                 conditions.Add(new UserTaskCondtion()
                 {
                     Id = item.Id,
-                    Title = importDesc.FirstOrDefault(x => x.Id == item.DescriptionId)?.Title
+                    Title = importDesc.FirstOrDefault(x => x.Id == item.DescriptionId)?.Title,
+                    Description = importDesc.FirstOrDefault(x => x.Id == item.DescriptionId)?.Description
                 });
             }
             return conditions;

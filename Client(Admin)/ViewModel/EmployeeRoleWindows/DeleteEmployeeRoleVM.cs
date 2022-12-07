@@ -21,9 +21,6 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
                 OnPropertyChanged("SelectedEmployeeRole");
             }
         }
-
-        private UserRole _selectedRole;
-
       
         private List<EmployeeRole> _employeeRoles;
 

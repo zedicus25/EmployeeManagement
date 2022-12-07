@@ -84,6 +84,8 @@
     <Compile Include="Model\Employee.cs" />
     <Compile Include="Model\EmployeeRole.cs" />
     <Compile Include="Model\Project.cs" />
+    <Compile Include="Model\TaskCondition.cs" />
+    <Compile Include="Model\TaskImportance.cs" />
     <Compile Include="Model\UserRole.cs" />
     <Compile Include="ViewModel\EmployeeRoleWindows\CreateEmployeeRoleVM.cs" />
     <Compile Include="ViewModel\EmployeeRoleWindows\DeleteEmployeeRoleVM.cs" />
@@ -98,6 +100,10 @@
     <Compile Include="ViewModel\ProjectWindows\DeleteProjectVM.cs" />
     <Compile Include="ViewModel\ProjectWindows\ProjectWindowVM.cs" />
     <Compile Include="ViewModel\ProjectWindows\UpdateProjectVM.cs" />
+    <Compile Include="ViewModel\TaskConditionWindows\CreateTaskConditionVM.cs" />
+    <Compile Include="ViewModel\TaskConditionWindows\DeleteTaskConditionVM.cs" />
+    <Compile Include="ViewModel\TaskConditionWindows\TaskConditionVM.cs" />
+    <Compile Include="ViewModel\TaskConditionWindows\UpdateTaskConditionVM.cs" />
     <Compile Include="View\EmployeeRoleWindows\CreateEmployeeRoleControl.xaml.cs">
       <DependentUpon>CreateEmployeeRoleControl.xaml</DependentUpon>
     </Compile>
@@ -134,8 +140,17 @@
     <Compile Include="View\ProjectWindows\UpdateProjectControl.xaml.cs">
       <DependentUpon>UpdateProjectControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\TaskConditionWindows\CreateTaskConditionControl.xaml.cs">
+      <DependentUpon>CreateTaskConditionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskConditionWindows\DeleteTaskConditionControl.xaml.cs">
+      <DependentUpon>DeleteTaskConditionControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TaskConditionWindows\TaskConditionWindow.xaml.cs">
       <DependentUpon>TaskConditionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskConditionWindows\UpdateTaskConditionControl.xaml.cs">
+      <DependentUpon>UpdateTaskConditionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TaskImportanceWindow\TaskImportanceWindow.xaml.cs">
       <DependentUpon>TaskImportanceWindow.xaml</DependentUpon>
@@ -224,7 +239,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\TaskConditionWindows\CreateTaskConditionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskConditionWindows\DeleteTaskConditionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\TaskConditionWindows\TaskConditionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskConditionWindows\UpdateTaskConditionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

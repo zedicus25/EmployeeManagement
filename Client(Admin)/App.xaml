@@ -15,7 +15,9 @@
     xmlns:employeeRoleVM="clr-namespace:Client_Admin_.ViewModel.EmployeeRoleWindows"
     xmlns:employeeRoleView="clr-namespace:Client_Admin_.View.EmployeeRoleWindows"
     xmlns:projectVM ="clr-namespace:Client_Admin_.ViewModel.ProjectWindows"
-    xmlns:projectView="clr-namespace:Client_Admin_.View.ProjectWindows">
+    xmlns:projectView="clr-namespace:Client_Admin_.View.ProjectWindows"
+    xmlns:taskConditionVM="clr-namespace:Client_Admin_.ViewModel.TaskConditionWindows"
+    xmlns:taskConditonView="clr-namespace:Client_Admin_.View.TaskConditionWindows">
 
     <Application.Resources>
         <ResourceDictionary x:Key="MaterialDesign">
@@ -58,6 +60,15 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type projectVM:UpdateProjectVM}">
                 <projectView:UpdateProjectControl></projectView:UpdateProjectControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskConditionVM:CreateTaskConditionVM}">
+                <taskConditonView:CreateTaskConditionControl></taskConditonView:CreateTaskConditionControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskConditionVM:DeleteTaskConditionVM}">
+                <taskConditonView:DeleteTaskConditionControl></taskConditonView:DeleteTaskConditionControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskConditionVM:UpdateTaskConditionVM}">
+                <taskConditonView:UpdateTaskConditionControl></taskConditonView:UpdateTaskConditionControl>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

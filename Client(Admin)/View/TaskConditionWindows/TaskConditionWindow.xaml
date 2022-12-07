@@ -4,9 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client_Admin_.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:taskconditionwindows="clr-namespace:Client_Admin_.ViewModel.TaskConditionWindows" d:DataContext="{d:DesignInstance Type=taskconditionwindows:TaskConditionVM}"
         mc:Ignorable="d"
         Title="TaskConditionWindow" Height="450" Width="800">
     <Grid>
-        
+        <ToolBarTray  Orientation="Vertical">
+            <ToolBar
+                Style="{StaticResource MaterialDesignToolBar}"
+                ClipToBounds="False">
+                <Button Command="{Binding ShowCreateMenu}"
+                    ToolTip="Create task condition"
+                    Content="{materialDesign:PackIcon Kind=PlusCircleOutline}" />
+                <Button Command="{Binding ShowDeleteMenu}"
+                    ToolTip="Delete task condition"
+                    Content="{materialDesign:PackIcon Kind=MinusCircleOutline}" />
+                <Button Command="{Binding ShowUpdateMenu}"
+                    ToolTip="Update task codition"
+                    Content="{materialDesign:PackIcon Kind=Update}" />
+
+            </ToolBar>
+        </ToolBarTray>
+        <ContentControl Content="{Binding CurrentViewModel, UpdateSourceTrigger=PropertyChanged}" Margin="50,0,0,0"></ContentControl>
     </Grid>
 </Window>

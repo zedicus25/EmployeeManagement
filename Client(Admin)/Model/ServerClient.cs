@@ -22,6 +22,8 @@ namespace Client_Admin_.Model
         public event Action<IEnumerable<Employee>> GetEmployees;
         public event Action<IEnumerable<Employee>> GetAllEmployees;
         public event Action<IEnumerable<UserRole>> GetUserRoles;
+        public event Action<IEnumerable<TaskCondition>> GetTaskConditions;
+        public event Action<IEnumerable<TaskImportance>> GetTaskImortances;
 
         public string IdOnServer { get; private set; }
 
@@ -48,6 +50,20 @@ namespace Client_Admin_.Model
         public void SendQuerryForEmployeeRoles()
         {
             _stringBuilder.Append("--getEmployeeRole\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void SendQuerryForTaskConditions()
+        {
+            _stringBuilder.Append("--getConditions\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void SendQuerryForTaskImportances()
+        {
+            _stringBuilder.Append("--getImportance\n");
             _stringBuilder.Append($"id={IdOnServer}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
@@ -119,6 +135,50 @@ namespace Client_Admin_.Model
             _stringBuilder.Append("--updateProject\n");
             _stringBuilder.Append($"projId={id}\n");
             _stringBuilder.Append($"newProj={JsonConvert.SerializeObject(project)}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void AddTaskCondition(TaskCondition condition)
+        {
+            _stringBuilder.Append("--addTaskCondition\n");
+            _stringBuilder.Append($"condition={JsonConvert.SerializeObject(condition)}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void DeleteTaskCondition(int id)
+        {
+            _stringBuilder.Append("--removeTaskCondition\n");
+            _stringBuilder.Append($"conditionId={id}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void UpdateTaskCondition(int id, TaskCondition condition)
+        {
+            _stringBuilder.Append("--updateTaskCondition\n");
+            _stringBuilder.Append($"oldConditionId={id}\n");
+            _stringBuilder.Append($"newCondition={JsonConvert.SerializeObject(condition)}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void AddTaskImportance(TaskImportance importance)
+        {
+            _stringBuilder.Append("--addTaskImportance\n");
+            _stringBuilder.Append($"importance={JsonConvert.SerializeObject(importance)}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void DeleteTaskImportance(int id)
+        {
+            _stringBuilder.Append("--removeTaskImportance\n");
+            _stringBuilder.Append($"importanceId={id}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void UpdateTaskImportance(int id, TaskImportance importance)
+        {
+            _stringBuilder.Append("--updateTaskImportance\n");
+            _stringBuilder.Append($"oldImportanceId={id}\n");
+            _stringBuilder.Append($"newCondition={JsonConvert.SerializeObject(importance)}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }
@@ -207,6 +267,14 @@ namespace Client_Admin_.Model
                         else if (msg.Contains("allUserRoles="))
                         {
                             GetUserRoles?.Invoke(Parser.GetInstance().GetUserRoles(msg.Substring(msg.IndexOf('=') + 1)));
+                        }
+                        else if (msg.Contains("allImportances="))
+                        {
+                            GetTaskImortances?.Invoke(Parser.GetInstance().GetTaskImportances(msg.Substring(msg.IndexOf('=') + 1)));
+                        }
+                        else if (msg.Contains("allConditions="))
+                        {
+                            GetTaskConditions?.Invoke(Parser.GetInstance().GetTaskConditions(msg.Substring(msg.IndexOf('=') + 1)));
                         }
                         else
                         {

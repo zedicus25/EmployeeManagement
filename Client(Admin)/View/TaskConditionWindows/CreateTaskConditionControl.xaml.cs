@@ -1,5 +1,4 @@
-﻿using Client_Admin_.ViewModel.TaskConditionWindows;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,19 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client_Admin_.View
+namespace Client_Admin_.View.TaskConditionWindows
 {
     /// <summary>
-    /// Interaction logic for TaskConditionWindow.xaml
+    /// Interaction logic for CreateTaskConditionControl.xaml
     /// </summary>
-    public partial class TaskConditionWindow : Window
+    public partial class CreateTaskConditionControl : UserControl
     {
-        public TaskConditionWindow()
+        public CreateTaskConditionControl()
         {
             InitializeComponent();
-            this.DataContext = new TaskConditionVM();
         }
     }
 }

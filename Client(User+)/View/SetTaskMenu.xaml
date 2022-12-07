@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="Client_User__.View.SetTaskMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Client_User__.View" 
+             xmlns:viewmodel="clr-namespace:Client_User__.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:TaskSetVM}"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate x:Key="itemTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="Bold"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Margin="5" FontSize="13"> Project:</TextBlock>
+                    <TextBlock Margin="0 5" FontSize="12" Text="{Binding ProjectTitle}"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ListBox Margin="10" 
+                 ItemsSource="{Binding Tasks}"
+                 ItemTemplate="{StaticResource itemTemplate}" 
+                 SelectedItem="{Binding SelectedTask}">
+        </ListBox>
+        <StackPanel Grid.Column="1">
+            <ComboBox SelectedItem="{Binding SelectedEmployee}" FontSize="12"  Margin="10" ItemsSource="{Binding Employees}"
+                Style="{StaticResource MaterialDesignFilledComboBox}"
+                materialDesign:HintAssist.Hint="Employee"
+                materialDesign:TextFieldAssist.HasClearButton="True">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding FullName}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                ToolTip="Set selected task to employee"
+                Content="Set task" Margin="10"
+                Command="{Binding SetTaskCommand}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

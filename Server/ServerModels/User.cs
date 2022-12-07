@@ -89,7 +89,6 @@ namespace Server.ServerModels
             Project.Id = id;
             Project.Title = title;
             Project.Description = description;
-            Project.Images = new List<string>();
         }
 
         public void FillLoginData(string login, string password)

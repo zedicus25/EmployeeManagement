@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client_Admin_.View
+namespace Client_Admin_.View.TaskImportanceWindows
 {
     /// <summary>
-    /// Interaction logic for TaskImportanceWindow.xaml
+    /// Interaction logic for DeleteTaskImportanceControl.xaml
     /// </summary>
-    public partial class TaskImportanceWindow : Window
+    public partial class DeleteTaskImportanceControl : UserControl
     {
-        public TaskImportanceWindow()
+        public DeleteTaskImportanceControl()
         {
             InitializeComponent();
         }

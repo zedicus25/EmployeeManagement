@@ -32,7 +32,7 @@ namespace Client_Admin_.Utilities
             JsonConvert.DeserializeObject<List<Employee>>(data);
         public IEnumerable<UserRole> GetUserRoles(string data) =>
             JsonConvert.DeserializeObject<List<UserRole>>(data);
-        public IEnumerable<TaskImportance> GetTaskImportances(string data) =>
+        public List<TaskImportance> GetTaskImportances(string data) =>
             JsonConvert.DeserializeObject<List<TaskImportance>>(data);
         public IEnumerable<TaskCondition> GetTaskConditions(string data) =>
             JsonConvert.DeserializeObject<List<TaskCondition>>(data);

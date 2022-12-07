@@ -23,7 +23,7 @@ namespace Client_Admin_.Model
         public event Action<IEnumerable<Employee>> GetAllEmployees;
         public event Action<IEnumerable<UserRole>> GetUserRoles;
         public event Action<IEnumerable<TaskCondition>> GetTaskConditions;
-        public event Action<IEnumerable<TaskImportance>> GetTaskImortances;
+        public event Action<List<TaskImportance>> GetTaskImortances;
 
         public string IdOnServer { get; private set; }
 

@@ -104,6 +104,10 @@
     <Compile Include="ViewModel\TaskConditionWindows\DeleteTaskConditionVM.cs" />
     <Compile Include="ViewModel\TaskConditionWindows\TaskConditionVM.cs" />
     <Compile Include="ViewModel\TaskConditionWindows\UpdateTaskConditionVM.cs" />
+    <Compile Include="ViewModel\TaskImportanceWindows\CreateTaskImportanceVM.cs" />
+    <Compile Include="ViewModel\TaskImportanceWindows\DeleteTaskImportanceVM.cs" />
+    <Compile Include="ViewModel\TaskImportanceWindows\TaskImportanceVM.cs" />
+    <Compile Include="ViewModel\TaskImportanceWindows\UpdateTaskImportanceVM.cs" />
     <Compile Include="View\EmployeeRoleWindows\CreateEmployeeRoleControl.xaml.cs">
       <DependentUpon>CreateEmployeeRoleControl.xaml</DependentUpon>
     </Compile>
@@ -152,11 +156,20 @@
     <Compile Include="View\TaskConditionWindows\UpdateTaskConditionControl.xaml.cs">
       <DependentUpon>UpdateTaskConditionControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TaskImportanceWindow\TaskImportanceWindow.xaml.cs">
+    <Compile Include="View\TaskImportanceWindows\CreateTaskImportanceControl.xaml.cs">
+      <DependentUpon>CreateTaskImportanceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskImportanceWindows\DeleteTaskImportanceControl.xaml.cs">
+      <DependentUpon>DeleteTaskImportanceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskImportanceWindows\TaskImportanceWindow.xaml.cs">
       <DependentUpon>TaskImportanceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EmployeeWindows\EmployeeWindow.xaml.cs">
       <DependentUpon>EmployeeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskImportanceWindows\UpdateTaskImportanceControl.xaml.cs">
+      <DependentUpon>UpdateTaskImportanceControl.xaml</DependentUpon>
     </Compile>
     <Page Include="View\EmployeeRoleWindows\CreateEmployeeRoleControl.xaml">
       <SubType>Designer</SubType>
@@ -255,11 +268,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\TaskImportanceWindow\TaskImportanceWindow.xaml">
+    <Page Include="View\TaskImportanceWindows\CreateTaskImportanceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskImportanceWindows\DeleteTaskImportanceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskImportanceWindows\TaskImportanceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\EmployeeWindows\EmployeeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskImportanceWindows\UpdateTaskImportanceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

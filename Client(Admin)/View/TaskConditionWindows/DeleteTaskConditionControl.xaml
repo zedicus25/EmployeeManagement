@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client_Admin_.View.TaskConditionWindows"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:taskconditionwindows="clr-namespace:Client_Admin_.ViewModel.TaskConditionWindows" d:DataContext="{d:DesignInstance Type=taskconditionwindows:DeleteTaskConditionVM}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -15,7 +15,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Command="{Binding DeleteCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+        <Button Command="{Binding DeleteCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete condition">
             <materialDesign:PackIcon Kind="Delete" Width="30" Height="30"/>
         </Button>
     </Grid>

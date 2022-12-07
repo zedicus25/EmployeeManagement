@@ -17,7 +17,9 @@
     xmlns:projectVM ="clr-namespace:Client_Admin_.ViewModel.ProjectWindows"
     xmlns:projectView="clr-namespace:Client_Admin_.View.ProjectWindows"
     xmlns:taskConditionVM="clr-namespace:Client_Admin_.ViewModel.TaskConditionWindows"
-    xmlns:taskConditonView="clr-namespace:Client_Admin_.View.TaskConditionWindows">
+    xmlns:taskConditonView="clr-namespace:Client_Admin_.View.TaskConditionWindows"
+    xmlns:taskImportanceVM="clr-namespace:Client_Admin_.ViewModel.TaskImportanceWindows"
+    xmlns:taskImportanceView="clr-namespace:Client_Admin_.View.TaskImportanceWindows">
 
     <Application.Resources>
         <ResourceDictionary x:Key="MaterialDesign">
@@ -69,6 +71,15 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type taskConditionVM:UpdateTaskConditionVM}">
                 <taskConditonView:UpdateTaskConditionControl></taskConditonView:UpdateTaskConditionControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskImportanceVM:CreateTaskImportanceVM}">
+                <taskImportanceView:CreateTaskImportanceControl></taskImportanceView:CreateTaskImportanceControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskImportanceVM:DeleteTaskImportanceVM}">
+                <taskImportanceView:DeleteTaskImportanceControl></taskImportanceView:DeleteTaskImportanceControl>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type taskImportanceVM:UpdateTaskImportanceVM}">
+                <taskImportanceView:UpdateTaskImportanceControl></taskImportanceView:UpdateTaskImportanceControl>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

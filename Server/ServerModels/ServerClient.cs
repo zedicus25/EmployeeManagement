@@ -201,15 +201,20 @@ namespace Server.ServerModels
                             }
                             else if (msg.Contains("--addTaskImportance") && msg.Contains("importance="))
                             {
-
+                                string[] strs = msg.Split('\n');
+                                _serverController.AddTaskImportance(
+                                   JsonConvert.DeserializeObject<TaskImportance>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
                             }
                             else if (msg.Contains("--removeTaskImportance") && msg.Contains("importanceId="))
                             {
-
+                                string[] strs = msg.Split('\n');
+                                _serverController.DeleteTaskImportance(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)));
                             }
                             else if (msg.Contains("--updateTaskImportance") && msg.Contains("oldImportanceId=") && msg.Contains("newCondition="))
                             {
-
+                                string[] strs = msg.Split('\n');
+                                _serverController.UpdateTaskImportance(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
+                                    JsonConvert.DeserializeObject<TaskImportance>(strs[2].Substring(strs[2].IndexOf('=') + 1)));
                             }
                             else if (msg.Contains("--createTask")) 
                             {

@@ -116,10 +116,11 @@ namespace Server.ServerModels
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendEmployees(strs[1].Substring(strs[1].IndexOf('=') + 1));
                             }
-                            else if (msg.Contains("--addNewEmployee"))
+                            else if (msg.Contains("--createEmployeeRole"))
                             {
                                 string[] strs = msg.Split('\n');
-                                _serverController.CreateEmployee(JsonConvert.DeserializeObject<UserEmployeeLong>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
+                                _serverController.CreateEmployeeRole(
+                                    JsonConvert.DeserializeObject<UserEmployeeRole>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
                             }
                             else if (msg.Contains("--removeEmployeeRole") && msg.Contains("id="))
                             {
@@ -132,10 +133,27 @@ namespace Server.ServerModels
                                 _serverController.UpdateEmployeeRole(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
                                     JsonConvert.DeserializeObject<UserEmployeeRole>(strs[2].Substring(strs[2].IndexOf('=') + 1)));
                             }
+                            else if (msg.Contains("--setEmployeeRole") && msg.Contains("userRole=") && msg.Contains("employeeRole="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.SetNewUserRoleForEmployeeRole(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
+                                    Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--addNewEmployee"))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.CreateEmployee(JsonConvert.DeserializeObject<UserEmployeeLong>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
+                            }
                             else if (msg.Contains("--removeEmployee"))
                             {
                                 string[] strs = msg.Split('\n');
                                 _serverController.DeleteEmployee(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--updateEmployee") && msg.Contains("empId=") && msg.Contains("newEmp="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.UpdateEmployee(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
+                                    JsonConvert.DeserializeObject<UserEmployeeLong>(strs[2].Substring(strs[2].IndexOf('=') + 1)));
                             }
                             else if (msg.Contains("--getProjects") && msg.Contains("id="))
                             {
@@ -147,7 +165,7 @@ namespace Server.ServerModels
                                 string[] strs = msg.Split('\n');
                                 _serverController.AddProject(JsonConvert.DeserializeObject<UserProject>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
                             }
-                            else if (msg.Contains("--deleteProject") && msg.Contains("projId="))
+                            else if (msg.Contains("--removeProject") && msg.Contains("projId="))
                             {
                                 string[] strs = msg.Split('\n');
                                 _serverController.DeleteProject(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)));
@@ -169,12 +187,7 @@ namespace Server.ServerModels
                                 string[] strs = msg.Split('\n');
                                 _serverController.CreateTask(JsonConvert.DeserializeObject<UserTask>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
                             }
-                            else if(msg.Contains("--updateEmployee") && msg.Contains("empId=") && msg.Contains("newEmp="))
-                            {
-                                string[] strs = msg.Split('\n');
-                                _serverController.UpdateEmployee(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
-                                    JsonConvert.DeserializeObject<UserEmployeeLong>(strs[2].Substring(strs[2].IndexOf('=') + 1)));
-                            }
+                           
                             else if (msg.Contains("--removeTask"))
                             {
                                 string[] strs = msg.Split('\n');
@@ -191,24 +204,35 @@ namespace Server.ServerModels
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendAllTasks(strs[1].Substring(strs[1].IndexOf('=') + 1));
                             }
+                            else if (msg.Contains("--addTaskCondition"))
+                            {
+
+                            }
+                            else if (msg.Contains("--removeTaskCondition"))
+                            {
+
+                            }
+                            else if (msg.Contains("--updateTaskCondition"))
+                            {
+
+                            }
+                            else if (msg.Contains("--addTaskImportance"))
+                            {
+
+                            }
+                            else if (msg.Contains("--removeTaskImportance"))
+                            {
+
+                            }
+                            else if (msg.Contains("--updateTaskImportance"))
+                            {
+
+                            }
                             else if(msg.Contains("--getUserRoles") && msg.Contains("id="))
                             {
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendAllUserRoles(strs[1].Substring(strs[1].IndexOf('=') + 1));
                             }
-                            else if (msg.Contains("--createEmployeeRole"))
-                            {
-                                string[] strs = msg.Split('\n');
-                                _serverController.CreateEmployeeRole(
-                                    JsonConvert.DeserializeObject<UserEmployeeRole>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
-                            }
-                            else if (msg.Contains("--setEmployeeRole") && msg.Contains("userRole=") && msg.Contains("employeeRole="))
-                            {
-                                string[] strs = msg.Split('\n');
-                                _serverController.SetNewUserRoleForEmployeeRole(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
-                                    Convert.ToInt32(strs[2].Substring(strs[2].IndexOf('=') + 1)));
-                            }
-                            
                             else if(msg.Contains("--disconnect") && msg.Contains("id="))
                             {
                                 string[] strs = msg.Split('\n');

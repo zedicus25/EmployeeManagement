@@ -309,6 +309,19 @@ namespace Server.Controllers
         public void UpdateProject(int id, UserProject userProject) =>
             _projectController.UpdateProject(id, userProject);
 
+        public void AddTaskCondition(UserTaskCondtion cond) =>
+            _userTaskController.AddTaskCondition(cond);
+        public void DeleteTaskCondition(int condId) =>
+            _userTaskController.DeleteTaskCondition(condId);
+        public void UpdateTaskCondition(int condId, UserTaskCondtion cond) =>
+            _userTaskController.UpdateTaskCondition(condId, cond);
+        public void AddTaskImportance(TaskImportance importance) =>
+            _userTaskController.AddTaskImportance(importance);
+        public void DeleteTaskImportance(int importId) =>
+            _userTaskController.DeleteTaskImportance(importId);
+        public void UpdateTaskImportance(int importId, TaskImportance import) =>
+            _userTaskController.UpdateTaskImportance(importId, import);
+
 
     }
 }

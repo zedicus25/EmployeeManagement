@@ -107,6 +107,22 @@ namespace Client_Admin_.Model
             _stringBuilder.Clear();
         }
 
+        public void RemoveProject(int id)
+        {
+            _stringBuilder.Append("--removeProject\n");
+            _stringBuilder.Append($"projId={id}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+        public void UpdateProject(int id, Project project)
+        {
+            _stringBuilder.Append("--updateProject\n");
+            _stringBuilder.Append($"projId={id}\n");
+            _stringBuilder.Append($"newProj={JsonConvert.SerializeObject(project)}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+
         public void SendMessageToServer(string message)
         {
             if (message.ToLower().Contains("drop") || message.ToLower().Contains("delete") ||

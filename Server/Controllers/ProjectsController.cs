@@ -60,9 +60,7 @@ namespace Server.Controllers
 
             _dbContext.Projects.Remove(project);
             _dbContext.ProjectDescriptions.Remove(desc);
-            _dbContext.SaveChanges();
-
-            
+            _dbContext.SaveChanges();        
         }
         public void UpdateProject(int id, UserProject newProject)
         {

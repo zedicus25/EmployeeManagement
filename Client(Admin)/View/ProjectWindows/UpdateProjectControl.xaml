@@ -4,9 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client_Admin_.View.ProjectWindows"
+              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:projectwindows="clr-namespace:Client_Admin_.ViewModel.ProjectWindows" d:DataContext="{d:DesignInstance Type=projectwindows:UpdateProjectVM}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ListBox ItemsSource="{Binding Projects}" SelectedItem="{Binding SelectedProject}" Foreground="White"  Margin="10" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}"></TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Column="1">
+            <TextBox Text="{Binding SelectedProject.Title}" Foreground="White" Margin="10 8 10 10"
+                Style="{StaticResource MaterialDesignFilledTextBox}"
+                MaxLength="100"
+                materialDesign:HintAssist.Hint="Title" />
+            <TextBox TextWrapping="Wrap" Text="{Binding SelectedProject.Description}" MinHeight="250" Foreground="White" Margin="10 8 10 10"
+                Style="{StaticResource MaterialDesignFilledTextBox}"
+                MaxLength="2500"
+                materialDesign:HintAssist.Hint="Descritption" />
+        </StackPanel>
+        <Button Command="{Binding UpdateCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+            <materialDesign:PackIcon Kind="Update" Width="30" Height="30"/>
+        </Button>
     </Grid>
 </UserControl>

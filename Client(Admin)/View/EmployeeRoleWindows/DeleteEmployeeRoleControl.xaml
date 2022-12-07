@@ -8,16 +8,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
     <Grid>
-        <ComboBox VerticalAlignment="Top" ItemsSource="{Binding EmployeeRoles}" SelectedItem="{Binding SelectedEmployeeRole}"  Foreground="White"  Margin="10" 
-                Style="{StaticResource MaterialDesignFilledComboBox}"
-                materialDesign:HintAssist.Hint="Employee role"
-                materialDesign:TextFieldAssist.HasClearButton="True" MaxHeight="50">
-            <ComboBox.ItemTemplate>
+        <ListBox ItemsSource="{Binding EmployeeRoles}" SelectedItem="{Binding SelectedEmployeeRole}" Foreground="White"  Margin="10" >
+            <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}"></TextBlock>
                 </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <Button Command="{Binding DeleteCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
             <materialDesign:PackIcon Kind="Delete" Width="30" Height="30"/>
         </Button>

@@ -173,6 +173,11 @@ namespace Server.Controllers
             Employee emp = _dbContext.Employees.FirstOrDefault(x => x.Id == employeId);
             if (emp == null)
                 return;
+            List<ProjectTask> tasks = _dbContext.ProjectTasks.Where(x => x.EmployeeId == employeId).ToList();
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                tasks[i].EmployeeId = null;
+            }
             Person person = _dbContext.Persons.FirstOrDefault(x => x.Id == emp.PersonId);
             FIO fio = _dbContext.FIOs.FirstOrDefault(x => x.Id == person.FIO_Id);
             Adress adress = _dbContext.Adresses.FirstOrDefault(x => x.Id == person.Adress_Id);

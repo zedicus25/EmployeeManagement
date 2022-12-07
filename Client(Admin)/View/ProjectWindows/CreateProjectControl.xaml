@@ -17,7 +17,7 @@
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="100"
                 materialDesign:HintAssist.Hint="Title" />
-            <TextBox Text="{Binding Project.Description}" MinHeight="250" Foreground="White" Margin="10 8 10 10"
+            <TextBox TextWrapping="Wrap" Text="{Binding Project.Description}" MinHeight="250" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="2500"
                 materialDesign:HintAssist.Hint="Descritption" />

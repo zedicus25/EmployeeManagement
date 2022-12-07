@@ -13,18 +13,14 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <StackPanel>
-            <ComboBox ItemsSource="{Binding EmployeeRoles}" SelectedItem="{Binding SelectedEmployeeRole}"  Foreground="White"  Margin="10" 
-                Style="{StaticResource MaterialDesignFilledComboBox}"
-                materialDesign:HintAssist.Hint="Employee role"
-                materialDesign:TextFieldAssist.HasClearButton="True">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Title}"></TextBlock>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </StackPanel>
+        <ListBox  ItemsSource="{Binding EmployeeRoles}" SelectedItem="{Binding SelectedEmployeeRole}"  Foreground="White"  Margin="10" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}"></TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
         <StackPanel Grid.Column="1">
 
             <TextBox Text="{Binding SelectedEmployeeRole.Title}" Foreground="White" Margin="10 8 10 10"

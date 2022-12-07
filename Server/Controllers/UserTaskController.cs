@@ -196,5 +196,103 @@ namespace Server.Controllers
             return tasks;
         }
 
+        public void AddTaskCondition(UserTaskCondtion newCondition)
+        {
+            TaskCondition condititon = new TaskCondition();
+            TaskConditionDescription description = new TaskConditionDescription();
+            description.Title = newCondition.Title;
+            description.Description = newCondition.Description;
+            condititon.TaskConditionDescription = description;
+            _dbContext.TaskConditions.Add(condititon);
+            _dbContext.SaveChanges();
+        }
+        public void DeleteTaskCondition(int conditionId)
+        {
+            if (_dbContext.TaskConditions.Count() == 1)
+                return;
+
+            TaskCondition condititon = _dbContext.TaskConditions.FirstOrDefault(x => x.Id ==conditionId);
+            if (condititon == null)
+                return;
+            TaskConditionDescription description = _dbContext.TaskConditionDescriptions.
+                FirstOrDefault(x => x.Id == condititon.DescriptionId);
+
+            TaskCondition newCondition = _dbContext.TaskConditions.Where(x => x.Id != conditionId).First();
+
+            List<ProjectTask> tasks = _dbContext.ProjectTasks.Where(x => x.TaskConditionId == conditionId).ToList();
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                tasks[i].TaskConditionId = newCondition.Id;
+            }
+
+            _dbContext.TaskConditions.Remove(condititon);
+            _dbContext.TaskConditionDescriptions.Remove(description);
+            _dbContext.SaveChanges();
+        }
+        public void UpdateTaskCondition(int oldId, UserTaskCondtion newCondition)
+        {
+            TaskCondition condititon = _dbContext.TaskConditions.FirstOrDefault(x => x.Id == oldId);
+            if (condititon == null)
+                return;
+            TaskConditionDescription description = _dbContext.TaskConditionDescriptions.
+                FirstOrDefault(x => x.Id == condititon.DescriptionId);
+
+            if (description.Title == newCondition.Title && description.Description == newCondition.Description)
+                return;
+            description.Description = newCondition.Description;
+            description.Title = newCondition.Title;
+
+            _dbContext.SaveChanges();
+        }
+
+        public void AddTaskImportance(TaskImportance newImportance)
+        {
+            Importance importance = new Importance();
+            ImportanceDescription description = new ImportanceDescription();
+            description.Title = newImportance.Title;
+            description.Description = newImportance.Description;
+            importance.ImportanceDescription = description;
+            _dbContext.Importances.Add(importance);
+            _dbContext.SaveChanges();
+        }
+        public void DeleteTaskImportance(int importanceId)
+        {
+            if (_dbContext.Importances.Count() == 1)
+                return;
+
+            Importance importance = _dbContext.Importances.FirstOrDefault(x => x.Id == importanceId);
+            if (importance == null)
+                return;
+            ImportanceDescription description = _dbContext.ImportanceDescriptions.
+                FirstOrDefault(x => x.Id == importance.DescriptionId);
+
+            Importance newImportance = _dbContext.Importances.Where(x => x.Id != importanceId).First();
+
+            List<ProjectTask> tasks = _dbContext.ProjectTasks.Where(x => x.ImportanceId == importanceId).ToList();
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                tasks[i].ImportanceId = newImportance.Id;
+            }
+
+            _dbContext.Importances.Remove(importance);
+            _dbContext.ImportanceDescriptions.Remove(description);
+            _dbContext.SaveChanges();
+        }
+        public void UpdateTaskImportance(int oldId, TaskImportance newImportance)
+        {
+            Importance importance = _dbContext.Importances.FirstOrDefault(x => x.Id == oldId);
+            if (importance == null)
+                return;
+            ImportanceDescription description = _dbContext.ImportanceDescriptions.
+                FirstOrDefault(x => x.Id == importance.DescriptionId);
+
+            if (description.Title == newImportance.Title && description.Description == newImportance.Description)
+                return;
+            description.Description = newImportance.Description;
+            description.Title = newImportance.Title;
+
+            _dbContext.SaveChanges();
+        }
+
     }
 }

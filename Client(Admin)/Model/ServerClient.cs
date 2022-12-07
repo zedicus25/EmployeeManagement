@@ -99,6 +99,13 @@ namespace Client_Admin_.Model
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }
+        public void AddProject(Project project)
+        {
+            _stringBuilder.Append("--addProject\n");
+            _stringBuilder.Append($"proj={JsonConvert.SerializeObject(project)}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
 
         public void SendMessageToServer(string message)
         {

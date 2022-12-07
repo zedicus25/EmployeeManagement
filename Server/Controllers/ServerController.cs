@@ -301,6 +301,15 @@ namespace Server.Controllers
 
         public void UpdateEmployeeRole(int oldId, UserEmployeeRole role) =>
             _employeeController.UpdateEmployeeRole(oldId, role);
+
+        public void AddProject(UserProject userProject) =>
+            _projectController.AddProject(userProject);
+        public void DeleteProject(int id) =>
+            _projectController.DeleteProject(id);
+        public void UpdateProject(int id, UserProject userProject) =>
+            _projectController.UpdateProject(id, userProject);
+
+
     }
 }
 

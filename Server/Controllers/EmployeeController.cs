@@ -281,7 +281,7 @@ namespace Server.Controllers
             EmployeesRole role = _dbContext.EmployeesRoles.FirstOrDefault(x => x.Id == empRoleId);
             if (role == null)
                 return;
-            EmployeesRole newRole = _dbContext.EmployeesRoles.First();
+            EmployeesRole newRole = _dbContext.EmployeesRoles.Where(x=> x.Id != empRoleId).First();
             List<Employee> employees = _dbContext.Employees.Where(x => x.RoleId == empRoleId).ToList();
             for (int i = 0; i < employees.Count; i++)
             {

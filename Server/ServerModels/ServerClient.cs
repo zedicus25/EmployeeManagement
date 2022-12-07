@@ -142,6 +142,22 @@ namespace Server.ServerModels
                                 string[] strs = msg.Split('\n');
                                 _serverController.SendProjects(strs[1].Substring(strs[1].IndexOf('=') + 1));
                             }
+                            else if(msg.Contains("--addProject") && msg.Contains("proj="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.AddProject(JsonConvert.DeserializeObject<UserProject>(strs[1].Substring(strs[1].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--deleteProject") && msg.Contains("projId="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.DeleteProject(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)));
+                            }
+                            else if (msg.Contains("--updateProject") && msg.Contains("projId=") && msg.Contains("newProj="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.UpdateProject(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
+                                    JsonConvert.DeserializeObject<UserProject>(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                            }
                             else if (msg.Contains("--submitTask") && msg.Contains("id=") && msg.Contains("userDataBaseId="))
                             {
                                 string[] strs = msg.Split('\n');

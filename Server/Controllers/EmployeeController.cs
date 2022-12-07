@@ -2,6 +2,7 @@
 using Server.ServerModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -100,7 +101,9 @@ namespace Server.Controllers
                 roles.Add(new UserEmployeeRole()
                 {
                     Id = item.Id,
-                    Title = descriptions.FirstOrDefault(x => x.Id == item.DescriptionId).Title
+                    Title = descriptions.FirstOrDefault(x => x.Id == item.DescriptionId).Title,
+                    Description = descriptions.FirstOrDefault(x => x.Id == item.DescriptionId).Description,
+                    UserRoleId = item.UserRoleId
                 });
             }
             return roles;
@@ -287,6 +290,20 @@ namespace Server.Controllers
             EmployeeRoleDescription desck = _dbContext.EmployeeRoleDescriptions.FirstOrDefault(x => x.Id == role.DescriptionId);
             _dbContext.EmployeesRoles.Remove(role);
             _dbContext.EmployeeRoleDescriptions.Remove(desck);
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateEmployeeRole(int oldId, UserEmployeeRole newRole)
+        {
+            EmployeesRole oldRole = _dbContext.EmployeesRoles.FirstOrDefault(x => x.Id == oldId);
+            if (oldRole == null)
+                return;
+            EmployeeRoleDescription desck = _dbContext.EmployeeRoleDescriptions.FirstOrDefault(x => x.Id == oldRole.DescriptionId);
+            if (desck.Description == newRole.Description && desck.Title == newRole.Title && oldRole.UserRoleId == newRole.UserRoleId)
+                return;
+            desck.Title = newRole.Title;
+            desck.Description = newRole.Description;
+            oldRole.UserRoleId = newRole.UserRoleId;
             _dbContext.SaveChanges();
         }
     }

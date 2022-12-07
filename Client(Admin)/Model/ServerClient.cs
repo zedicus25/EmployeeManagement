@@ -1,5 +1,6 @@
 ﻿using Client_Admin_.Utilities;
 using Client_Admin_.ViewModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -86,6 +87,15 @@ namespace Client_Admin_.Model
             _stringBuilder.Append("--setEmployeeRole\n");
             _stringBuilder.Append($"userRole={userRole}\n");
             _stringBuilder.Append($"employeeRole={employeeRole}\n");
+            SendMessageToServer(_stringBuilder.ToString());
+            _stringBuilder.Clear();
+        }
+
+        public void UpdateEmployeeRole(int id, EmployeeRole role)
+        {
+            _stringBuilder.Append("--updateEmployeeRole\n");
+            _stringBuilder.Append($"roleId={id}\n");
+            _stringBuilder.Append($"employeeRole={JsonConvert.SerializeObject(role)}\n");
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }

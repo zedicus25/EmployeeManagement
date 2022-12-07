@@ -126,6 +126,12 @@ namespace Server.ServerModels
                                 string[] strs = msg.Split('\n');
                                 _serverController.RemoveEmployeeRole(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)));
                             }
+                            else if (msg.Contains("--updateEmployeeRole") && msg.Contains("roleId=") && msg.Contains("employeeRole="))
+                            {
+                                string[] strs = msg.Split('\n');
+                                _serverController.UpdateEmployeeRole(Convert.ToInt32(strs[1].Substring(strs[1].IndexOf('=') + 1)),
+                                    JsonConvert.DeserializeObject<UserEmployeeRole>(strs[2].Substring(strs[2].IndexOf('=') + 1)));
+                            }
                             else if (msg.Contains("--removeEmployee"))
                             {
                                 string[] strs = msg.Split('\n');

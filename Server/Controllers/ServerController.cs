@@ -298,6 +298,9 @@ namespace Server.Controllers
 
         public void RemoveEmployeeRole(int empRoleId) =>
             _employeeController.RemoveEmployeeRole(empRoleId);
+
+        public void UpdateEmployeeRole(int oldId, UserEmployeeRole role) =>
+            _employeeController.UpdateEmployeeRole(oldId, role);
     }
 }
 

@@ -4,6 +4,7 @@ using Client_User__.Model;
 using Newtonsoft.Json;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Client_User__.ViewModel
 {
@@ -72,8 +73,11 @@ namespace Client_User__.ViewModel
 
         public void SetLogining(bool res) => IsLoginig = res;
 
-        public void CreateTask(UserTask newTask) =>
-            ServerClient.SendMessageToServer($"--createTask\n{JsonConvert.SerializeObject(newTask)}");
+        public  void CreateTask(UserTask newTask) 
+        {
+            ServerClient.SendMessageToServer($"--createTask\n{JsonConvert.SerializeObject(newTask)}");     
+        }
+            
 
 
         public void DeleteTask(int taskId) => ServerClient.DeleteTask(taskId);

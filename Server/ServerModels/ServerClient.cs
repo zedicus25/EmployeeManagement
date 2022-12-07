@@ -45,7 +45,7 @@ namespace Server.ServerModels
                 {
                     try
                     {
-                        byte[] data = new byte[256];
+                        byte[] data = new byte[4096];
                         StringBuilder sb = new StringBuilder();
                         int byteCount = 0;
                         do

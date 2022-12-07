@@ -52,13 +52,8 @@ namespace Client_User__.ViewModel
 
         private void GetAllTasks(List<UserTask> obj)
         {
-            if (Tasks.Count <= 0)
-            {
-                Tasks = new ObservableCollection<UserTask>(obj);
-                return;
-            }
-
-            Tasks.Union(obj);
+            Tasks = new ObservableCollection<UserTask>(obj);
+            OnPropertyChanged("Tasks");
         }
 
         private void DeleteTask()
@@ -69,6 +64,7 @@ namespace Client_User__.ViewModel
             MainVM.GetInstance().DeleteTask(SelectedTask.Id);
             Tasks.Remove(SelectedTask);
             SelectedTask = null;
+            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }
     }
 }

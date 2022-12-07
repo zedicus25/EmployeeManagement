@@ -139,7 +139,10 @@ namespace Server.Controllers
             newTask.Term = term;
             newTask.ProjectId = task.ProjectId;
             newTask.TaskConditionId = task.ConditionId;
-            newTask.EmployeeId = task.EmployeeId;
+            if(task.EmployeeId != 0)
+                newTask.EmployeeId = task.EmployeeId;
+            else
+                newTask.EmployeeId = null;
             newTask.ProjectTaskDescription = project;
             newTask.ImportanceId = task.ImportanceId;
 

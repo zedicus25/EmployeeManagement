@@ -178,24 +178,14 @@ namespace Client_User__.ViewModel
 
         private void GetAllTasks(List<UserTask> obj)
         {
-            if (Tasks.Count <= 0)
-            {
-                Tasks = new ObservableCollection<UserTask>(obj);
-                return;
-            }
-
-            Tasks.Union(obj);
+            Tasks = new ObservableCollection<UserTask>(obj);
+            OnPropertyChanged("Tasks");
         }
 
         private void GetTaskConditions(List<TaskCondition> obj)
         {
-            if (Conditions.Count <= 0)
-            {
-                Conditions = new ObservableCollection<TaskCondition>(obj);
-                return;
-            }
-
-            Conditions.Union(obj);
+            Conditions = new ObservableCollection<TaskCondition>(obj);
+            OnPropertyChanged("Conditions");
         }
 
         private void UpdateTask()
@@ -219,41 +209,25 @@ namespace Client_User__.ViewModel
             }
                 
             MainVM.GetInstance().ServerClient.UpdateTask(SelectedTask.Id,SelectedTask);
-            SendQuerrys();
         }
 
         private void GetProjects(IEnumerable<UserProject> obj)
         {
-            if (Projects.Count <= 0)
-            {
-                Projects = new ObservableCollection<UserProject>(obj);
-                return;
-            }
-
-            Projects.Union(obj);
+            Projects = new ObservableCollection<UserProject>(obj);
+            OnPropertyChanged("Projects");
         }
 
         private void GetEmployees(List<Employee> obj)
         {
-            if (Employees.Count <= 0)
-            {
-                Employees = new ObservableCollection<Employee>(obj);
-                return;
-            }
-
-            Employees.Union(obj);
+            Employees = new ObservableCollection<Employee>(obj);
+            OnPropertyChanged("Employees");
         }
 
 
         private void GetTaskImportants(List<TaskImportant> obj)
         {
-            if (Importances.Count <= 0)
-            {
-                Importances = new ObservableCollection<TaskImportant>(obj);
-                return;
-            }
-
-            Importances.Union(obj);
+            Importances = new ObservableCollection<TaskImportant>(obj);
+            OnPropertyChanged("Importances");
         }
 
         private async void SendQuerrys()

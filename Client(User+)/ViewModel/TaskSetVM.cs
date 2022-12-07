@@ -79,7 +79,7 @@ namespace Client_User__.ViewModel
             MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }
 
-        private void SetTask()
+        private async void SetTask()
         {
             if (SelectedTask == null)
                 return;
@@ -93,30 +93,21 @@ namespace Client_User__.ViewModel
                 MainVM.GetInstance().ServerClient.QuerrySetTaskToEmployee(SelectedTask.Id, SelectedEmployee.Id);
                 SelectedTask.EmployeeId = SelectedEmployee.Id;
             }
+            await Task.Delay(800);
             MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
 
         }
 
         private void GetEmployees(List<Employee> obj)
         {
-            if (Employees.Count <= 0)
-            {
-                Employees = new ObservableCollection<Employee>(obj);
-                return;
-            }
-
-            Employees.Union(obj);
+            Employees = new ObservableCollection<Employee>(obj);
+            OnPropertyChanged("Employees");
         }
 
         private void GetAllTasks(List<UserTask> obj)
         {
-            if (Tasks.Count <= 0)
-            {
-                Tasks = new ObservableCollection<UserTask>(obj);
-                return;
-            }
-
-            Tasks.Union(obj);
+            Tasks = new ObservableCollection<UserTask>(obj);
+            OnPropertyChanged("Tasks");
         }
     }
 }

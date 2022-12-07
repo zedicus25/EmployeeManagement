@@ -126,10 +126,12 @@ namespace Client_User__.ViewModel
             Projects = new ObservableCollection<UserProject>();
         }
 
-        private void CreateTask()
+        private  async void CreateTask()
         {
             if (NewTask.Title.Equals(String.Empty) || NewTask.Description.Equals(String.Empty) || ToCompleteDate == null
                  || SelectedImportance == null || SelectedProject == null)
+                return;
+            if (ToCompleteDate < DateTime.Now)
                 return;
             NewTask.ToComplete = ToCompleteDate;
             NewTask.CreationDate = DateTime.Now;
@@ -141,11 +143,11 @@ namespace Client_User__.ViewModel
                 NewTask.EmployeeId = SelectedEmployee.Id;
                 NewTask.ConditionId = 3;
             }
-            MainVM.GetInstance().CreateTask(NewTask);
+            MainVM.GetInstance().CreateTask(NewTask);   
             ToCompleteDate = DateTime.Now;
-            SelectedEmployee = new Employee();;
-            SelectedImportance = new TaskImportant();
-            SelectedProject = new UserProject();
+            SelectedEmployee = null;
+            SelectedImportance = null;
+            SelectedProject = null;
             NewTask = new UserTask();
         }
 
@@ -161,42 +163,27 @@ namespace Client_User__.ViewModel
 
         private void GetProjects(List<UserProject> obj)
         {
-            if (Projects.Count <= 0)
-            {
-                Projects = new ObservableCollection<UserProject>(obj);
-                return;
-            }
-
-            Projects.Union(obj);
+            Projects = new ObservableCollection<UserProject>(obj);
+            OnPropertyChanged("Projects");
         }
 
         private void GetEmployees(List<Employee> obj)
         {
-            if (Employees.Count <= 0)
-            {
-                Employees = new ObservableCollection<Employee>(obj);
-                return;
-            }
-
-            Employees.Union(obj);
+            Employees = new ObservableCollection<Employee>(obj);
+            OnPropertyChanged("Employees");
         }
 
 
         private void GetTaskImportants(List<TaskImportant> obj)
         {
-            if (Importances.Count <= 0)
-            {
-                Importances = new ObservableCollection<TaskImportant>(obj);
-                return;
-            }
-
-            Importances.Union(obj);
+            Importances = new ObservableCollection<TaskImportant>(obj);
+            OnPropertyChanged("Importances");
         }
 
         private async void SendQuerrys()
         {
             MainVM.GetInstance().ServerClient.SendQuerryForImportance();
-            await Task.Delay(2000);
+            await Task.Delay(2800);
             MainVM.GetInstance().ServerClient.SendQuerryForEmployees();
             await Task.Delay(2000);
             MainVM.GetInstance().ServerClient.SendQuerryForProjects();

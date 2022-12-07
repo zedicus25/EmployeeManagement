@@ -224,7 +224,7 @@ namespace Client_User__.Model
                         
                 }
             }
-            catch (Exception ex)
+             catch (Exception ex)
             {
                 StateUpdating?.Invoke($"Connection error {ex.Message}");
                 Disconnect();

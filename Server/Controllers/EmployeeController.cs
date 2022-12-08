@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -111,6 +112,9 @@ namespace Server.Controllers
 
         public void AddEmployee(UserEmployeeLong employee)
         {
+            if (employee.FirstName == String.Empty || employee.LastName == String.Empty || employee.Patronymic == String.Empty)
+                return;
+
             FIO fio = new FIO() 
             { 
                 First_Name = employee.FirstName,
@@ -118,6 +122,9 @@ namespace Server.Controllers
                 Patronymic = employee.Patronymic
             };
 
+            if (employee.Country == String.Empty || employee.City == String.Empty || employee.Street == String.Empty ||
+                employee.House_Number == String.Empty || employee.Full_Adress == String.Empty)
+                return;
             Adress adress = new Adress()
             {
                 Country = employee.Country,
@@ -127,12 +134,16 @@ namespace Server.Controllers
                 Full_Adress = employee.Full_Adress
             };
 
+            if (employee.Login == String.Empty || employee.Password == String.Empty)
+                return;
             LoginData loginData = new LoginData()
             {
                 Login = employee.Login,
                 Password = employee.Password
             };
 
+            if (employee.Birthday == null)
+                return;
             Person person = new Person()
             {
                 Birthday = employee.Birthday,
@@ -151,7 +162,8 @@ namespace Server.Controllers
             {
                 numbers.Add(new Phone_Numbers() { Phone_Number = item, Person = person});
             }
-
+            if (employee.Salary == 0.0f || employee.EmployeeRoleId == 0 || employee.ProjectId == 0)
+                return;
             Employee empl = new Employee()
             {
                 Person = person,
@@ -216,13 +228,13 @@ namespace Server.Controllers
             List<Email> newEmails = new List<Email>();
             foreach (var item in newEmp.Emails)
             {
-                emails.Add(new Email() { Email1 = item, Person = person });
+                newEmails.Add(new Email() { Email1 = item, Person = person });
             }
 
             List<Phone_Numbers> newNumbers = new List<Phone_Numbers>();
             foreach (var item in newEmp.PhoneNumbers)
             {
-                numbers.Add(new Phone_Numbers() { Phone_Number = item, Person = person });
+                newNumbers.Add(new Phone_Numbers() { Phone_Number = item, Person = person });
             }
             _dbContext.Phone_Numbers.AddRange(newNumbers);
             _dbContext.Emails.AddRange(newEmails);
@@ -261,7 +273,7 @@ namespace Server.Controllers
         }
 
         public void AddEmployeeRole(UserEmployeeRole role)
-        {
+        {   
             EmployeesRole newRole = new EmployeesRole();
             newRole.UserRoleId = role.UserRoleId;
             EmployeeRoleDescription description = new EmployeeRoleDescription();

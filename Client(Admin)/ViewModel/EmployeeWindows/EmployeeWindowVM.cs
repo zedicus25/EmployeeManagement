@@ -25,7 +25,7 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
         {
             get => _showCreateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is CreateEmployeeVM || _allVMs.Count < 1)
+                if (CurrentViewModel is CreateEmployeeVM)
                     return;
                 CurrentViewModel = _allVMs[0];
             });
@@ -35,9 +35,10 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
         {
             get => _showDeleteMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is DeleteEmployeeVM || _allVMs.Count < 2)
+                if (CurrentViewModel is DeleteEmployeeVM)
                     return;
                 CurrentViewModel = _allVMs[1];
+                MainVM.GetInstance().ServerClient.SendQuerryForEmployees();
             });
         }
 
@@ -45,7 +46,7 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
         {
             get => _showUpdateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is UpdateEmployeeVM || _allVMs.Count < 3)
+                if (CurrentViewModel is UpdateEmployeeVM)
                     return;
                 CurrentViewModel = _allVMs[2];
             });
@@ -62,19 +63,29 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
             CreateVMs();
         }
 
-        private async void CreateVMs()
+        private  void CreateVMs()
         {
             while (true)
             {
                 if (MainVM.GetInstance().User != null)
                     break;
             }
-
+                
             _allVMs.Add(new CreateEmployeeVM());
-            await Task.Delay(8000);
             _allVMs.Add(new DeleteEmployeeVM());
-            await Task.Delay(5000);
             _allVMs.Add(new UpdateEmployeeVM());
+            SendQuerrys();
+        }
+
+        private async void SendQuerrys()
+        {
+            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
+            await Task.Delay(3000);
+            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
+            await Task.Delay(3000);
+            MainVM.GetInstance().ServerClient.SendQuerryForEmployees();
+            await Task.Delay(3000);
+            MainVM.GetInstance().ServerClient.SendQuerryForAllEmployees();
         }
 
     }

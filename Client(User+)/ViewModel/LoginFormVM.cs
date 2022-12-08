@@ -50,11 +50,15 @@ namespace Client_User__.ViewModel
                 {
                     if (LoginInput != String.Empty && PasswordInput != String.Empty)
                     {
-                        string msg = $"id={MainVM.GetInstance().ServerClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
-                        MainVM.GetInstance().ServerClient.SendMessageToServer(msg);
-                        AddListeners();
-                        LoginingResult = false;
+                        if (MainVM.GetInstance().ServerClient.IsConnected)
+                        {
+                            string msg = $"id={MainVM.GetInstance().ServerClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
+                            MainVM.GetInstance().ServerClient.SendMessageToServer(msg);
+                            AddListeners();
+                            LoginingResult = false;
+                        }
                     }
+                        
                 }));
             }
         }

@@ -37,6 +37,15 @@ namespace Client_Admin_.ViewModel
                 OnPropertyChanged("ServerMessages");
             }
         }
+        public bool LoginingResult
+        {
+            get => _loginigResult;
+            set
+            {
+                _loginigResult = value;
+                OnPropertyChanged("LoginingResult");
+            }
+        }
 
         public RelayCommand LoginCommand
         {
@@ -46,9 +55,13 @@ namespace Client_Admin_.ViewModel
                 {
                     if (LoginInput != String.Empty && PasswordInput != String.Empty)
                     {
-                        string msg = $"id={MainVM.GetInstance().ServerClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
-                        MainVM.GetInstance().ServerClient.SendMessageToServer(msg);
-                        AddListeners();
+                        if (MainVM.GetInstance().ServerClient.IsConnected)
+                        {
+                            string msg = $"id={MainVM.GetInstance().ServerClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
+                            MainVM.GetInstance().ServerClient.SendMessageToServer(msg);
+                            AddListeners();
+                            LoginingResult = false;
+                        }  
                     }
                 }));
             }
@@ -62,7 +75,7 @@ namespace Client_Admin_.ViewModel
 
         public LoginFormVM()
         {
-
+            LoginingResult = true;
         }
 
         public void AddListeners()
@@ -79,11 +92,11 @@ namespace Client_Admin_.ViewModel
 
         private void SetLoginigResult(bool res, User user)
         {
-            _loginigResult = res;
-            if (_loginigResult && user.UserRoleId == 7)
+            LoginingResult = !res;
+            if (res && user.UserRoleId == 7)
             {
-                MainVM.GetInstance().SetViewModel(new HomePageVM());
                 MainVM.GetInstance().User = user;
+                MainVM.GetInstance().SetViewModel(new HomePageVM());
             }
 
         }

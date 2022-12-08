@@ -43,30 +43,30 @@
                 materialDesign:TextFieldAssist.HasClearButton="True"
                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
                 <Separator Margin="10"></Separator>
-                <ComboBox IsEnabled="False" ItemsSource="{Binding SelectedEmployee.Emails}" SelectedItem="{Binding SelectedEmail}" Foreground="White"  Margin="10" 
-                Style="{StaticResource MaterialDesignFilledComboBox}"
-                materialDesign:HintAssist.Hint="Emails"
-                materialDesign:TextFieldAssist.HasClearButton="True">
-                </ComboBox>
-                <StackPanel IsEnabled="False" Orientation="Horizontal">
+                <ListBox  ItemsSource="{Binding SelectedEmployee.Emails, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedEmail,UpdateSourceTrigger=PropertyChanged}" Foreground="White"  Margin="10">
+                </ListBox>
+                <StackPanel  Orientation="Horizontal">
                     <TextBox Text="{Binding SelectedEmail}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="30" MinWidth="150"
                 materialDesign:HintAssist.Hint="Email" />
-                    <Button Command="{Binding DeleteEmail}" Content="Del"></Button>
+                    <StackPanel>
+                        <Button IsEnabled="{Binding CanUpdateEmployee}" Margin="0 5" Command="{Binding AddEmail}" Content="Add"></Button>
+                        <Button IsEnabled="{Binding CanUpdateEmployee}" Command="{Binding DeleteEmail}" Content="Del"></Button>
+                    </StackPanel>
                 </StackPanel>
                 <Separator Margin="10"></Separator>
-                <ComboBox IsEnabled="False" ItemsSource="{Binding SelectedEmployee.PhoneNumbers}" SelectedItem="{Binding SelectedPhone}" Foreground="White"  Margin="10" 
-                Style="{StaticResource MaterialDesignFilledComboBox}"
-                materialDesign:HintAssist.Hint="Phone numbers"
-                materialDesign:TextFieldAssist.HasClearButton="True">
-                </ComboBox>
-                <StackPanel IsEnabled="False" Orientation="Horizontal">
+                <ListBox ItemsSource="{Binding SelectedEmployee.PhoneNumbers}" SelectedItem="{Binding SelectedPhone}" Foreground="White"  Margin="10" >
+                </ListBox>
+                <StackPanel Orientation="Horizontal">
                     <TextBox Text="{Binding SelectedPhone}" Foreground="White" Margin="10 8 10 10"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 MaxLength="15" MinWidth="150"
                 materialDesign:HintAssist.Hint="Phone Number" />
-                    <Button Command="{Binding DeleteNumber}" Content="Del"></Button>
+                    <StackPanel>
+                        <Button IsEnabled="{Binding CanUpdateEmployee}" Margin="0 5" Command="{Binding AddNumber}" Content="Add"></Button>
+                        <Button IsEnabled="{Binding CanUpdateEmployee}" Command="{Binding DeleteNumber}" Content="Del"></Button>
+                    </StackPanel>
                 </StackPanel>
                 <Separator Margin="10"></Separator>
                 <TextBox Text="{Binding SelectedEmployee.Country}" Foreground="White" Margin="10 8 10 10"
@@ -127,7 +127,7 @@
                 </ComboBox>
             </StackPanel>
         </ScrollViewer>
-        <Button Command="{Binding UpdateCommand}" Grid.Column="2" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+        <Button IsEnabled="{Binding CanUpdateEmployee}" Command="{Binding UpdateCommand}" Grid.Column="2" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
             <materialDesign:PackIcon Kind="Update" Width="30" Height="30"/>
         </Button>
     </Grid>

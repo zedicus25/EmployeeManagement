@@ -26,7 +26,7 @@ namespace Client_User__.Model
         public bool CanSendMessagesToServer { get; private set; }
 
         private TcpClient _tcpClient;
-        public bool IsConnected => _tcpClient.Connected;
+        public bool IsConnected => _tcpClient.Connected;    
         private NetworkStream _tcpStream;
 
         private readonly int PORT = 8008;

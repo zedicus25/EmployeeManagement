@@ -60,7 +60,7 @@
                 MaxLength="15"
                              MinWidth="250"
                 materialDesign:HintAssist.Hint="Phone number" />
-                    <Button Command="{Binding AddPhoneNumber}" Content="Add"></Button>
+                    <Button IsEnabled="{Binding CanAddEmployee}" Command="{Binding AddPhoneNumber}" Content="Add"></Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBox Text="{Binding Email}" Foreground="White" Margin="10 8 10 10"
@@ -68,7 +68,7 @@
                 MaxLength="30"
                              MinWidth="250"
                 materialDesign:HintAssist.Hint="Email" />
-                    <Button Command="{Binding AddEmail}" Content="Add"></Button>
+                    <Button IsEnabled="{Binding CanAddEmployee}" Command="{Binding AddEmail}" Content="Add"></Button>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
@@ -109,7 +109,7 @@
                 </ComboBox>
             </StackPanel>
         </ScrollViewer>
-        <Button Command="{Binding AddCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+        <Button IsEnabled="{Binding CanAddEmployee}" Command="{Binding AddCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
             <materialDesign:PackIcon Kind="PlusBold" Width="30" Height="30"/>
         </Button>
     </Grid>

@@ -36,8 +36,6 @@ namespace Client_Admin_.Model
         private readonly string HOST = "127.0.0.1";
         private StringBuilder _stringBuilder;
 
-        
-
 
         private CancellationTokenSource _reciveCTS;
         private CancellationTokenSource _tryConnectCTS;

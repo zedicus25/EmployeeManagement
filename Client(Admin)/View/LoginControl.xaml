@@ -46,7 +46,7 @@
                     materialDesign:HintAssist.Hint="Пароль" />
 
 
-        <Button Grid.Row="3" Grid.Column="1" Margin="10 0" VerticalAlignment="Top"
+        <Button IsEnabled="{Binding LoginingResult}" Grid.Row="3" Grid.Column="1" Margin="10 0" VerticalAlignment="Top"
                 Style="{StaticResource MaterialDesignFlatSecondaryDarkBgButton}"
                 Command="{Binding LoginCommand}"
                 Content="Увійти" />

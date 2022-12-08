@@ -1,5 +1,6 @@
 ﻿using Client_User__.Model;
 using GalaSoft.MvvmLight.Command;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -94,6 +95,16 @@ namespace Client_User__.ViewModel
         {
             get { return _createTask ?? new RelayCommand(CreateTask); }
         }
+        public bool CanAddTasks
+        {
+            get => _canAddTasks;
+            set
+            {
+                _canAddTasks = value;
+                OnPropertyChanged("CanAddTasks");
+            }
+        }
+        private bool _canAddTasks;
 
 
         private ObservableCollection<TaskImportant> _importances;
@@ -107,9 +118,12 @@ namespace Client_User__.ViewModel
         private TaskImportant _selectedImportance;
         private Employee _selectedEmployee;
 
+        
+
 
         public TaskCreateVM()
         {
+            _canAddTasks = false;
             NewTask = new UserTask()
             {
                 Description = String.Empty,
@@ -119,14 +133,13 @@ namespace Client_User__.ViewModel
             SelectedEmployee = new Employee(); ;
             SelectedImportance = new TaskImportant();
             SelectedProject = new UserProject();
-            SendQuerrys();
             ToCompleteDate = DateTime.Now;
             Employees = new ObservableCollection<Employee>();
             Importances = new ObservableCollection<TaskImportant>();
             Projects = new ObservableCollection<UserProject>();
         }
 
-        private  async void CreateTask()
+        private async void CreateTask()
         {
             if (NewTask.Title.Equals(String.Empty) || NewTask.Description.Equals(String.Empty) || ToCompleteDate == null
                  || SelectedImportance == null || SelectedProject == null)
@@ -143,14 +156,16 @@ namespace Client_User__.ViewModel
                 NewTask.EmployeeId = SelectedEmployee.Id;
                 NewTask.ConditionId = 3;
             }
-            MainVM.GetInstance().CreateTask(NewTask);   
+            MainVM.GetInstance().ServerClient.SendMessageToServer($"--createTask\n{JsonConvert.SerializeObject(NewTask  )}");
             ToCompleteDate = DateTime.Now;
             SelectedEmployee = null;
             SelectedImportance = null;
             SelectedProject = null;
             NewTask = new UserTask();
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }
-
+            
         private void AddListeners()
         {
             if (MainVM.GetInstance().ServerClient == null)
@@ -158,8 +173,12 @@ namespace Client_User__.ViewModel
 
             MainVM.GetInstance().ServerClient.GetTaskImportants += GetTaskImportants;
             MainVM.GetInstance().ServerClient.GetEmployees += GetEmployees;
-            MainVM.GetInstance().ServerClient.GetProjects += GetProjects; ;
+            MainVM.GetInstance().ServerClient.GetProjects += GetProjects;
+            MainVM.GetInstance().ServerClient.GetAllTasks += GetAllTasks; ;
         }
+
+        private void GetAllTasks(List<UserTask> obj) => CanAddTasks = true;
+        
 
         private void GetProjects(List<UserProject> obj)
         {
@@ -178,15 +197,6 @@ namespace Client_User__.ViewModel
         {
             Importances = new ObservableCollection<TaskImportant>(obj);
             OnPropertyChanged("Importances");
-        }
-
-        private async void SendQuerrys()
-        {
-            MainVM.GetInstance().ServerClient.SendQuerryForImportance();
-            await Task.Delay(2800);
-            MainVM.GetInstance().ServerClient.SendQuerryForEmployees();
-            await Task.Delay(2000);
-            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
         }
     }
 }

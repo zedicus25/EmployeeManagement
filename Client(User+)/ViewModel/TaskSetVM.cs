@@ -58,6 +58,16 @@ namespace Client_User__.ViewModel
                 OnPropertyChanged("SelectedEmployee");
             }
         }
+        public bool CanLinkTasks
+        {
+            get => _canAddTasks;
+            set
+            {
+                _canAddTasks = value;
+                OnPropertyChanged("CanAddTasks");
+            }
+        }
+        private bool _canAddTasks;
 
         private RelayCommand _setTaskCommand;
 
@@ -71,12 +81,11 @@ namespace Client_User__.ViewModel
 
         public TaskSetVM()
         {
+            CanLinkTasks = false;
             Employees = new ObservableCollection<Employee>();
             Tasks = new ObservableCollection<UserTask>();
             MainVM.GetInstance().ServerClient.GetAllTasks += GetAllTasks;
             MainVM.GetInstance().ServerClient.GetEmployees += GetEmployees;
-            MainVM.GetInstance().ServerClient.SendQuerryForEmployees();
-            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }
 
         private async void SetTask()
@@ -106,6 +115,7 @@ namespace Client_User__.ViewModel
 
         private void GetAllTasks(List<UserTask> obj)
         {
+            CanLinkTasks = true;
             Tasks = new ObservableCollection<UserTask>(obj);
             OnPropertyChanged("Tasks");
         }

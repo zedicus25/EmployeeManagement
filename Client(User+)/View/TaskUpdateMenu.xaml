@@ -93,7 +93,7 @@
                  materialDesign:HintAssist.Hint="Task description">
 
         </TextBox>
-        <Button Grid.Column="2" VerticalAlignment="Bottom" Margin="10" HorizontalAlignment="Right"
+        <Button IsEnabled="{Binding CanUpdateTasks}" Grid.Column="2" VerticalAlignment="Bottom" Margin="10" HorizontalAlignment="Right"
             Style="{StaticResource MaterialDesignFloatingActionButton}"
             ToolTip="MaterialDesignFloatingActionButton" Command="{Binding UpdateCommand}">
             <materialDesign:PackIcon Width="40" Height="40" Kind="Update" />

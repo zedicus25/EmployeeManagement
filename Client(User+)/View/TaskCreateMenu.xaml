@@ -67,7 +67,7 @@
                  materialDesign:HintAssist.Hint="Task description">
             
         </TextBox>
-        <Button Grid.Column="1" VerticalAlignment="Bottom" Margin="10" HorizontalAlignment="Right"
+        <Button IsEnabled="{Binding CanAddTasks}" Grid.Column="1" VerticalAlignment="Bottom" Margin="10" HorizontalAlignment="Right"
             Style="{StaticResource MaterialDesignFloatingActionButton}"
             ToolTip="MaterialDesignFloatingActionButton" Command="{Binding CreateTaskCommand}">
             <materialDesign:PackIcon Width="40" Height="40" Kind="Plus" />

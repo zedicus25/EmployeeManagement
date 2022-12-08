@@ -33,7 +33,15 @@ namespace Client_User__.ViewModel
                 OnPropertyChanged("ServerMessages");
             }
         }
-
+        public bool LoginingResult
+        {
+            get => _loginigResult;
+            set
+            {
+                _loginigResult = value;
+                OnPropertyChanged("LoginingResult");
+            }
+        }
         public RelayCommand LoginCommand
         {
             get
@@ -45,6 +53,7 @@ namespace Client_User__.ViewModel
                         string msg = $"id={MainVM.GetInstance().ServerClient.IdOnServer}\nlogin={LoginInput}\npassword={PasswordInput}";
                         MainVM.GetInstance().ServerClient.SendMessageToServer(msg);
                         AddListeners();
+                        LoginingResult = false;
                     }
                 }));
             }
@@ -59,7 +68,7 @@ namespace Client_User__.ViewModel
 
         public LoginFormVM()
         {
-
+            LoginingResult = true;
         }
 
         public void AddListeners()
@@ -78,8 +87,8 @@ namespace Client_User__.ViewModel
         {
             if (MainVM.GetInstance().IsLoginig)
                 return;
-            _loginigResult = res;
-            if (_loginigResult && user.UserRoleId != 1)
+            LoginingResult = !res;
+            if (res && user.UserRoleId != 1)
             {
                 MainVM.GetInstance().User = user;
                 MainVM.GetInstance().SetViewModel(new HomeControlVM());

@@ -42,7 +42,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button
+            <Button IsEnabled="{Binding CanLinkTasks}"
                 Style="{StaticResource MaterialDesignRaisedButton}"
                 ToolTip="Set selected task to employee"
                 Content="Set task" Margin="10"

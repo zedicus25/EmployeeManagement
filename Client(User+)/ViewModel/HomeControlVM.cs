@@ -87,6 +87,20 @@ namespace Client_User__.ViewModel
             _allVMs.Add(new TaskDeleteVM());
             _allVMs.Add(new TaskUpdateVM());
             _allVMs.Add(new TaskSetVM());
+            SendQuerrys();
+        }
+
+        private async void SendQuerrys()
+        {
+            MainVM.GetInstance().ServerClient.SendQuerryForImportance();
+            await Task.Delay(2000);
+            MainVM.GetInstance().ServerClient.SendQuerryForConditions();
+            await Task.Delay(2000);
+            MainVM.GetInstance().ServerClient.SendQuerryForEmployees();
+            await Task.Delay(2000);
+            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
+            await Task.Delay(2000);
+            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }
     }
 }

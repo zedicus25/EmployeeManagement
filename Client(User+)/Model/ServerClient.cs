@@ -120,7 +120,7 @@ namespace Client_User__.Model
             try
             {
                 byte[] data = Encoding.Unicode.GetBytes(message);
-                _tcpStream?.WriteAsync(data, 0, data.Length);
+                _tcpStream?.Write(data, 0, data.Length);
             }
             catch (Exception ex)
             {

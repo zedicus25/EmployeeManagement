@@ -140,6 +140,16 @@ namespace Client_User__.ViewModel
         {
             get { return _updateCommand ?? new RelayCommand(UpdateTask); }
         }
+        public bool CanUpdateTasks
+        {
+            get => _canAddTasks;
+            set
+            {
+                _canAddTasks = value;
+                OnPropertyChanged("CanAddTasks");
+            }
+        }
+        private bool _canAddTasks;
 
         private ObservableCollection<TaskImportant> _importances;
         private ObservableCollection<TaskCondition> _conditions;
@@ -155,8 +165,8 @@ namespace Client_User__.ViewModel
         private RelayCommand _updateCommand;
         public TaskUpdateVM()
         {
+            CanUpdateTasks = false;
             AddListeners();
-            SendQuerrys();
             Tasks = new ObservableCollection<UserTask>();
             Employees = new ObservableCollection<Employee>();
             Importances = new ObservableCollection<TaskImportant>();
@@ -178,6 +188,7 @@ namespace Client_User__.ViewModel
 
         private void GetAllTasks(List<UserTask> obj)
         {
+            CanUpdateTasks = true;
             Tasks = new ObservableCollection<UserTask>(obj);
             OnPropertyChanged("Tasks");
         }
@@ -188,7 +199,7 @@ namespace Client_User__.ViewModel
             OnPropertyChanged("Conditions");
         }
 
-        private void UpdateTask()
+        private async void UpdateTask()
         {
             if (SelectedTask.Title.Equals(String.Empty) || SelectedTask.Description.Equals(String.Empty) || ToCompleteDate == null
                 || SelectedImportance == null || SelectedProject == null)
@@ -209,6 +220,8 @@ namespace Client_User__.ViewModel
             }
                 
             MainVM.GetInstance().ServerClient.UpdateTask(SelectedTask.Id,SelectedTask);
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }
 
         private void GetProjects(IEnumerable<UserProject> obj)
@@ -228,19 +241,6 @@ namespace Client_User__.ViewModel
         {
             Importances = new ObservableCollection<TaskImportant>(obj);
             OnPropertyChanged("Importances");
-        }
-
-        private async void SendQuerrys()
-        {
-            MainVM.GetInstance().ServerClient.SendQuerryForImportance();
-            await Task.Delay(2000);
-            MainVM.GetInstance().ServerClient.SendQuerryForConditions();
-            await Task.Delay(2000);
-            MainVM.GetInstance().ServerClient.SendQuerryForEmployees();
-            await Task.Delay(2000);
-            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
-            await Task.Delay(2000);
-            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }
     }
 }

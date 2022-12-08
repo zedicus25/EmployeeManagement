@@ -54,7 +54,7 @@ namespace Server.ServerModels
                             sb.Append(Encoding.Unicode.GetString(data, 0, byteCount));
                         } while (NetworkStream.DataAvailable);
 
-                        if (sb.Length > 0)
+                        if (sb.Length > 0)  
                         {
                             string msg = sb.ToString();
                             if(msg.ToLower().Contains("drop") || msg.ToLower().Contains("delete") || 

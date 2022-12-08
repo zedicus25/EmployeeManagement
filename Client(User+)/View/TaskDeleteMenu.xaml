@@ -38,6 +38,6 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedTask}">
         </ListBox>
 
-        <Button Command="{Binding DeleteCommand}" Grid.Row="3" Margin="10" VerticalAlignment="Bottom"  Content="Delete"></Button>
+        <Button IsEnabled="{Binding CanRemoveTasks}" Command="{Binding DeleteCommand}" Grid.Row="3" Margin="10" VerticalAlignment="Bottom"  Content="Delete"></Button>
     </Grid>
 </UserControl>

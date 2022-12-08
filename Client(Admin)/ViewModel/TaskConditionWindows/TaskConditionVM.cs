@@ -26,7 +26,7 @@ namespace Client_Admin_.ViewModel.TaskConditionWindows
         {
             get => _showCreateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is CreateTaskConditionVM || _allVMs.Count < 1)
+                if (CurrentViewModel is CreateTaskConditionVM)
                     return;
                 CurrentViewModel = _allVMs[0];
             });
@@ -36,7 +36,7 @@ namespace Client_Admin_.ViewModel.TaskConditionWindows
         {
             get => _showDeleteMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is DeleteTaskConditionVM || _allVMs.Count < 2)
+                if (CurrentViewModel is DeleteTaskConditionVM)
                     return;
                 CurrentViewModel = _allVMs[1];
             });
@@ -46,7 +46,7 @@ namespace Client_Admin_.ViewModel.TaskConditionWindows
         {
             get => _showUpdateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is UpdateTaskConditionVM || _allVMs.Count < 3)
+                if (CurrentViewModel is UpdateTaskConditionVM)
                     return;
                 CurrentViewModel = _allVMs[2];
             });
@@ -63,7 +63,7 @@ namespace Client_Admin_.ViewModel.TaskConditionWindows
             CreateVMs();
         }
 
-        private async void CreateVMs()
+        private void CreateVMs()
         {
             while (true)
             {
@@ -72,10 +72,9 @@ namespace Client_Admin_.ViewModel.TaskConditionWindows
             }
 
             _allVMs.Add(new CreateTaskConditionVM());
-            await Task.Delay(3000);
             _allVMs.Add(new DeleteTaskConditionVM());
-            await Task.Delay(3000);
             _allVMs.Add(new UpdateTaskConditionVM());
+            MainVM.GetInstance().ServerClient.SendQuerryForTaskConditions();
         }
     }
 }

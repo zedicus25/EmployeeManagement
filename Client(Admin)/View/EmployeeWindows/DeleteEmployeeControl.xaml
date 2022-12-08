@@ -19,7 +19,9 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button IsEnabled="{Binding CanRemoveEmployee}" Command="{Binding DeleteCommand}" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+        <Button IsEnabled="{Binding CanRemoveEmployee}" Command="{Binding DeleteCommand}" Margin="10" 
+                VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" 
+                ToolTip="Delete employee">
             <materialDesign:PackIcon Kind="Delete" Width="30" Height="30"/>
         </Button>
     </Grid>

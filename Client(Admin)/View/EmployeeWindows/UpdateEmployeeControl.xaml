@@ -127,7 +127,9 @@
                 </ComboBox>
             </StackPanel>
         </ScrollViewer>
-        <Button IsEnabled="{Binding CanUpdateEmployee}" Command="{Binding UpdateCommand}" Grid.Column="2" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+        <Button IsEnabled="{Binding CanUpdateEmployee}" Command="{Binding UpdateCommand}" Grid.Column="2" 
+                Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Update employee">
             <materialDesign:PackIcon Kind="Update" Width="30" Height="30"/>
         </Button>
     </Grid>

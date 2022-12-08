@@ -36,6 +36,8 @@ namespace Server.Controllers
         {
             Project project = new Project();
             ProjectDescription desc = new ProjectDescription();
+            if (userProject.Title == String.Empty || userProject.Description == String.Empty)
+                return;
             desc.Description = userProject.Description;
             desc.Title = userProject.Title;
             project.ProjectDescription = desc;
@@ -74,6 +76,8 @@ namespace Server.Controllers
         }
         public void UpdateProject(int id, UserProject newProject)
         {
+            if (newProject.Title == String.Empty || newProject.Description == String.Empty)
+                return;
             Project project = _dbContext.Projects.FirstOrDefault(x => x.Id == id);
             if (project == null)
                 return;

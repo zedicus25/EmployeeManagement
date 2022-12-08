@@ -150,6 +150,7 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
 		{
 			CanAddEmployee = false;
 			NewEmployee = new Employee();
+			NewEmployee.Birthday = DateTime.Now;
 			Roles = new ObservableCollection<EmployeeRole>();
 			Projects = new ObservableCollection<Project>();
 			MainVM.GetInstance().ServerClient.GetEmployeeRoles += GetEmployeeRoles;
@@ -163,8 +164,11 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
 		{
 			if (SelectedRole == null || SelectedProject == null)
 				return;
-			NewEmployee.EmployeeRoleId = SelectedRole.Id;
+			if (NewEmployee.Birthday >= DateTime.Now)
+				return;
+            NewEmployee.EmployeeRoleId = SelectedRole.Id;
 			NewEmployee.ProjectId = SelectedProject.Id;
+			
 			if (NewEmployee.IsValid())
 			{
 				MainVM.GetInstance().ServerClient.
@@ -176,8 +180,6 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
             }
 			SelectedRole = null;
 			SelectedProject = null;	
-            
-
         }
 
 		private void GetProjects(IEnumerable<Project> obj)

@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,11 +20,15 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
             {
                 _role = value;
                 OnPropertyChanged("SelectedEmployeeRole");
+                if(SelectedEmployeeRole != null)
+                {
+                    SelectedUserRole = UserRoles.FirstOrDefault(x => x.Id == SelectedEmployeeRole.UserRoleId);
+                }
             }
         }
-        private List<EmployeeRole> _employeeRoles;
+        private ObservableCollection<EmployeeRole> _employeeRoles;
 
-        public List<EmployeeRole> EmployeeRoles
+        public ObservableCollection<EmployeeRole> EmployeeRoles
         {
             get { return _employeeRoles; }
             set
@@ -45,9 +50,9 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
             }
         }
 
-        private List<UserRole> _roles;
+        private ObservableCollection<UserRole> _roles;
 
-        public List<UserRole> UserRoles
+        public ObservableCollection<UserRole> UserRoles
         {
             get { return _roles; }
             set
@@ -63,21 +68,30 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
         {
             get { return _updateCommand ?? new RelayCommand(UpdateRole); }
         }
+        private bool _canUpdateRole;
+
+        public bool CanUpdateRole
+        {
+            get { return _canUpdateRole; }
+            set 
+            { 
+                _canUpdateRole = value;
+                OnPropertyChanged("CanUpdateRole");
+            }
+        }
+
 
         public UpdateEmployeeRoleVM()
         {
-
-            UserRoles = new List<UserRole>();
-            EmployeeRoles = new List<EmployeeRole>();
+            UserRoles = new ObservableCollection<UserRole>();
+            EmployeeRoles = new ObservableCollection<EmployeeRole>();
             SelectedEmployeeRole = new EmployeeRole();
             SelectedUserRole = new UserRole();
             MainVM.GetInstance().ServerClient.GetUserRoles += GetUserRoles;
             MainVM.GetInstance().ServerClient.GetEmployeeRoles += GetEmployeeRoles;
-            MainVM.GetInstance().ServerClient.SendQuerryForUserRoles();
-            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
         }
 
-        private void UpdateRole()
+        private async void UpdateRole()
         {
             if (SelectedEmployeeRole == null || SelectedUserRole == null)
                 return;
@@ -89,23 +103,23 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
                 UserRoleId = SelectedUserRole.Id
             };
             MainVM.GetInstance().ServerClient.UpdateEmployeeRole(SelectedEmployeeRole.Id, newRole);
+            CanUpdateRole = false;
+            SelectedUserRole = null;
+            SelectedEmployeeRole = null;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
         }
 
         private void GetUserRoles(IEnumerable<UserRole> obj)
         {
-            UserRoles.Clear();
-            foreach (var item in obj)
-            {
-                UserRoles.Add(item);
-            }
+            UserRoles = new ObservableCollection<UserRole>(obj);
+            OnPropertyChanged("UserRoles");
         }
         private void GetEmployeeRoles(IEnumerable<EmployeeRole> obj)
         {
-            EmployeeRoles.Clear();
-            foreach (var item in obj)
-            {
-                EmployeeRoles.Add(item);
-            }
+            CanUpdateRole = true;
+            EmployeeRoles = new ObservableCollection<EmployeeRole>(obj);
+            OnPropertyChanged("EmployeeRoles");
         }
     }
 }

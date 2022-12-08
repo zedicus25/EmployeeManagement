@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,9 @@ namespace Client_Admin_.ViewModel.ProjectWindows
 {
     public class UpdateProjectVM : BaseVM
     {
-        private List<Project> _projects;
+        private ObservableCollection<Project> _projects;
 
-        public List<Project> Projects
+        public ObservableCollection<Project> Projects
         {
             get { return _projects; }
             set
@@ -33,33 +34,49 @@ namespace Client_Admin_.ViewModel.ProjectWindows
                 OnPropertyChanged("SelectedProject");
             }
         }
-        public UpdateProjectVM()
-        {
-            Projects = new List<Project>();
-            MainVM.GetInstance().ServerClient.GetProjects += GetProjects;
-            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
-        }
         private RelayCommand _updateCommand;
+
+
+        private bool _canUpdateProject;
+
+        public bool CanUpdateProject
+        {
+            get { return _canUpdateProject; }
+            set
+            {
+                _canUpdateProject = value;
+                OnPropertyChanged("CanUpdateProject");
+            }
+        }
 
         public RelayCommand UpdateCommand
         {
             get { return _updateCommand ?? new RelayCommand(UpdateProject); }
         }
+        public UpdateProjectVM()
+        {
+            CanUpdateProject = false;
+            Projects = new ObservableCollection<Project>();
+            MainVM.GetInstance().ServerClient.GetProjects += GetProjects;
+        }
+        
         private void GetProjects(IEnumerable<Project> obj)
         {
-            Projects.Clear();
-            foreach (var item in obj)
-            {
-                Projects.Add(item);
-            }
+            CanUpdateProject = true;
+            Projects = new ObservableCollection<Project>(obj);
+            OnPropertyChanged("Projects");
         }
 
-        private void UpdateProject()
+        private async void UpdateProject()
         {
             if (SelectedProject == null)
                 return;
             MainVM.GetInstance().ServerClient.UpdateProject(SelectedProject.Id, SelectedProject);
             SelectedProject = new Project();
+            CanUpdateProject = false;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
+
         }
 
     }

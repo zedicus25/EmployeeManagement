@@ -22,7 +22,7 @@
                 MaxLength="2500"
                 materialDesign:HintAssist.Hint="Descritption" />
         </StackPanel>
-        <Button Command="{Binding AddCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+        <Button IsEnabled="{Binding CanAddProject}" Command="{Binding AddCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
             <materialDesign:PackIcon Kind="PlusBold" Width="30" Height="30"/>
         </Button>
     </Grid>

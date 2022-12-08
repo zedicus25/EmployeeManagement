@@ -32,6 +32,20 @@ namespace Client_User__.ViewModel
             {
                 _selectedTask = value;
                 OnPropertyChanged("SelectedTask");
+                if(SelectedTask != null)
+                {
+                    SelectedImportance = Importances.FirstOrDefault(x => x.Id == SelectedTask.ImportanceId);
+                    SelectedCondition = Conditions.FirstOrDefault(x => x.Id == SelectedTask.ConditionId);
+                    if (SelectedTask.EmployeeId != 0)
+                        SelectedEmployee = Employees.FirstOrDefault(x => x.Id == SelectedTask.EmployeeId);
+                    else
+                    {
+                        SelectedEmployee = null;
+                    }
+                        
+
+                    SelectedProject = Projects.FirstOrDefault(x => x.Id == SelectedTask.ProjectId);
+                }
             }
         }
 
@@ -71,15 +85,6 @@ namespace Client_User__.ViewModel
                 OnPropertyChanged("Projects");
             }
         }
-        public UserTask NewTask
-        {
-            get => _newTask;
-            set
-            {
-                _newTask = value;
-                OnPropertyChanged("NewTask");
-            }
-        }
         public DateTime ToCompleteDate
         {
             get => _toCompleteDate;
@@ -91,14 +96,13 @@ namespace Client_User__.ViewModel
         }
 
 
-
         public UserProject SelectedProject
         {
             get { return _selectedProject; }
             set
             {
                 _selectedProject = value;
-                OnPropertyChanged("SelectedCondition");
+                OnPropertyChanged("SelectedProject");
             }
         }
 
@@ -136,13 +140,22 @@ namespace Client_User__.ViewModel
         {
             get { return _updateCommand ?? new RelayCommand(UpdateTask); }
         }
+        public bool CanUpdateTasks
+        {
+            get => _canUpdate;
+            set
+            {
+                _canUpdate = value;
+                OnPropertyChanged("CanUpdateTasks");
+            }
+        }
+        private bool _canUpdate;
 
         private ObservableCollection<TaskImportant> _importances;
         private ObservableCollection<TaskCondition> _conditions;
         private ObservableCollection<Employee> _employees;
         private ObservableCollection<UserProject> _projects;
 
-        private UserTask _newTask;
         private DateTime _toCompleteDate;
 
         private UserProject _selectedProject;
@@ -152,13 +165,14 @@ namespace Client_User__.ViewModel
         private RelayCommand _updateCommand;
         public TaskUpdateVM()
         {
+            CanUpdateTasks = false;
             AddListeners();
-            SendQuerrys();
             Tasks = new ObservableCollection<UserTask>();
             Employees = new ObservableCollection<Employee>();
             Importances = new ObservableCollection<TaskImportant>();
             Projects = new ObservableCollection<UserProject>();
             Conditions = new ObservableCollection<TaskCondition>();
+            SelectedTask = new UserTask();
         }
         private void AddListeners()
         {
@@ -170,113 +184,64 @@ namespace Client_User__.ViewModel
             MainVM.GetInstance().ServerClient.GetTaskConditions += GetTaskConditions;
             MainVM.GetInstance().ServerClient.GetEmployees += GetEmployees;
             MainVM.GetInstance().ServerClient.GetProjects += GetProjects;
-            MainVM.GetInstance().ServerClient.GetTaskById += GetTaskById;
         }
 
-        private void GetAllTasks(IEnumerable<UserTask> obj)
+        private void GetAllTasks(List<UserTask> obj)
         {
-            Tasks.Clear();
-            foreach (var item in obj)
-            {
-                Tasks.Add(item);
-            }
+            CanUpdateTasks = true;
+            Tasks = new ObservableCollection<UserTask>(obj);
+            OnPropertyChanged("Tasks");
         }
 
-        private void GetTaskConditions(IEnumerable<TaskCondition> obj)
+        private void GetTaskConditions(List<TaskCondition> obj)
         {
-            Conditions.Clear();
-            foreach (var item in obj)
-            {
-                Conditions.Add(item);
-            }
+            Conditions = new ObservableCollection<TaskCondition>(obj);
+            OnPropertyChanged("Conditions");
         }
 
-        private void GetTaskById(UserTask obj)
+        private async void UpdateTask()
         {
-            NewTask.Id = obj.Id;
-            NewTask.Title = obj.Title;
-            NewTask.Description = obj.Description;
-            ToCompleteDate = obj.ToComplete;
-            if (obj.EmployeeId != 0)
-                SelectedEmployee = Employees.FirstOrDefault(x => x.Id == obj.EmployeeId);
-            SelectedProject = Projects.FirstOrDefault(x => x.Id == obj.ProjectId);
-            SelectedImportance = Importances.FirstOrDefault(x => x.Id == obj.ImportanceId);
-            SelectedCondition = Conditions.FirstOrDefault(x => x.Id == obj.ConditionId);
-        }
-
-        private void UpdateTask()
-        {
-            if (NewTask.Title.Equals(String.Empty) || NewTask.Description.Equals(String.Empty) || ToCompleteDate == null
-                || SelectedEmployee == null || SelectedImportance == null
-                || SelectedProject == null)
+            if (SelectedTask.Title.Equals(String.Empty) || SelectedTask.Description.Equals(String.Empty) || ToCompleteDate == null
+                || SelectedImportance == null || SelectedProject == null)
                 return;
-            UserTask oldtask = new UserTask()
-            {
-                ConditionId = NewTask.ConditionId,
-                Description = NewTask.Description,
-                Title = NewTask.Title,
-                ImportanceId = NewTask.ImportanceId,
-                ProjectId = NewTask.ProjectId,
-                EmployeeId = NewTask.EmployeeId,
-                ToComplete = NewTask.ToComplete
-            };
-
-            NewTask.ToComplete = ToCompleteDate;
-            NewTask.ProjectId = SelectedProject.Id;
-            NewTask.ConditionId = SelectedCondition.Id;
-            NewTask.ImportanceId = SelectedImportance.Id;
-            if (NewTask.ConditionId == 3)
-            {
-                NewTask.EmployeeId = SelectedEmployee.Id;
-            }
-
-            if (NewTask.ConditionId == oldtask.ConditionId && NewTask.ProjectId == oldtask.ProjectId
-                && NewTask.ImportanceId == oldtask.ImportanceId && NewTask.EmployeeId == oldtask.EmployeeId &&
-                NewTask.Description == oldtask.Description && NewTask.Title == oldtask.Title && NewTask.CreationDate == oldtask.CreationDate)
+            if (SelectedTask.ToComplete < DateTime.Now)
                 return;
 
-            MainVM.GetInstance().ServerClient.UpdateTask(NewTask.Id,NewTask);
+            SelectedTask.ProjectId = SelectedProject.Id;
+            SelectedTask.ConditionId = SelectedCondition.Id;
+            SelectedTask.ImportanceId = SelectedImportance.Id;
+            if(SelectedEmployee != null)
+            {
+                SelectedTask.EmployeeId = SelectedEmployee.Id;
+            }
+            else
+            {
+                SelectedTask.EmployeeId = 0;
+            }
+                
+            MainVM.GetInstance().ServerClient.UpdateTask(SelectedTask.Id,SelectedTask);
+            CanUpdateTasks = false; 
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }
 
         private void GetProjects(IEnumerable<UserProject> obj)
         {
-            Projects.Clear();
-            foreach (var item in obj)
-            {
-                Projects.Add(item);
-            }
+            Projects = new ObservableCollection<UserProject>(obj);
+            OnPropertyChanged("Projects");
         }
 
-        private void GetEmployees(IEnumerable<Employee> obj)
+        private void GetEmployees(List<Employee> obj)
         {
-            Employees.Clear();
-            foreach (var item in obj)
-            {
-                Employees.Add(item);
-            }
+            Employees = new ObservableCollection<Employee>(obj);
+            OnPropertyChanged("Employees");
         }
 
 
-        private void GetTaskImportants(IEnumerable<TaskImportant> obj)
+        private void GetTaskImportants(List<TaskImportant> obj)
         {
-            Importances.Clear();
-            foreach (var item in obj)
-            {
-                Importances.Add(item);
-            }
-        }
-
-        private async void SendQuerrys()
-        {
-            MainVM.GetInstance().ServerClient.SendQuerryForImportance();
-            await Task.Delay(2000);
-            MainVM.GetInstance().ServerClient.SendQuerryForConditions();
-            await Task.Delay(2000);
-            MainVM.GetInstance().ServerClient.SendQuerryForEmployees();
-            await Task.Delay(2000);
-            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
-            await Task.Delay(2000);
-            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
+            Importances = new ObservableCollection<TaskImportant>(obj);
+            OnPropertyChanged("Importances");
         }
     }
 }

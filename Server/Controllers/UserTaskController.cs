@@ -35,7 +35,8 @@ namespace Server.Controllers
                 Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id == item.TermId);
 
                 tasks.Add(new UserTask(item.Id, taskDesc.Title, taskDesc.TaskDescription, taskCondition.Id, conditionDesc.Title,
-                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title));
+                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title, 
+                    (int)item.ProjectId, item.EmployeeId == null ? 0 : (int)item.EmployeeId));
             }
             return tasks;
         }
@@ -78,7 +79,8 @@ namespace Server.Controllers
                 Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id == item.TermId);
 
                 tasks.Add(new UserTask(item.Id, taskDesc.Title, taskDesc.TaskDescription, taskCondition.Id, conditionDesc.Title,
-                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title));
+                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title, 
+                    (int)item.ProjectId, item.EmployeeId == null ? 0 : (int)item.EmployeeId));
             }
 
             return tasks;
@@ -126,6 +128,10 @@ namespace Server.Controllers
 
         public void AddTask(UserTask task)
         {
+            if (task.ProjectId == 0 || task.ImportanceId == 0 || task.ConditionId == 0 ||
+                task.Description == String.Empty || task.Title == String.Empty ||
+                task.ToComplete == null)
+                return;
             ProjectTaskDescription project = new ProjectTaskDescription();
             project.TaskDescription = task.Description;
             project.Title = task.Title;
@@ -137,7 +143,10 @@ namespace Server.Controllers
             newTask.Term = term;
             newTask.ProjectId = task.ProjectId;
             newTask.TaskConditionId = task.ConditionId;
-            newTask.EmployeeId = task.EmployeeId;
+            if(task.EmployeeId != 0)
+                newTask.EmployeeId = task.EmployeeId;
+            else
+                newTask.EmployeeId = null;
             newTask.ProjectTaskDescription = project;
             newTask.ImportanceId = task.ImportanceId;
 
@@ -165,15 +174,29 @@ namespace Server.Controllers
 
         public void UpdateTask(int id, UserTask newTask)
         {
+            if (newTask.ProjectId == 0 || newTask.ImportanceId == 0 || newTask.ConditionId == 0 ||
+                newTask.Description == String.Empty || newTask.Title == String.Empty ||
+                newTask.ToComplete == null)
+                return;
+
             ProjectTask task = _dbContext.ProjectTasks.FirstOrDefault(x => x.Id == id);
             ProjectTaskDescription project = _dbContext.ProjectTaskDescriptions.FirstOrDefault(x => x.Id == task.DescriptionId);
             Term term = _dbContext.Terms.FirstOrDefault(x => x.Id == task.TermId);
+
+            if (project.Title == newTask.Title && project.TaskDescription == project.TaskDescription
+                && task.TaskConditionId == newTask.ConditionId && task.EmployeeId == newTask.EmployeeId &&
+                task.ImportanceId == newTask.ImportanceId && task.ProjectId == newTask.ProjectId && term.ToComplete == newTask.ToComplete)
+                return;
+
             project.Title = newTask.Title;  
             project.TaskDescription = newTask.Description;
             term.ToComplete = newTask.ToComplete;
             task.ProjectId = newTask.ProjectId;
             task.ImportanceId = newTask.ImportanceId;
-            task.EmployeeId = newTask.EmployeeId;
+            if (newTask.EmployeeId == 0)
+                task.EmployeeId = null;
+            else
+                task.EmployeeId = newTask.EmployeeId;
             task.TaskConditionId = newTask.ConditionId;
             _dbContext.SaveChanges();
         }
@@ -197,13 +220,16 @@ namespace Server.Controllers
                 Term taskTerm = _dbContext.Terms.FirstOrDefault(x => x.Id == item.TermId);
 
                 tasks.Add(new UserTask(item.Id, taskDesc.Title, taskDesc.TaskDescription, taskCondition.Id, conditionDesc.Title,
-                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title));
+                    taskImportance.Id, importanceDesc.Title, taskTerm.CreationDate, taskTerm.ToComplete, projectDesk.Title, 
+                    (int)item.ProjectId, item.EmployeeId == null ? 0 : (int)item.EmployeeId));
             }
             return tasks;
         }
 
         public void AddTaskCondition(UserTaskCondtion newCondition)
         {
+            if (newCondition.Title == String.Empty || newCondition.Description == String.Empty)
+                return;
             TaskCondition condititon = new TaskCondition();
             TaskConditionDescription description = new TaskConditionDescription();
             description.Title = newCondition.Title;
@@ -237,6 +263,8 @@ namespace Server.Controllers
         }
         public void UpdateTaskCondition(int oldId, UserTaskCondtion newCondition)
         {
+            if (newCondition.Title == String.Empty || newCondition.Description == String.Empty)
+                return;
             TaskCondition condititon = _dbContext.TaskConditions.FirstOrDefault(x => x.Id == oldId);
             if (condititon == null)
                 return;
@@ -253,6 +281,8 @@ namespace Server.Controllers
 
         public void AddTaskImportance(TaskImportance newImportance)
         {
+            if (newImportance.Title == String.Empty || newImportance.Description == String.Empty)
+                return;
             Importance importance = new Importance();
             ImportanceDescription description = new ImportanceDescription();
             description.Title = newImportance.Title;
@@ -286,6 +316,8 @@ namespace Server.Controllers
         }
         public void UpdateTaskImportance(int oldId, TaskImportance newImportance)
         {
+            if (newImportance.Title == String.Empty || newImportance.Description == String.Empty)
+                return;
             Importance importance = _dbContext.Importances.FirstOrDefault(x => x.Id == oldId);
             if (importance == null)
                 return;

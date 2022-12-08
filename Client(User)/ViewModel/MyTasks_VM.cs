@@ -82,7 +82,7 @@ namespace EmployeeManagement.ViewModel
             MainViewModel.GetInstance().ServerClient.MyTask += SetUserTasks;
         }
 
-        private void SetUserTasks(List<UserTask> tasks)
+        public void SetUserTasks(List<UserTask> tasks)
         {
             if (MyTasks.Count <= 0)
             {

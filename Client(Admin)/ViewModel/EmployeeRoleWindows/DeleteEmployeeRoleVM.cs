@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,9 +23,9 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
             }
         }
       
-        private List<EmployeeRole> _employeeRoles;
+        private ObservableCollection<EmployeeRole> _employeeRoles;
 
-        public List<EmployeeRole> EmployeeRoles
+        public ObservableCollection<EmployeeRole> EmployeeRoles
         {
             get { return _employeeRoles; }
             set
@@ -40,31 +41,45 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
             get { return _deleteCommand ?? new RelayCommand(RemoveRole); }
         }
 
+        private bool _canRemoveRole;
+
+        public bool CanRemoveRole
+        {
+            get { return _canRemoveRole; }
+            set 
+            { 
+                _canRemoveRole = value;
+                OnPropertyChanged("CanRemoveRole");
+            }
+        }
+
+
         public DeleteEmployeeRoleVM()
         {
-            EmployeeRoles = new List<EmployeeRole>();
+            CanRemoveRole = false;
+            EmployeeRoles = new ObservableCollection<EmployeeRole>();
             SelectedEmployeeRole = new EmployeeRole();
-            MainVM.GetInstance().ServerClient.GetEmployeeRoles += GetEmployeeRoles;
-            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
+            MainVM.GetInstance().ServerClient.GetEmployeeRoles += GetEmployeeRoles; 
         }
 
         private void GetEmployeeRoles(IEnumerable<EmployeeRole> obj)
         {
-            EmployeeRoles.Clear();
-            foreach (var item in obj)
-            {
-                EmployeeRoles.Add(item);
-            }
+            CanRemoveRole = true;
+            EmployeeRoles = new ObservableCollection<EmployeeRole>(obj);
+            OnPropertyChanged("EmployeeRoles");
         }
 
-        private void RemoveRole()
+        private async void RemoveRole()
         {
             if (SelectedEmployeeRole == null)
                 return;
 
             MainVM.GetInstance().ServerClient.SendMessageToServer($"--removeEmployeeRole\nid={SelectedEmployeeRole.Id}");
             EmployeeRoles.Remove(SelectedEmployeeRole);
+            CanRemoveRole = false;
             SelectedEmployeeRole = null;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
         }
     }
 }

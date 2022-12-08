@@ -26,7 +26,7 @@ namespace Client_Admin_.ViewModel.ProjectWindows
         {
             get => _showCreateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is CreateProjectVM || _allVMs.Count < 1)
+                if (CurrentViewModel is CreateProjectVM)
                     return;
                 CurrentViewModel = _allVMs[0];
             });
@@ -36,7 +36,7 @@ namespace Client_Admin_.ViewModel.ProjectWindows
         {
             get => _showDeleteMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is DeleteProjectVM || _allVMs.Count < 2)
+                if (CurrentViewModel is DeleteProjectVM)
                     return;
                 CurrentViewModel = _allVMs[1];
             });
@@ -46,7 +46,7 @@ namespace Client_Admin_.ViewModel.ProjectWindows
         {
             get => _showUpdateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is UpdateProjectVM || _allVMs.Count < 3)
+                if (CurrentViewModel is UpdateProjectVM)
                     return;
                 CurrentViewModel = _allVMs[2];
             });
@@ -63,7 +63,7 @@ namespace Client_Admin_.ViewModel.ProjectWindows
             CreateVMs();
         }
 
-        private async void CreateVMs()
+        private void CreateVMs()
         {
             while (true)
             {
@@ -72,10 +72,9 @@ namespace Client_Admin_.ViewModel.ProjectWindows
             }
 
             _allVMs.Add(new CreateProjectVM());
-            await Task.Delay(5000);
             _allVMs.Add(new DeleteProjectVM());
-            await Task.Delay(5000);
             _allVMs.Add(new UpdateProjectVM());
+            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
         }
     }
 }

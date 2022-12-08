@@ -82,12 +82,12 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
             }
 
             _allVMs.Add(new CreateEmployeeRoleVM());
-            await Task.Delay(3000);
             _allVMs.Add(new DeleteEmployeeRoleVM());
-            await Task.Delay(3000);
             _allVMs.Add(new UpdateEmployeeRoleVM());
-            await Task.Delay(3000);
             _allVMs.Add(new LinkEmployeeRoleVM());
+            MainVM.GetInstance().ServerClient.SendQuerryForUserRoles();
+            await Task.Delay(2000);
+            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
         }
     }
 }

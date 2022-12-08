@@ -26,7 +26,7 @@
 
         <StackPanel Grid.ColumnSpan="5" Grid.RowSpan="3" Orientation="Vertical">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Image Margin="30 10" Width="200" HorizontalAlignment="Left" Height="200" Source="/CustomControls/defaultUser.png" Stretch="Uniform"/>
+                <Image Margin="30 10" Width="200" HorizontalAlignment="Left" Height="200" Source="https://i.imgur.com/dPaVWoh.png" Stretch="Uniform"/>
                 <TextBlock Padding="10" FontSize="30" Text="{Binding User.First_Name}"></TextBlock>
                 <TextBlock Padding="10" FontSize="30" Text="{Binding User.Last_Name}"></TextBlock>
                 <TextBlock Padding="10" FontSize="30" Text="{Binding User.Patronymic}"></TextBlock>

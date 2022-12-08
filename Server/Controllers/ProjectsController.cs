@@ -36,6 +36,8 @@ namespace Server.Controllers
         {
             Project project = new Project();
             ProjectDescription desc = new ProjectDescription();
+            if (userProject.Title == String.Empty || userProject.Description == String.Empty)
+                return;
             desc.Description = userProject.Description;
             desc.Title = userProject.Title;
             project.ProjectDescription = desc;
@@ -57,13 +59,25 @@ namespace Server.Controllers
             {
                 employees[i].ProjectId = newProject.Id;
             }
-
+            List<ProjectTask> tasks = _dbContext.ProjectTasks.Where(x => x.ProjectId == id).ToList();
+            List<ProjectTaskDescription> descriptions = new List<ProjectTaskDescription>();
+            List<Term> terms = new List<Term>();
+            foreach (var item in tasks)
+            {
+                descriptions.Add(_dbContext.ProjectTaskDescriptions.FirstOrDefault(x => x.Id == item.DescriptionId));
+                terms.Add(_dbContext.Terms.FirstOrDefault(x => x.Id == item.TermId));
+            }
+            _dbContext.ProjectTasks.RemoveRange(tasks);
+            _dbContext.ProjectTaskDescriptions.RemoveRange(descriptions);
+            _dbContext.Terms.RemoveRange(terms);
             _dbContext.Projects.Remove(project);
             _dbContext.ProjectDescriptions.Remove(desc);
             _dbContext.SaveChanges();        
         }
         public void UpdateProject(int id, UserProject newProject)
         {
+            if (newProject.Title == String.Empty || newProject.Description == String.Empty)
+                return;
             Project project = _dbContext.Projects.FirstOrDefault(x => x.Id == id);
             if (project == null)
                 return;

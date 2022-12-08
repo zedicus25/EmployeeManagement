@@ -42,31 +42,46 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
 			get { return _deleteCommand ?? new RelayCommand(DeleteUser); }
 
 		}
+		private bool _canRemoveEmployee;
+
+		public bool CanRemoveEmployee
+		{
+			get { return _canRemoveEmployee; }
+			set 
+			{ 
+				_canRemoveEmployee = value;
+				OnPropertyChanged("CanRemoveEmployee");
+			}
+		}
+
 
 
 		public DeleteEmployeeVM()
 		{
+			CanRemoveEmployee = false;
 			Employees = new ObservableCollection<Employee>();
 			MainVM.GetInstance().ServerClient.GetEmployees += GetEmployees;
-			MainVM.GetInstance().ServerClient.SendQuerryForEmployees();
+			MainVM.GetInstance().ServerClient.GetAllEmployees += GetAllEmployees;
 		}
 
-		private void DeleteUser()
+		private void GetAllEmployees(IEnumerable<Employee> obj) => CanRemoveEmployee = true;
+
+		private async void DeleteUser()
 		{
 			if (SelectedEmployee == null)
 				return;
 			MainVM.GetInstance().ServerClient.SendMessageToServer($"--removeEmployee\nemployeeId={SelectedEmployee.Id}\n");
 			Employees.Remove(SelectedEmployee);
 			SelectedEmployee = null;
-		}
+			CanRemoveEmployee = false;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForAllEmployees();
+        }
 
 		private void GetEmployees(IEnumerable<Employee> obj)
 		{
-			Employees.Clear();
-			foreach (var item in obj)
-			{
-				Employees.Add(item);
-			}
+			Employees = new ObservableCollection<Employee>(obj);
+			OnPropertyChanged("Employees");
 		}
 	}
 }

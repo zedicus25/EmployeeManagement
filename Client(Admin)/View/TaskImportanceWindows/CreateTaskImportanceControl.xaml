@@ -22,7 +22,8 @@
                 MaxLength="1000"
                 materialDesign:HintAssist.Hint="Descritption" />
         </StackPanel>
-        <Button Command="{Binding AddCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Add condition">
+        <Button IsEnabled="{Binding CanAdd}" Command="{Binding AddCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" 
+                HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Add importance">
             <materialDesign:PackIcon Kind="PlusBold" Width="30" Height="30"/>
         </Button>
     </Grid>

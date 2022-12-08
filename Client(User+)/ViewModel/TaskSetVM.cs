@@ -31,6 +31,13 @@ namespace Client_User__.ViewModel
             {
                 _selectedTask = value;
                 OnPropertyChanged("SelectedTask");
+                if(SelectedTask != null)
+                {
+                    if (SelectedTask.EmployeeId != 0)
+                        SelectedEmployee = Employees.FirstOrDefault(x => x.Id == SelectedTask.EmployeeId);
+                    else
+                        SelectedEmployee = null;
+                }
             }
         }
         public ObservableCollection<Employee> Employees
@@ -51,6 +58,16 @@ namespace Client_User__.ViewModel
                 OnPropertyChanged("SelectedEmployee");
             }
         }
+        public bool CanLinkTasks
+        {
+            get => _canLinks;
+            set
+            {
+                _canLinks = value;
+                OnPropertyChanged("CanLinkTasks");
+            }
+        }
+        private bool _canLinks;
 
         private RelayCommand _setTaskCommand;
 
@@ -64,37 +81,44 @@ namespace Client_User__.ViewModel
 
         public TaskSetVM()
         {
+            CanLinkTasks = false;
             Employees = new ObservableCollection<Employee>();
             Tasks = new ObservableCollection<UserTask>();
             MainVM.GetInstance().ServerClient.GetAllTasks += GetAllTasks;
             MainVM.GetInstance().ServerClient.GetEmployees += GetEmployees;
-            MainVM.GetInstance().ServerClient.SendQuerryForEmployees();
-            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }
 
-        private void SetTask()
+        private async void SetTask()
         {
-            if (SelectedEmployee == null || SelectedTask == null)
+            if (SelectedTask == null)
                 return;
-            MainVM.GetInstance().ServerClient.QuerrySetTaskToEmployee(SelectedTask.Id, SelectedEmployee.Id);
+            if(SelectedEmployee == null)
+            {
+                MainVM.GetInstance().ServerClient.QuerrySetTaskToEmployee(SelectedTask.Id, 0);
+                SelectedTask.EmployeeId = 0;
+            }
+            else
+            {
+                MainVM.GetInstance().ServerClient.QuerrySetTaskToEmployee(SelectedTask.Id, SelectedEmployee.Id);
+                SelectedTask.EmployeeId = SelectedEmployee.Id;
+            }
+            CanLinkTasks = false;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
+
         }
 
-        private void GetEmployees(IEnumerable<Employee> obj)
+        private void GetEmployees(List<Employee> obj)
         {
-            Employees.Clear();
-            foreach (var item in obj)
-            {
-                Employees.Add(item);
-            }
+            Employees = new ObservableCollection<Employee>(obj);
+            OnPropertyChanged("Employees");
         }
 
-        private void GetAllTasks(IEnumerable<UserTask> obj)
+        private void GetAllTasks(List<UserTask> obj)
         {
-            Tasks.Clear();
-            foreach (var item in obj)
-            {
-                Tasks.Add(item);
-            }
+            CanLinkTasks = true;
+            Tasks = new ObservableCollection<UserTask>(obj);
+            OnPropertyChanged("Tasks");
         }
     }
 }

@@ -178,7 +178,15 @@ namespace Server.Controllers
                 return;
 
             byte[] bytes = Encoding.Unicode.GetBytes(msg);
-            client.NetworkStream.Write(bytes, 0, bytes.Length);
+            try
+            {
+                client.NetworkStream.WriteAsync(bytes, 0, bytes.Length);
+
+            }
+            catch (Exception ex)
+            {
+            }
+            
         }
 
         public void SendProjectTasks(string client, int projectId)

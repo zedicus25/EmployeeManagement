@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,9 +23,9 @@ namespace Client_Admin_.ViewModel.TaskConditionWindows
             }
         }
 
-        private List<TaskCondition> _taskConditions;
+        private ObservableCollection<TaskCondition> _taskConditions;
 
-        public List<TaskCondition> TaskConditions
+        public ObservableCollection<TaskCondition> TaskConditions
         {
             get { return _taskConditions; }
             set
@@ -39,33 +40,44 @@ namespace Client_Admin_.ViewModel.TaskConditionWindows
         {
             get { return _updateCommand ?? new RelayCommand(UpdateCondition); }
         }
+
+        private bool _canUpdate;
+
+        public bool CanUpdate
+        {
+            get { return _canUpdate; }
+            set 
+            { 
+                _canUpdate = value;
+                OnPropertyChanged("CanUpdate");
+            }
+        }
+
         public UpdateTaskConditionVM()
         {
-            TaskConditions = new List<TaskCondition>();
+            CanUpdate = false;
+            TaskConditions = new ObservableCollection<TaskCondition>();
             SelectedCondition = new TaskCondition();
             MainVM.GetInstance().ServerClient.GetTaskConditions += GetTaskConditions;
-            MainVM.GetInstance().ServerClient.SendQuerryForTaskConditions();
         }
 
         private void GetTaskConditions(IEnumerable<TaskCondition> obj)
         {
-            TaskConditions.Clear();
-            foreach (var item in obj)
-            {
-                TaskConditions.Add(item);
-            }
+            CanUpdate = true;
+            TaskConditions = new ObservableCollection<TaskCondition>(obj);
+            OnPropertyChanged("TaskConditions");
         }
 
-        private void UpdateCondition()
+        private async void UpdateCondition()
         {
             if (SelectedCondition == null)
                 return;
-            if (SelectedCondition.Title == String.Empty || SelectedCondition.Description == String.Empty)
-                return;
 
             MainVM.GetInstance().ServerClient.UpdateTaskCondition(SelectedCondition.Id, SelectedCondition);
-            SelectedCondition = null;   
-
+            SelectedCondition = null;
+            CanUpdate = false;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForTaskConditions();
         }
     }
 }

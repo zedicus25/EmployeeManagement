@@ -99,7 +99,7 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
 			get { return _addPhoneNumber ?? new RelayCommand(() =>
 			{
 				if (NewEmployee.PhoneNumbers == null)
-					NewEmployee.PhoneNumbers = new List<string>();
+					NewEmployee.PhoneNumbers = new ObservableCollection<string>();
 
 				if (PhoneNumner.StartsWith("+"))
 					NewEmployee.PhoneNumbers.Add(PhoneNumner);
@@ -115,7 +115,7 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
                 return _addEmail ?? new RelayCommand(() =>
                 {
                     if (NewEmployee.Emails == null)
-                        NewEmployee.Emails = new List<string>();
+                        NewEmployee.Emails = new ObservableCollection<string>();
 
 					if(Email.Contains('@') )
 						NewEmployee.Emails.Add(Email);
@@ -132,54 +132,66 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
 			get { return _addCommand ?? new RelayCommand(AddUser); }
 		}
 
+		private bool _canAddEmployee;
+
+		public bool CanAddEmployee
+		{
+			get { return _canAddEmployee; }
+			set 
+			{ 
+				_canAddEmployee = value;
+				OnPropertyChanged("CanAddEmployee");
+			}
+		}
+
+
 
 		public CreateEmployeeVM()
 		{
+			CanAddEmployee = false;
 			NewEmployee = new Employee();
+			NewEmployee.Birthday = DateTime.Now;
 			Roles = new ObservableCollection<EmployeeRole>();
 			Projects = new ObservableCollection<Project>();
 			MainVM.GetInstance().ServerClient.GetEmployeeRoles += GetEmployeeRoles;
 			MainVM.GetInstance().ServerClient.GetProjects += GetProjects;
-			SendQuerrys();
-			
+			MainVM.GetInstance().ServerClient.GetAllEmployees += this.GetAllEmployees;
 		}
-		private async void SendQuerrys()
-		{
-            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
-			await Task.Delay(3000);
-            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
-        }
-		private void AddUser()
+
+		private void GetAllEmployees(IEnumerable<Employee> obj) => CanAddEmployee = true;
+
+		private async void AddUser()
 		{
 			if (SelectedRole == null || SelectedProject == null)
 				return;
-			NewEmployee.EmployeeRoleId = SelectedRole.Id;
+			if (NewEmployee.Birthday >= DateTime.Now)
+				return;
+            NewEmployee.EmployeeRoleId = SelectedRole.Id;
 			NewEmployee.ProjectId = SelectedProject.Id;
+			
 			if (NewEmployee.IsValid())
 			{
 				MainVM.GetInstance().ServerClient.
 					SendMessageToServer($"--addNewEmployee\nemp={JsonConvert.SerializeObject(NewEmployee)}");
-				NewEmployee = new Employee();
-			}
-
-		}
+                await Task.Delay(800);
+                MainVM.GetInstance().ServerClient.SendQuerryForAllEmployees();
+                NewEmployee = new Employee();
+				CanAddEmployee = false;   
+            }
+			SelectedRole = null;
+			SelectedProject = null;	
+        }
 
 		private void GetProjects(IEnumerable<Project> obj)
 		{
-            Projects.Clear();
-            foreach (var item in obj)
-            {
-                Projects.Add(item);
-            }
+			Projects = new ObservableCollection<Project>(obj);
+			OnPropertyChanged("Projects");
         }
 
 		private void GetEmployeeRoles(IEnumerable<EmployeeRole> obj)
 		{
-			Roles.Clear();
-			foreach (var item in obj)
-			{
-				Roles.Add(item);
-			}
+			Roles = new ObservableCollection<EmployeeRole>(obj);
+			OnPropertyChanged("Roles");
 		}
 	}
 }

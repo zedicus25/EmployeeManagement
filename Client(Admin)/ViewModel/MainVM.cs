@@ -60,5 +60,14 @@ namespace Client_Admin_.ViewModel
             SelectedViewModel = baseVM;
         }
 
+        public void LogOut()
+        {
+            if (ServerClient.CanSendMessagesToServer)
+                ServerClient.SendMessageToServer($"--disconnect\nid={ServerClient.IdOnServer}\ntrue");
+            ServerClient.Disconnect();
+            ServerClient = new ServerClient();
+            SetViewModel(new LoginFormVM());
+
+        }
     }
 }

@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,19 +29,39 @@ namespace Client_Admin_.ViewModel.TaskConditionWindows
             get { return _addCommand ?? new RelayCommand(AddCondition); }
         }
 
-		public CreateTaskConditionVM()
+		private bool _canAddCondition;
+
+		public bool CanAddCondition
 		{
-			TaskCondition = new TaskCondition();
+			get { return _canAddCondition; }
+			set 
+			{ 
+				_canAddCondition = value;
+				OnPropertyChanged("CanAddCondition");
+			}
 		}
 
-		private void AddCondition()
+
+		public CreateTaskConditionVM()
+		{
+			CanAddCondition = false;
+			TaskCondition = new TaskCondition();
+            MainVM.GetInstance().ServerClient.GetTaskConditions += GetTaskConditions;
+        }
+		private void GetTaskConditions(IEnumerable<TaskCondition> obj) => CanAddCondition = true;
+       
+
+        private async void AddCondition()
 		{
 			if (TaskCondition.Title == String.Empty || TaskCondition.Description == String.Empty)
 				return;
 
 			MainVM.GetInstance().ServerClient.AddTaskCondition(TaskCondition);
 			TaskCondition = new TaskCondition();
-		}
+			CanAddCondition = false;
+			await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForTaskConditions();
+        }
 
     }
 }

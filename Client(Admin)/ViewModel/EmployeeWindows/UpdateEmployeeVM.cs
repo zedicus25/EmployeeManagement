@@ -12,9 +12,9 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
 {
     public class UpdateEmployeeVM : BaseVM
     {
-        private List<Employee> _employees;
+        private ObservableCollection<Employee> _employees;
 
-        public List<Employee> Employees
+        public ObservableCollection<Employee> Employees
         {
             get { return _employees; }
             set
@@ -124,8 +124,23 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
                 if (SelectedEmail == null || !SelectedEmployee.Emails.Contains(SelectedEmail))
                     return;
                 SelectedEmployee.Emails.Remove(SelectedEmail);
-                SelectedEmail = null;
+                SelectedEmail = String.Empty;
             }); }
+        }
+        private RelayCommand _addEmailCommand;
+
+        public RelayCommand AddEmail
+        {
+            get
+            {
+                return _addEmailCommand ?? new RelayCommand(() =>
+                {
+                    if (SelectedEmployee.Emails.Contains(SelectedEmail))
+                        return;
+                    SelectedEmployee.Emails.Add(SelectedEmail);
+                    SelectedEmail = String.Empty;
+                });
+            }
         }
         private RelayCommand _deletePhoneCommand;
 
@@ -138,7 +153,22 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
                     if (SelectedPhone == null || !SelectedEmployee.PhoneNumbers.Contains(SelectedPhone))
                         return;
                     SelectedEmployee.PhoneNumbers.Remove(SelectedPhone);
-                    SelectedPhone = null;
+                    SelectedPhone = String.Empty;
+                });
+            }
+        }
+        private RelayCommand _addPhoneNumber;
+
+        public RelayCommand AddNumber
+        {
+            get
+            {
+                return _addPhoneNumber ?? new RelayCommand(() =>
+                {
+                    if (SelectedEmployee.PhoneNumbers.Contains(SelectedPhone))
+                        return;
+                    SelectedEmployee.PhoneNumbers.Add(SelectedPhone);
+                    SelectedPhone = String.Empty;
                 });
             }
         }
@@ -154,31 +184,32 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
             }
         }
 
+        private bool _canUpdateEmployee;
+
+        public bool CanUpdateEmployee
+        {
+            get { return _canUpdateEmployee; }
+            set 
+            { 
+                _canUpdateEmployee = value;
+                OnPropertyChanged("CanUpdateEmployee");
+            }
+        }
+
+
 
 
         public UpdateEmployeeVM()
         {
             Projects = new ObservableCollection<Project>();
             Roles = new ObservableCollection<EmployeeRole>();
-            Employees = new List<Employee>();
+            Employees = new ObservableCollection<Employee>();
             MainVM.GetInstance().ServerClient.GetAllEmployees += GetEmployees;
             MainVM.GetInstance().ServerClient.GetEmployeeRoles += GetEmployeeRoles;
             MainVM.GetInstance().ServerClient.GetProjects += GetProjects;
-            SendQuerrys();
         }
 
-        private async void SendQuerrys()
-        {
-            await Task.Delay(5000);
-            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
-            await Task.Delay(8000);
-            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
-            await Task.Delay(8000);
-            MainVM.GetInstance().ServerClient.SendQuerryForAllEmployees();
-            await Task.Delay(5000);
-        }
-
-        private void UpdateUser()
+        private async void UpdateUser()
         {
             if (SelectedEmployee == null || SelectedProject == null || SelectedRole == null)
                 return;
@@ -193,32 +224,27 @@ namespace Client_Admin_.ViewModel.EmployeeWindows
             SelectedPhone = null;
             SelectedProject = null;
             SelectedRole = null;
+            CanUpdateEmployee = false;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForAllEmployees();
         }
 
         private void GetEmployees(IEnumerable<Employee> obj)
         {
-            Employees.Clear();
-            foreach (var item in obj)
-            {
-                Employees.Add(item);
-            }
+            CanUpdateEmployee = true;
+            Employees = new ObservableCollection<Employee>(obj);
+            OnPropertyChanged("Employees");
         }
         private void GetProjects(IEnumerable<Project> obj)
         {
-            Projects.Clear();
-            foreach (var item in obj)
-            {
-                Projects.Add(item);
-            }
+            Projects = new ObservableCollection<Project>(obj);
+            OnPropertyChanged("Projects");
         }
 
         private void GetEmployeeRoles(IEnumerable<EmployeeRole> obj)
         {
-            Roles.Clear();
-            foreach (var item in obj)
-            {
-                Roles.Add(item);
-            }
+            Roles = new ObservableCollection<EmployeeRole>(obj);
+            OnPropertyChanged("Roles");
         }
     }
 }

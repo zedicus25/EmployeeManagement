@@ -46,18 +46,35 @@ namespace EmployeeManagement.ViewModel
 
         private Task _listenAllTask;
         private CancellationTokenSource _tokenSourceListenTasks;
-		private TimeSpan _querryDelay;
+        private Task _listenMyTask;
+        private CancellationTokenSource _tokenSourceListenMyTasks;
+        private TimeSpan _querryDelay;
 
 
         private MainViewModel()
 		{
 			_querryDelay = new TimeSpan(0, 5, 0);
-			ServerClient = new ServerClient();
-			SelectedViewModel = new LoginWindow_VM();
-			_tokenSourceListenTasks = new CancellationTokenSource();
+            SelectedViewModel = new LoginWindow_VM();
+            _tokenSourceListenTasks = new CancellationTokenSource();
+			_tokenSourceListenMyTasks = new CancellationTokenSource();
             _listenAllTask = new Task(SendAllTasksQuerry, _tokenSourceListenTasks.Token);
+            _listenMyTask = new Task(SendMyTasksQuerry, _tokenSourceListenMyTasks.Token);
+
+        }
+
+		public void ConnectToServer()
+		{
+			if (ServerClient != null && ServerClient.IsConnected)
+				return;
+
+            ServerClient = new ServerClient();
+
+            
             _listenAllTask.Start();
-		}
+            _listenMyTask.Start();
+        }
+
+		
 
 		public void SetViewModel(BaseVM baseVM)
 		{
@@ -72,22 +89,32 @@ namespace EmployeeManagement.ViewModel
 		public void GetMyTask() => ServerClient.GetMyTask();
 
 		public void SubmitTask(int taskId, string branchName, string message) => 
-			ServerClient.SubmitTask(taskId, branchName, message); 
+			ServerClient.SubmitTask(taskId, branchName, message);
 
 
-		private async void SendAllTasksQuerry()
-		{
+        private async void SendAllTasksQuerry()
+        {
             while (_tokenSourceListenTasks.Token.IsCancellationRequested == false)
             {
                 ServerClient.GetAllTasks();
-				await Task.Delay(_querryDelay);
+                await Task.Delay(_querryDelay);
+            }
+        }
+        private async void SendMyTasksQuerry()
+        {
+            while (_tokenSourceListenTasks.Token.IsCancellationRequested == false)
+            {
+                ServerClient.GetMyTask();
+                await Task.Delay(_querryDelay);
             }
         }
 
 
-		public void LogOut()
+
+        public void LogOut()
 		{
-			ServerClient.SendMessageToServer($"--disconnect\nid={ServerClient.IdOnServer}\n");
+			if(ServerClient.CanSendMessagesToServer)
+				ServerClient.SendMessageToServer($"--disconnect\nid={ServerClient.IdOnServer}\ntrue");
 			ServerClient.Disconnect();
 			_tokenSourceListenTasks.Cancel();
 			_tokenSourceListenTasks = new CancellationTokenSource();
@@ -97,7 +124,7 @@ namespace EmployeeManagement.ViewModel
         }
 		~MainViewModel()
 		{
-			_tokenSourceListenTasks.Cancel();
+			_tokenSourceListenTasks?.Cancel();
 		}
 
     }

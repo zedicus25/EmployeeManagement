@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,12 +29,16 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
         public UserRole SelectedRole
         {
             get { return _selectedRole; }
-            set { _selectedRole = value; }
+            set 
+            { 
+                _selectedRole = value;
+                OnPropertyChanged("SelectedRole");
+            }
         }
 
-        private List<UserRole> _roles;
+        private ObservableCollection<UserRole> _roles;
 
-        public List<UserRole> Roles
+        public ObservableCollection<UserRole> Roles
         {
             get { return _roles; }
             set 
@@ -50,33 +55,49 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
             get { return _addCommand ?? new RelayCommand(AddRole); }
         }
 
+        private bool _canAddRole;
 
-
-        public CreateEmployeeRoleVM()
+        public bool CanAddRole
         {
-            NewRole = new EmployeeRole();
-            Roles = new List<UserRole>();
-            MainVM.GetInstance().ServerClient.GetUserRoles += GetUserRoles;
-            MainVM.GetInstance().ServerClient.SendQuerryForUserRoles();
-        }
-
-        private void GetUserRoles(IEnumerable<UserRole> obj)
-        {
-            Roles.Clear();
-            foreach (var item in obj)
-            {
-                Roles.Add(item);
+            get { return _canAddRole; }
+            set 
+            { 
+                _canAddRole = value;
+                OnPropertyChanged("CanAddRole");
             }
         }
 
-        private void AddRole()
+        public CreateEmployeeRoleVM()
+        {
+            CanAddRole = false;
+            NewRole = new EmployeeRole();
+            Roles = new ObservableCollection<UserRole>();
+            MainVM.GetInstance().ServerClient.GetUserRoles += GetUserRoles;
+            MainVM.GetInstance().ServerClient.GetEmployeeRoles += GetEmployeeRoles;
+
+        }
+
+        private void GetEmployeeRoles(IEnumerable<EmployeeRole> obj) => CanAddRole = true;
+
+
+        private void GetUserRoles(IEnumerable<UserRole> obj)
+        {
+            Roles = new ObservableCollection<UserRole>(obj);
+            OnPropertyChanged("Roles");
+        }
+
+        private async void AddRole()
         {
             if (SelectedRole == null || NewRole.Title == String.Empty || NewRole.Description == String.Empty)
                 return;
             NewRole.UserRoleId = SelectedRole.Id;
             MainVM.GetInstance().ServerClient.
                 SendMessageToServer($"--createEmployeeRole\nrole={JsonConvert.SerializeObject(NewRole)}\n");
+            CanAddRole = false;
+            SelectedRole = null;
             NewRole = new EmployeeRole();
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
         }
     }
 }

@@ -29,18 +29,38 @@ namespace Client_Admin_.ViewModel.ProjectWindows
 			get { return _addCommand ?? new RelayCommand(AddProject); }
 		}
 
-		public CreateProjectVM()
+		private bool _canAddProject;
+
+		public bool CanAddProject
 		{
-			Project = new Project();
+			get { return _canAddProject; }
+			set 
+			{ 
+				_canAddProject = value;
+				OnPropertyChanged("CanAddProject");
+			}
 		}
 
-		private void AddProject()
+
+		public CreateProjectVM()
+		{
+			CanAddProject = false;
+			Project = new Project();
+            MainVM.GetInstance().ServerClient.GetProjects += GetProjects;
+        }
+
+		private void GetProjects(IEnumerable<Project> obj) => CanAddProject = true;
+
+        private async void AddProject()
 		{
 			if (Project.Title == String.Empty || Project.Description == String.Empty)
 				return;
 
 			MainVM.GetInstance().ServerClient.AddProject(Project);
-			Project = new Project();
+			CanAddProject = false;
+            Project = new Project();
+			await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
 		}
 
 

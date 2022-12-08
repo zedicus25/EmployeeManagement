@@ -40,34 +40,45 @@ namespace Client_Admin_.ViewModel.TaskImportanceWindows
         {
             get { return _updateCommand ?? new RelayCommand(UpdateImportances); }
         }
+
+        private bool _canUpdate;
+
+        public bool CanUpdate
+        {
+            get { return _canUpdate; }
+            set 
+            { 
+                _canUpdate = value;
+                OnPropertyChanged("CanUpdate");
+            }
+        }
+
         public UpdateTaskImportanceVM()
         {
+            CanUpdate = false;
             TaskImportances = new ObservableCollection<TaskImportance>();
             SelectedImportance = new TaskImportance();
             MainVM.GetInstance().ServerClient.GetTaskImortances += GetTaskImportances;
-            MainVM.GetInstance().ServerClient.SendQuerryForTaskImportances();
+            
         }
 
         private void GetTaskImportances(List<TaskImportance> obj)
         {
-            if (TaskImportances.Count <= 0)
-            {
-                TaskImportances = new ObservableCollection<TaskImportance>(obj);
-                return;
-            }
-
-            TaskImportances.Union(obj);
+            CanUpdate = true;
+            TaskImportances = new ObservableCollection<TaskImportance>(obj);
+            OnPropertyChanged("TaskImportances");
         }
 
-        private void UpdateImportances()
+        private async void UpdateImportances()
         {
             if (SelectedImportance == null)
-                return;
-            if (SelectedImportance.Title == String.Empty || SelectedImportance.Description == String.Empty)
                 return;
 
             MainVM.GetInstance().ServerClient.UpdateTaskImportance(SelectedImportance.Id, SelectedImportance);
             SelectedImportance = null;
+            CanUpdate = false;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForTaskImportances();
 
         }
     }

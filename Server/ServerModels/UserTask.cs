@@ -25,10 +25,12 @@ namespace Server.ServerModels
         }
 
         public UserTask(int id, string title, string description, int conditionId, string conditionName, 
-            int importanceId, string importanceName, DateTime creationDate, DateTime toComplete ,string projectTitle)
+            int importanceId, string importanceName, DateTime creationDate, DateTime toComplete ,string projectTitle, 
+            int projectId, int employeeId)
         {
             this.Id = id;
             this.Title = title;
+            this.EmployeeId = employeeId;
             this.Description = description;
             this.ConditionId = conditionId;
             this.ProjectTitle = projectTitle;
@@ -37,6 +39,7 @@ namespace Server.ServerModels
             this.ImportanceName = importanceName;
             this.CreationDate = creationDate;
             this.ToComplete = toComplete;
+            this.ProjectId = projectId;
         }
     }
 }

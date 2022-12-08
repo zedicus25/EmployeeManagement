@@ -10,8 +10,6 @@ namespace EmployeeManagement.Model
     [Serializable]
     public class UserProject : INotifyPropertyChanged
     {
-        
-
         public int Id
         {
             get => _id;

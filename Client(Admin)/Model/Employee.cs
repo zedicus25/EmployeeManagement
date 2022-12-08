@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -108,7 +109,7 @@ namespace Client_Admin_.Model
                 OnPropertyChanged("Country");
             }
         }
-        public List<string> Emails
+        public ObservableCollection<string> Emails
         {
             get => _emails;
             set
@@ -117,7 +118,7 @@ namespace Client_Admin_.Model
                 OnPropertyChanged("Emails");
             }
         }
-        public List<string> PhoneNumbers
+        public ObservableCollection<string> PhoneNumbers
         {
             get => _phoneNumbers;
             set
@@ -188,8 +189,8 @@ namespace Client_Admin_.Model
         private string _fisrstName;
         private string _lastName;
         private string _patronymic;
-        private List<string> _emails = new List<string>();
-        private List<string> _phoneNumbers = new List<string>();
+        private ObservableCollection<string> _emails = new ObservableCollection<string>();
+        private ObservableCollection<string> _phoneNumbers = new ObservableCollection<string>();
         private int _userRoleId;
         private int _projectId;
         private int _employeeRoleId;

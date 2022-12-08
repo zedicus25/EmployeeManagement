@@ -34,6 +34,16 @@ namespace Client_User__.ViewModel
                 OnPropertyChanged("SelectedTask");
             }
         }
+        public bool CanRemoveTasks
+        {
+            get => _canAddTasks;
+            set
+            {
+                _canAddTasks = value;
+                OnPropertyChanged("CanRemoveTasks");
+            }
+        }
+        private bool _canAddTasks;
 
         private RelayCommand _deleteCommand;
 
@@ -45,21 +55,19 @@ namespace Client_User__.ViewModel
 
         public TaskDeleteVM()
         {
+            CanRemoveTasks = false;
             Tasks = new ObservableCollection<UserTask>();
             MainVM.GetInstance().ServerClient.GetAllTasks += GetAllTasks;
-            MainVM.GetInstance().GetAllTasks();
         }
 
-        private void GetAllTasks(IEnumerable<UserTask> obj)
+        private void GetAllTasks(List<UserTask> obj)
         {
-            Tasks.Clear();
-            foreach (var item in obj)
-            {
-                Tasks.Add(item);
-            }
+            CanRemoveTasks = true;
+            Tasks = new ObservableCollection<UserTask>(obj);
+            OnPropertyChanged("Tasks");
         }
 
-        private void DeleteTask()
+        private async void DeleteTask()
         {
             if (_selectedTask == null)
                 return;
@@ -67,6 +75,9 @@ namespace Client_User__.ViewModel
             MainVM.GetInstance().DeleteTask(SelectedTask.Id);
             Tasks.Remove(SelectedTask);
             SelectedTask = null;
+            CanRemoveTasks = false;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }
     }
 }

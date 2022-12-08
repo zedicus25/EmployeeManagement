@@ -42,7 +42,12 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
         </StackPanel>
-        <Button Command="{Binding UpdateCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+        <Button IsEnabled="{Binding CanUpdateRole}" 
+                Command="{Binding UpdateCommand}" Grid.Column="1" 
+                Margin="10" VerticalAlignment="Bottom" 
+                HorizontalAlignment="Right" 
+                Style="{StaticResource MaterialDesignFloatingActionButton}"
+                ToolTip="Update role">
             <materialDesign:PackIcon Kind="Update" Width="30" Height="30"/>
         </Button>
     </Grid>

@@ -26,6 +26,8 @@ namespace Client_Admin_.Model
         public event Action<List<TaskImportance>> GetTaskImortances;
 
         public string IdOnServer { get; private set; }
+        public bool CanSendMessagesToServer { get; private set; }
+        public bool IsConnected => _tcpClient.Connected;
 
         private TcpClient _tcpClient;
         private NetworkStream _tcpStream;
@@ -33,18 +35,20 @@ namespace Client_Admin_.Model
         private readonly int PORT = 8008;
         private readonly string HOST = "127.0.0.1";
         private StringBuilder _stringBuilder;
-        
 
 
-        private CancellationTokenSource _tokenSource;
+        private CancellationTokenSource _reciveCTS;
+        private CancellationTokenSource _tryConnectCTS;
         private Task _receiveTask;
+        private Task _tryConnectTask;
 
         public ServerClient()
         {
-            _tokenSource = new CancellationTokenSource();
             _tcpClient = new TcpClient();
+            _tryConnectCTS = new CancellationTokenSource();
             _stringBuilder = new StringBuilder();
-            TryConnect();
+            _tryConnectTask = new Task(TryConnect, _tryConnectCTS.Token);
+            _tryConnectTask.Start();
         }
 
         public void SendQuerryForEmployeeRoles()
@@ -93,7 +97,7 @@ namespace Client_Admin_.Model
         public void SendQuerryForUserRoles()
         {
             _stringBuilder.Append("--getUserRoles\n");
-            _stringBuilder.Append($"id={IdOnServer}\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");    
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }
@@ -206,9 +210,18 @@ namespace Client_Admin_.Model
                 _tcpClient.Connect(HOST, PORT);
                 _tcpStream = _tcpClient.GetStream();
                 StateUpdating?.Invoke("You connected to server!");
-                _receiveTask = new Task(ReceiveMessages, _tokenSource.Token);
+                CanSendMessagesToServer = true;
+                _tryConnectCTS.Cancel();
+                _tryConnectCTS.Dispose();
+
+                _reciveCTS = new CancellationTokenSource();
+                _receiveTask = new Task(ReceiveMessages, _reciveCTS.Token);
                 _receiveTask.Start();
-                
+
+            }
+            catch (SocketException ex)
+            {
+                TryConnect();
             }
             catch (System.Exception ex)
             {
@@ -222,7 +235,7 @@ namespace Client_Admin_.Model
         {
             try
             {
-                while (_tokenSource.Token.IsCancellationRequested == false)
+                while (_reciveCTS.Token.IsCancellationRequested == false)
                 {
                     byte[] data = new byte[1024];
                     StringBuilder sb = new StringBuilder();
@@ -276,6 +289,14 @@ namespace Client_Admin_.Model
                         {
                             GetTaskConditions?.Invoke(Parser.GetInstance().GetTaskConditions(msg.Substring(msg.IndexOf('=') + 1)));
                         }
+                        else if (msg.Contains("--disconnect"))
+                        {
+                            _reciveCTS.Cancel();
+                            CanSendMessagesToServer = false;
+                            MainVM.GetInstance().LogOut();
+                            CanSendMessagesToServer = true;
+                            break;
+                        }
                         else
                         {
                             GetServerMessage?.Invoke(msg);
@@ -294,7 +315,7 @@ namespace Client_Admin_.Model
 
         public void Disconnect()
         {
-            _tokenSource.Cancel();
+            _reciveCTS.Cancel();
             _tcpStream?.Close();
             _tcpClient.Close();
             StateUpdating?.Invoke("You disconnected from server");

@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,9 @@ namespace Client_Admin_.ViewModel.ProjectWindows
 {
     public class DeleteProjectVM :BaseVM
     {
-		private List<Project> _projects;
+		private ObservableCollection<Project> _projects;
 
-		public List<Project> Projects
+		public ObservableCollection<Project> Projects
 		{
 			get { return _projects; }
 			set 
@@ -40,31 +41,44 @@ namespace Client_Admin_.ViewModel.ProjectWindows
 		{
 			get { return _removeCommand ?? new RelayCommand(RemoveProject); }
 		}
+		private bool _canDeleteProject;
+
+		public bool CanDeleteProject
+		{
+			get { return _canDeleteProject; }
+			set 
+			{ 
+				_canDeleteProject = value;
+				OnPropertyChanged("CanDeleteProject");
+			}
+		}
+
 
 
 		public DeleteProjectVM()
 		{
-			Projects = new List<Project>();
+			CanDeleteProject = false;
+			Projects = new ObservableCollection<Project>();
 			MainVM.GetInstance().ServerClient.GetProjects += GetProjects;
-			MainVM.GetInstance().ServerClient.SendQuerryForProjects();
 		}
 
 		private void GetProjects(IEnumerable<Project> obj)
 		{
-			Projects.Clear();
-			foreach (var item in obj)
-			{
-				Projects.Add(item);
-			}
+			CanDeleteProject = true;
+			Projects = new ObservableCollection<Project>(obj);
+			OnPropertyChanged("Projects");
 		}
 
-		private void RemoveProject()
+		private async void RemoveProject()
 		{
 			if (SelectedProject == null)
 				return;
 			MainVM.GetInstance().ServerClient.RemoveProject(SelectedProject.Id);
+			CanDeleteProject = false;	
 			Projects.Remove(SelectedProject);
 			SelectedProject = new Project();
-		}
+			await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForProjects();
+        }
 	}
 }

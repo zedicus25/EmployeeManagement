@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,9 +38,9 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
                 OnPropertyChanged("SelectedUserRole");
             }
         }
-        private List<UserRole> _roles;
+        private ObservableCollection<UserRole> _roles;
 
-        public List<UserRole> UserRoles
+        public ObservableCollection<UserRole> UserRoles
         {
             get { return _roles; }
             set
@@ -48,9 +49,9 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
                 OnPropertyChanged("UserRoles");
             }
         }
-        private List<EmployeeRole> _employeeRoles;
+        private ObservableCollection<EmployeeRole> _employeeRoles;
 
-        public List<EmployeeRole> EmployeeRoles
+        public ObservableCollection<EmployeeRole> EmployeeRoles
         {
             get { return _employeeRoles; }
             set
@@ -67,42 +68,52 @@ namespace Client_Admin_.ViewModel.EmployeeRoleWindows
             get { return _linkCommand ?? new RelayCommand(LinkRole); }
         }
 
+        private bool _canLinkRole;
+
+        public bool CanLinkRole
+        {
+            get { return _canLinkRole; }
+            set 
+            { 
+                _canLinkRole = value;
+                OnPropertyChanged("CanLinkRole");
+            }
+        }
+
         public LinkEmployeeRoleVM()
         {
-            UserRoles = new List<UserRole>();
-            EmployeeRoles = new List<EmployeeRole>();
+            CanLinkRole = false;
+            UserRoles = new ObservableCollection<UserRole>();
+            EmployeeRoles = new ObservableCollection<EmployeeRole>();
             SelectedEmployeeRole = new EmployeeRole();
             SelectedUserRole = new UserRole();
             MainVM.GetInstance().ServerClient.GetUserRoles += GetUserRoles;
             MainVM.GetInstance().ServerClient.GetEmployeeRoles += GetEmployeeRoles;
-            MainVM.GetInstance().ServerClient.SendQuerryForUserRoles();
-            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
         }
 
-        private void LinkRole()
+        private async void LinkRole()
         {
             if (SelectedEmployeeRole == null || SelectedUserRole == null)
                 return;
             MainVM.GetInstance().ServerClient.SetUserRoleForEmployeeRole(SelectedUserRole.Id, SelectedEmployeeRole.Id);
+            CanLinkRole = false;
             SelectedEmployeeRole = null;
             SelectedUserRole = null;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForEmployeeRoles();
+            
         }
 
         private void GetUserRoles(IEnumerable<UserRole> obj)
         {
-            UserRoles.Clear();
-            foreach (var item in obj)
-            {
-                UserRoles.Add(item);
-            }
+            UserRoles = new ObservableCollection<UserRole>(obj);
+            OnPropertyChanged("UserRoles");
         }
         private void GetEmployeeRoles(IEnumerable<EmployeeRole> obj)
         {
-            EmployeeRoles.Clear();
-            foreach (var item in obj)
-            {
-                EmployeeRoles.Add(item);
-            }
+            CanLinkRole = true;
+            EmployeeRoles = new ObservableCollection<EmployeeRole>(obj);
+            OnPropertyChanged("EmployeeRoles");
         }
     }
 }

@@ -32,7 +32,9 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
         </StackPanel>
-        <Button Command="{Binding AddCommand}" Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Delete user">
+        <Button IsEnabled="{Binding CanAddRole}" Command="{Binding AddCommand}" 
+                Grid.Column="1" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Add user role">
             <materialDesign:PackIcon Kind="PlusBold" Width="30" Height="30"/>
         </Button>
     </Grid>

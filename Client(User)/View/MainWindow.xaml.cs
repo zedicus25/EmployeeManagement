@@ -25,6 +25,7 @@ namespace EmployeeManagement.View
         {
             InitializeComponent();
             this.DataContext = MainViewModel.GetInstance();
+            MainViewModel.GetInstance().ConnectToServer();
         }
     }
 }

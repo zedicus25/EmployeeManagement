@@ -23,9 +23,9 @@ namespace Client_Admin_.ViewModel.TaskConditionWindows
             }
         }
 
-        private List<TaskCondition> _taskConditions;
+        private ObservableCollection<TaskCondition> _taskConditions;
 
-        public List<TaskCondition> TaskConditions
+        public ObservableCollection<TaskCondition> TaskConditions
         {
             get { return _taskConditions; }
             set
@@ -40,25 +40,35 @@ namespace Client_Admin_.ViewModel.TaskConditionWindows
         {
             get { return _deleteCommand ?? new RelayCommand(RemoveConditon); }
         }
+        private bool _canRemove;
+
+        public bool CanRemove
+        {
+            get { return _canRemove; }
+            set 
+            {
+                _canRemove = value;
+                OnPropertyChanged("CanRemove");
+            }
+        }
+
 
         public DeleteTaskConditionVM()
         {
-            TaskConditions = new List<TaskCondition>();
+            CanRemove = false;
+            TaskConditions = new ObservableCollection<TaskCondition>();
             SelectedCondition = new TaskCondition();
-            MainVM.GetInstance().ServerClient.GetTaskConditions += GetTaskConditions;
-            MainVM.GetInstance().ServerClient.SendQuerryForTaskConditions();
+            MainVM.GetInstance().ServerClient.GetTaskConditions += GetTaskConditions;          
         }
 
         private void GetTaskConditions(IEnumerable<TaskCondition> obj)
         {
-            TaskConditions.Clear();
-            foreach (var item in obj)
-            {
-                TaskConditions.Add(item);
-            }
+            CanRemove = true;
+            TaskConditions = new ObservableCollection<TaskCondition>(obj);
+            OnPropertyChanged("TaskConditions");
         }
 
-        private void RemoveConditon()
+        private async void RemoveConditon()
         {
             if (SelectedCondition == null)
                 return;
@@ -66,6 +76,9 @@ namespace Client_Admin_.ViewModel.TaskConditionWindows
             MainVM.GetInstance().ServerClient.DeleteTaskCondition(SelectedCondition.Id);
             TaskConditions.Remove(SelectedCondition);
             SelectedCondition = null;
+            CanRemove = false;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForTaskConditions();
         }
     }
 }

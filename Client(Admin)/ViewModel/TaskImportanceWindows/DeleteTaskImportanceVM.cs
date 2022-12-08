@@ -41,26 +41,35 @@ namespace Client_Admin_.ViewModel.TaskImportanceWindows
             get { return _deleteCommand ?? new RelayCommand(RemoveImportances); }
         }
 
+        private bool _canRemove;
+
+        public bool CanRemove
+        {
+            get { return _canRemove; }
+            set 
+            { 
+                _canRemove = value;
+                OnPropertyChanged("CanRemove");
+            }
+        }
+
+
         public DeleteTaskImportanceVM()
         {
+            CanRemove = false;
             TaskImportances = new ObservableCollection<TaskImportance>();
             SelectedImportance = new TaskImportance();
             MainVM.GetInstance().ServerClient.GetTaskImortances += GetTaskImportances;
-            MainVM.GetInstance().ServerClient.SendQuerryForTaskImportances();
         }
 
         private void GetTaskImportances(List<TaskImportance> obj)
         {
-            if (TaskImportances.Count <= 0)
-            {
-                TaskImportances = new ObservableCollection<TaskImportance>(obj);
-                return;
-            }
-
-            TaskImportances.Union(obj);
+            CanRemove = true;
+            TaskImportances = new ObservableCollection<TaskImportance>(obj);
+            OnPropertyChanged("TaskImportances");
         }
 
-        private void RemoveImportances()
+        private async void RemoveImportances()
         {
             if (SelectedImportance == null)
                 return;
@@ -68,6 +77,9 @@ namespace Client_Admin_.ViewModel.TaskImportanceWindows
             MainVM.GetInstance().ServerClient.DeleteTaskImportance(SelectedImportance.Id);
             TaskImportances.Remove(SelectedImportance);
             SelectedImportance = null;
+            CanRemove = false;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForTaskImportances();
         }
     }
 }

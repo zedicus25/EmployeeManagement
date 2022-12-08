@@ -36,7 +36,7 @@ namespace EmployeeManagement.ViewModel
             {
                 return _goToMyTasks ?? (_goToMyTasks = new RelayCommand(() =>
                 {
-                    if (_baseVM is MyTasks_VM)
+                    if (_baseVM is MyTasks_VM && _allVMs.Count > 2)
                         return;
                     SetCurrentVM(_allVMs[1]);
                     MainViewModel.GetInstance().GetMyTask();
@@ -50,9 +50,10 @@ namespace EmployeeManagement.ViewModel
             {
                 return _goToAccount ?? (_goToAccount = new RelayCommand(() =>
                 {
-                    if (_baseVM is Account_VM)
+                    if (_baseVM is Account_VM && _allVMs.Count > 3)
                         return;
                     SetCurrentVM(_allVMs[2]);
+                    
                 }));
             }
         }
@@ -86,9 +87,9 @@ namespace EmployeeManagement.ViewModel
             _allVMs = new List<BaseVM>();
             _vmCreation = new Task(CreateVMs, _cancellationToken.Token);
             _vmCreation.Start();
-		}
+        }
 
-        private async void CreateVMs()
+        private async  void CreateVMs()
         {
             while (MainViewModel.GetInstance().User == null)
                 await Task.Delay(10);

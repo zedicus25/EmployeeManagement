@@ -28,18 +28,38 @@ namespace Client_Admin_.ViewModel.TaskImportanceWindows
             get { return _addCommand ?? new RelayCommand(AddCondition); }
         }
 
-        public CreateTaskImportanceVM()
+        private bool _canAdd;
+
+        public bool CanAdd
         {
-            Importance = new TaskImportance();
+            get { return _canAdd; }
+            set 
+            { 
+                _canAdd = value;
+                OnPropertyChanged("CanAdd");
+            }
         }
 
-        private void AddCondition()
+
+        public CreateTaskImportanceVM()
+        {
+            CanAdd = false;
+            Importance = new TaskImportance();
+            MainVM.GetInstance().ServerClient.GetTaskImortances += GetTaskImportances;
+        }
+
+        private void GetTaskImportances(List<TaskImportance> obj) => CanAdd = true;
+
+        private async void AddCondition()
         {
             if (Importance.Title == String.Empty || Importance.Description == String.Empty)
                 return;
 
             MainVM.GetInstance().ServerClient.AddTaskImportance(Importance);
             Importance = new TaskImportance();
+            CanAdd = false;
+            await Task.Delay(800);
+            MainVM.GetInstance().ServerClient.SendQuerryForTaskImportances();
         }
     }
 }

@@ -97,7 +97,7 @@ namespace Client_Admin_.Model
         public void SendQuerryForUserRoles()
         {
             _stringBuilder.Append("--getUserRoles\n");
-            _stringBuilder.Append($"id={IdOnServer}\n");
+            _stringBuilder.Append($"id={IdOnServer}\n");    
             SendMessageToServer(_stringBuilder.ToString());
             _stringBuilder.Clear();
         }

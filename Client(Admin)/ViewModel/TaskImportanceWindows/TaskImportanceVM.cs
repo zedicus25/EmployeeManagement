@@ -26,7 +26,7 @@ namespace Client_Admin_.ViewModel.TaskImportanceWindows
         {
             get => _showCreateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is CreateTaskImportanceVM || _allVMs.Count < 1)
+                if (CurrentViewModel is CreateTaskImportanceVM)
                     return;
                 CurrentViewModel = _allVMs[0];
             });
@@ -36,7 +36,7 @@ namespace Client_Admin_.ViewModel.TaskImportanceWindows
         {
             get => _showDeleteMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is DeleteTaskImportanceVM || _allVMs.Count < 2)
+                if (CurrentViewModel is DeleteTaskImportanceVM)
                     return;
                 CurrentViewModel = _allVMs[1];
             });
@@ -46,7 +46,7 @@ namespace Client_Admin_.ViewModel.TaskImportanceWindows
         {
             get => _showUpdateMenu ?? new RelayCommand(() =>
             {
-                if (CurrentViewModel is UpdateTaskImportanceVM || _allVMs.Count < 3)
+                if (CurrentViewModel is UpdateTaskImportanceVM)
                     return;
                 CurrentViewModel = _allVMs[2];
             });
@@ -63,7 +63,7 @@ namespace Client_Admin_.ViewModel.TaskImportanceWindows
             CreateVMs();
         }
 
-        private async void CreateVMs()
+        private void CreateVMs()
         {
             while (true)
             {
@@ -72,10 +72,9 @@ namespace Client_Admin_.ViewModel.TaskImportanceWindows
             }
 
             _allVMs.Add(new CreateTaskImportanceVM());
-            await Task.Delay(3000);
             _allVMs.Add(new DeleteTaskImportanceVM());
-            await Task.Delay(3000);
             _allVMs.Add(new UpdateTaskImportanceVM());
+            MainVM.GetInstance().ServerClient.SendQuerryForTaskImportances();
         }
     }
 }

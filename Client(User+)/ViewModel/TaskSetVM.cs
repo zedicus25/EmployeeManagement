@@ -60,14 +60,14 @@ namespace Client_User__.ViewModel
         }
         public bool CanLinkTasks
         {
-            get => _canAddTasks;
+            get => _canLinks;
             set
             {
-                _canAddTasks = value;
-                OnPropertyChanged("CanAddTasks");
+                _canLinks = value;
+                OnPropertyChanged("CanLinkTasks");
             }
         }
-        private bool _canAddTasks;
+        private bool _canLinks;
 
         private RelayCommand _setTaskCommand;
 
@@ -102,6 +102,7 @@ namespace Client_User__.ViewModel
                 MainVM.GetInstance().ServerClient.QuerrySetTaskToEmployee(SelectedTask.Id, SelectedEmployee.Id);
                 SelectedTask.EmployeeId = SelectedEmployee.Id;
             }
+            CanLinkTasks = false;
             await Task.Delay(800);
             MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
 

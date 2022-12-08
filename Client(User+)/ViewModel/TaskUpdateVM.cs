@@ -142,14 +142,14 @@ namespace Client_User__.ViewModel
         }
         public bool CanUpdateTasks
         {
-            get => _canAddTasks;
+            get => _canUpdate;
             set
             {
-                _canAddTasks = value;
-                OnPropertyChanged("CanAddTasks");
+                _canUpdate = value;
+                OnPropertyChanged("CanUpdateTasks");
             }
         }
-        private bool _canAddTasks;
+        private bool _canUpdate;
 
         private ObservableCollection<TaskImportant> _importances;
         private ObservableCollection<TaskCondition> _conditions;
@@ -220,6 +220,7 @@ namespace Client_User__.ViewModel
             }
                 
             MainVM.GetInstance().ServerClient.UpdateTask(SelectedTask.Id,SelectedTask);
+            CanUpdateTasks = false; 
             await Task.Delay(800);
             MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }

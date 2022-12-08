@@ -162,6 +162,7 @@ namespace Client_User__.ViewModel
             SelectedImportance = null;
             SelectedProject = null;
             NewTask = new UserTask();
+            CanAddTasks = false;
             await Task.Delay(800);
             MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }

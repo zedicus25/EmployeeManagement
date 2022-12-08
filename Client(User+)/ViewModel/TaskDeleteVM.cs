@@ -75,6 +75,7 @@ namespace Client_User__.ViewModel
             MainVM.GetInstance().DeleteTask(SelectedTask.Id);
             Tasks.Remove(SelectedTask);
             SelectedTask = null;
+            CanRemoveTasks = false;
             await Task.Delay(800);
             MainVM.GetInstance().ServerClient.SendQuerryForAllTasks();
         }

@@ -129,10 +129,15 @@ namespace Server.Controllers
                 string login = datas[1].Substring(datas[1].IndexOf('=') + 1).Trim();
                 string password = datas[2].Substring(datas[2].IndexOf('=') + 1).Trim();
 
-                LoginData loginData = _dbContext.LoginDatas
-                    .FirstOrDefault(x => x.Password.Equals(password) && x.Login.Equals(login));
+                LoginData loginData = _dbContext.LoginDatas.FirstOrDefault(x => x.Login.Equals(login));
 
                 if (loginData == null)
+                {
+                    SendMessageToClient(datas[0].Substring(datas[0].IndexOf('=') + 1), "loginigResult=false\n");
+                    return;
+                }
+
+                if(!PasswordHasher.VerifyHashedPassword(loginData.Password, password))
                 {
                     SendMessageToClient(datas[0].Substring(datas[0].IndexOf('=') + 1), "loginigResult=false\n");
                     return;

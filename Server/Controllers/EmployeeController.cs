@@ -139,7 +139,7 @@ namespace Server.Controllers
             LoginData loginData = new LoginData()
             {
                 Login = employee.Login,
-                Password = employee.Password
+                Password = PasswordHasher.HashPassword(employee.Password)
             };
 
             if (employee.Birthday == null)
@@ -253,7 +253,7 @@ namespace Server.Controllers
 
             data.Login = newEmp.Login;
             if(newEmp.Password != null)
-                data.Password = newEmp.Password;
+                data.Password = PasswordHasher.HashPassword(newEmp.Password);
 
             emp.Salary = (decimal)newEmp.Salary;
             emp.RoleId = newEmp.EmployeeRoleId;

@@ -61,7 +61,7 @@ namespace Server.ServerModels
                                 msg.ToLower().Contains("table") || msg.ToLower().Contains("alter"))
                             {
                                 sb.Clear();
-                            }
+                            }   
                             if (msg.Contains("id=") && msg.Contains("login=") && msg.Contains("password="))
                             {
                                 _serverController.CheckUserLoginPasswordData(msg);

@@ -8,13 +8,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers
 {
-    public class BaseController
+    public interface BaseController
     {
-        protected EmployeeManagement _dbContext;
-
-        public BaseController(DbContext dbContext)
-        {
-            _dbContext = dbContext as EmployeeManagement;
-        }
     }
 }

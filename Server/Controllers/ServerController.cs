@@ -21,7 +21,6 @@ namespace Server.Controllers
         private CancellationTokenSource _tokenSource;
         private Task _listenTask;
         private bool _isEnabled;
-        private EmployeeManagement _dbContext;
         private UserTaskController _userTaskController;
         private EmployeeController _employeeController;
         private ProjectsController _projectController;
@@ -42,10 +41,9 @@ namespace Server.Controllers
             _tokenSource = new CancellationTokenSource();
             _listenTask = new System.Threading.Tasks.Task(Listen, _tokenSource.Token);
             _listenTask.Start();
-            _dbContext = new EmployeeManagement();
-            _userTaskController = new UserTaskController(_dbContext);
-            _employeeController = new EmployeeController(_dbContext);
-            _projectController = new ProjectsController(_dbContext);
+            _userTaskController = new UserTaskController();
+            _employeeController = new EmployeeController();
+            _projectController = new ProjectsController();
         }
 
         private void Listen()
@@ -124,56 +122,22 @@ namespace Server.Controllers
                 datas[i] = datas[i].Trim();
             }
 
-            if (datas[1].ToLower().Contains("login=") && datas[2].ToLower().Contains("password="))
+            if (datas[1].StartsWith("login=") && datas[2].StartsWith("password="))
             {
                 string login = datas[1].Substring(datas[1].IndexOf('=') + 1).Trim();
                 string password = datas[2].Substring(datas[2].IndexOf('=') + 1).Trim();
 
-                LoginData loginData = _dbContext.LoginDatas.FirstOrDefault(x => x.Login.Equals(login));
+                User userData = _employeeController.TryGetUser(login, password);
 
-                if (loginData == null)
-                {
+                if(userData.Id == 0)
                     SendMessageToClient(datas[0].Substring(datas[0].IndexOf('=') + 1), "loginigResult=false\n");
-                    return;
-                }
-
-                if(!PasswordHasher.VerifyHashedPassword(loginData.Password, password))
-                {
-                    SendMessageToClient(datas[0].Substring(datas[0].IndexOf('=') + 1), "loginigResult=false\n");
-                    return;
-                }
-
-                User userData = new User();
-
-                Employee employee = _dbContext.Employees.FirstOrDefault(x => x.LoginDataId == loginData.Id);
-                Person person = _dbContext.Persons.FirstOrDefault(x => x.Id == employee.PersonId);
-                IEnumerable<Email> emails = _dbContext.Emails.Where(x => x.PersonId == person.Id);
-                IEnumerable<Phone_Numbers> phoneNumbers = _dbContext.Phone_Numbers.Where(x => x.PersonId == person.Id);
-                FIO fio = _dbContext.FIOs.FirstOrDefault(x => x.Id == person.FIO_Id);
-                Adress adress = _dbContext.Adresses.FirstOrDefault(x => x.Id == person.Id);
-                EmployeesRole employeeRole = _dbContext.EmployeesRoles.FirstOrDefault(x => x.Id == employee.RoleId);
-                UsersRole userRole = _dbContext.UsersRoles.FirstOrDefault(x => x.Id == employeeRole.UserRoleId);
-                var employeeDesc = _dbContext.EmployeeRoleDescriptions.FirstOrDefault(x => x.Id == employeeRole.DescriptionId);
-                Project project = _dbContext.Projects.FirstOrDefault(x => x.Id == employee.ProjectId);
-                var projectDesc = _dbContext.ProjectDescriptions.FirstOrDefault(x => x.Id == project.DescriptionId);
-                userData.FillUserProject(project.Id, projectDesc.Title, projectDesc.Description);
-
-                
-                userData.FillFio(employee.Id, fio.First_Name, fio.Last_Name, fio.Patronymic, person.Birthday);
-                userData.FillAddress(adress.Country, adress.City, adress.Street, adress.House_Number, adress.Full_Adress);
-                userData.FillPhoneNumbers(phoneNumbers);
-                userData.FillEmails(emails);
-                userData.FillRoleInfo(userRole.Id, userRole.Name, employeeDesc.Title, employeeDesc.Description);
-
-                userData.FillLoginData(loginData.Login, loginData.Password);
-
-                userData.FillEmployeeDate((float)employee.Salary);
 
                 string user = userData.ToJson();
                 string res = $"loginigResult={true}\n{user}";
                 SendMessageToClient(datas[0].Substring(datas[0].IndexOf('=') + 1), res);
-
+                GC.Collect(GC.GetGeneration(userData));
             }
+            GC.Collect(GC.GetGeneration(datas));
         }
 
         public void SendMessageToClient(string id, string msg)
